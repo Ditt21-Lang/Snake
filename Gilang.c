@@ -61,7 +61,7 @@ void UpdateSnake(Snake *snake) {
 
 void DrawSnake(Snake *snake) {
     for (int i = 0; i < snake->length; i++) {
-        DrawRectangle(snake->body[i].x, snake->body[i].y, CELL_SIZE, CELL_SIZE, BLACK);
+        DrawRectangle(snake->body[i].x, snake->body[i].y, CELL_SIZE, CELL_SIZE, BLUE);
     }
 }
 
