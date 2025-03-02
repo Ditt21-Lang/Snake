@@ -7,19 +7,19 @@
 
 
 int lastbutton(){
- if(IsKeyDown(KEY_RIGHT)){
+ if(IsKeyPressed(KEY_RIGHT)){
 
 return 262;
 }
-else if(IsKeyDown(KEY_LEFT)){
+else if(IsKeyPressed(KEY_LEFT)){
 
 return 263;
 }
-else if(IsKeyDown(KEY_DOWN)){
+else if(IsKeyPressed(KEY_DOWN)){
 
 return 264;
 }
-else if(IsKeyDown(KEY_UP)){
+else if(IsKeyPressed(KEY_UP)){
 
 return 265;
 }
@@ -54,8 +54,9 @@ return 265;
         break;
         
         case 264: //down
-        while(coorY>TINGGI_LAYAR-650){
-        coorY -=20;
+          while(coorY<TINGGI_LAYAR){
+        coorY +=20;
+    
         BeginDrawing();
         DrawCircle(coorX,coorY,radius,GOLD);
         ClearBackground(WHITE);
@@ -65,8 +66,8 @@ return 265;
         break;
         
         case 265: //up
-        while(coorY<TINGGI_LAYAR){
-        coorY +=20;
+          while(coorY>TINGGI_LAYAR-650){
+        coorY -=20;
         BeginDrawing();
         DrawCircle(coorX,coorY,radius,GOLD);
         ClearBackground(WHITE);
@@ -83,24 +84,37 @@ return 265;
 
 
 int main(){
- 
+     const int screenWidth = 800;
+    const int screenHeight = 600;
+   
+
+    // Variabel lingkaran
+    float circleX = screenWidth / 2.0f;
+    float circleY = screenHeight / 2.0f;
+    float radius = 30.0f;
+    float speed = 5.0f;
+
     int buffer;
     // Inisialisasi window
     InitWindow(LEBAR_LAYAR,TINGGI_LAYAR, "Gerakkan Lingkaran");
     SetTargetFPS(60);
      while(!WindowShouldClose()){
-         buffer=263;
+         buffer=lastbutton();
          printf("pppp%d\n",buffer);
            if(IsKeyDown(KEY_P)){
-            portal_blast(200,300,&buffer);
+            portal_blast(circleX,circleY,&buffer);
         }
-
-         BeginDrawing();
-    ClearBackground(GOLD);
-    DrawCircle(400,400,90,BLUE);
-    EndDrawing();
-      
-      
+        if (IsKeyDown(KEY_RIGHT)) circleX += speed;
+        if (IsKeyDown(KEY_LEFT)) circleX -= speed;
+        if (IsKeyDown(KEY_DOWN)) circleY += speed;
+        if (IsKeyDown(KEY_UP)) circleY -= speed;
+        
+        // Gambar
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawCircle((int)circleX, (int)circleY, radius, BLUE);
+        DrawText("BUG cuy", 10, 10, 20, DARKGRAY);
+        EndDrawing();      
      }
          CloseWindow();
     return 0;
