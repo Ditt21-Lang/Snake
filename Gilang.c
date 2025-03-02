@@ -5,6 +5,7 @@
 #define TINGGI_LAYAR 800
 #define UKURAN_BLOCK 20
 
+
 void InitSnake(Snake *Snake){
     Snake->position = (Vector2){LEBAR_LAYAR/2, TINGGI_LAYAR/2};
     Snake->speed= (Vector2){UKURAN_BLOCK, 0};
