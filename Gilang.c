@@ -1,29 +1,27 @@
 #include "raylib.h"
 #include <stdlib.h>
 #include "Gilang.h"
-#define LEBAR_LAYAR 800
-#define TINGGI_LAYAR 650
+#define LEBAR_LAYAR 600
+#define TINGGI_LAYAR 800
 #define UKURAN_BLOCK 20
 
 int main(){
-
     
-    InitWindow(LEBAR_LAYAR, TINGGI_LAYAR, "Test");
+    InitWindow(LEBAR_LAYAR, TINGGI_LAYAR, "Snake Game");
     Snake Snake;
     SetTargetFPS(10);
     InitSnake(&Snake);
 
     while(!WindowShouldClose()){
         BeginDrawing();
-        UpdateSnake(&Snake);
-        ClearBackground(RAYWHITE);
-
-        DrawSnake(&Snake);
-        
-
-        
-        DrawText("Contoh", 280, 500, 20, BLACK);
-
+        ClearBackground(BLACK);
+        if(!cekTabrakan(&Snake)){
+            UpdateSnake(&Snake);
+            DrawSnake(&Snake);
+        }
+        else{
+            DrawText("Game Over", LEBAR_LAYAR/2, TINGGI_LAYAR/2, 25, RED);
+        }
         EndDrawing();
 
     }
@@ -34,8 +32,8 @@ int main(){
 
 void InitSnake(Snake *Snake){
     Snake->position = (Vector2){LEBAR_LAYAR/2, TINGGI_LAYAR/2};
-    Snake->speed = (Vector2){3,0};
-    Snake->panjang = 10;
+    Snake->speed= (Vector2){UKURAN_BLOCK, 0};
+    Snake->panjang = 5;
 
 
     for (int i = 0; i < Snake->panjang; i++) {
@@ -48,6 +46,15 @@ void DrawSnake(Snake *Snake) {
     for (int i = 0; i < Snake->panjang; i++) {
         DrawRectangleV(Snake->badan[i], (Vector2){UKURAN_BLOCK, UKURAN_BLOCK}, BLUE);
     }
+}
+
+bool cekTabrakan(Snake *Snake){
+    for (int i = 1; i < Snake->panjang; i++){
+        if(Snake->badan[0].x == Snake->badan[i].x && Snake->badan[0].y == Snake->badan[i].y){
+            return true;
+        }
+    }
+    return false;
 }
 
 void UpdateSnake(Snake *Snake) {
@@ -75,4 +82,6 @@ void UpdateSnake(Snake *Snake) {
    // Perbarui posisi kepala dengan menambahkan kecepatan
     Snake->badan[0].x += Snake->speed.x;
     Snake->badan[0].y += Snake->speed.y;
+
+    cekTabrakan(Snake);
 } 
