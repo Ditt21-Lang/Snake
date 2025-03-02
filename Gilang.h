@@ -6,9 +6,9 @@ typedef struct{
     Vector2 speed;
     int panjang;
     Vector2 badan[100];
-    int frame;
 } Snake;
 
 void InitSnake(Snake *Snake);
 void DrawSnake(Snake *Snake);
 void UpdateSnake(Snake *Snake);
+bool cekTabrakan(Snake *Snake);
