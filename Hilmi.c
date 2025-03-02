@@ -7,13 +7,13 @@ void ReverseSnake(Snake *snake){
 
     for (int i = 0; i < snake->panjang; i++){
         tempBody[i] = snake->badan[snake->panjang - 1 - i];
-        }
+        }    /* menyimpan tubuh ular dalam urutan terbalik */
 
     for (int i = 0; i < snake->panjang; i++){
         snake->badan[i] = tempBody[i];
-        }
+        }    /* mengganti posisi tubuh ular dengan tubuh yang sudah dibalik */
 
-    snake->position = snake->body[0];
+    snake->position = snake->body[0]; /* mengatur posisi kepala sesuai dengan tubuh yang baru dibalik */
 
     if(snake->speed.x !=0) {
         snake->speed.x = -snake->speed.x; }
