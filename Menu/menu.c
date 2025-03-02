@@ -26,10 +26,12 @@ int main() {
     
     GameScreen currentScreen = MENU;
     
+    // Tombol main menu
     const char *menuTexts[] = {"Play", "Option", "Quit"};
     Button menuButtons[3];
     InitButtons(menuButtons, menuTexts, 3, 300);
     
+    // Tombol pilihan mode
     const char *modeTexts[] = {"Endless Mode", "Stage Mode", "Back"};
     Button modeButtons[3];
     InitButtons(modeButtons, modeTexts, 3, 300);
@@ -39,7 +41,7 @@ int main() {
         ClearBackground(BLACK);
         
         if (currentScreen == MENU) {
-            // Menampilkan judul game
+            // Judul game
             DrawText("Snake Game", SCREEN_WIDTH / 2 - MeasureText("Snake Game", 50) / 2, 200, 50, WHITE);
             
             UpdateButtons(menuButtons, 3, &currentScreen);
@@ -70,12 +72,14 @@ void UpdateButtons(Button buttons[], int count, GameScreen *screen) {
         buttons[i].hover = CheckCollisionPointRec(mousePoint, buttons[i].border);
         if (buttons[i].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             if (*screen == MENU) {
+                // Jika tombol "Play" di-klik
                 if (i == 0) *screen = MODE_SELECTION;
                 else if (i == 2) {
                     CloseWindow();
                     exit(0);
                 }
             } else if (*screen == MODE_SELECTION) {
+                // Jika tombol "Back" di-klik
                 if (i == 2) *screen = MENU;
             }
         }
@@ -84,7 +88,7 @@ void UpdateButtons(Button buttons[], int count, GameScreen *screen) {
 
 void DrawButtons(Button buttons[], int count) {
     for (int i = 0; i < count; i++) {
-        Color btnColor = buttons[i].hover ? LIGHTGRAY : GRAY;
+        Color btnColor = buttons[i].hover ? LIGHTGRAY : GRAY; // Warna saat di-hover
         DrawRectangleRec(buttons[i].border, btnColor);
         DrawText(buttons[i].text, buttons[i].border.x + 35, buttons[i].border.y + 15, 20, WHITE);
     }
