@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "raylib.h"
+#ifndef GILANG_H
+#define GILANG_H
 
 typedef struct{
     Vector2 position; //Menyimpan dua nilai, menentukan nilai koordinat x dan y. 
@@ -12,3 +14,5 @@ void InitSnake(Snake *Snake);
 void DrawSnake(Snake *Snake);
 void UpdateSnake(Snake *Snake);
 bool cekTabrakan(Snake *Snake);
+
+#endif
