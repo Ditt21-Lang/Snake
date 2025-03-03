@@ -61,3 +61,16 @@ void UpdateSnake(Snake *Snake) {
 
     cekTabrakan(Snake);
 } 
+
+bool CheckMakanan(Snake *snake, Food *food) {
+    return (snake->badan[0].x == food->position.x && snake->badan[0].y == food->position.y);
+}
+
+bool CheckObstacle(Snake *snake, Obstacle *Obstacle){
+    for (int i = 0; i < Obstacle->count; i++){
+        if (snake->badan[0].x == Obstacle->obstacles[i].x && snake->badan[0].y == Obstacle->obstacles[i].y){
+            return true;
+        }
+    }
+    return false;
+}
