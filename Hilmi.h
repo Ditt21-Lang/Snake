@@ -1,15 +1,15 @@
 #include <stdlib.h>
 #include "raylib.h"
-#ifndef HILMI_H
-#define HILMI_H
+#ifndef Hilmi_H
+#define Hilmi_H
 
 typedef struct{
-  Vector2 tempBody [100];
-  Vector2 position;
-  Vector2 speed;
-  int panjang;
-  } Snake;
+  Vector2 tempBody [2000];
+  Vector2 Position;
+  Vector2 Speed;
+  int Panjang;
+  } SNAKE;
 
-void ReverseSnake(Snake *snake);
+void ReverseSnake(SNAKE *SnakE);
 
 #endif
