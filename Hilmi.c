@@ -2,25 +2,25 @@
 #include "stdlib.h"
 #include "Hilmi.h"
 
-void ReverseSnake(Snake *snake){
+void ReverseSnake(SNAKE *SnakE){
     Vector2 tempBody[100];
 
-    for (int i = 0; i < snake->panjang; i++){
-        tempBody[i] = snake->badan[snake->panjang - 1 - i];
+    for (int i = 0; i < SnakE->Panjang; i++){
+        tempBody[i] = SnakE->Body[SnakE->Panjang - 1 - i];
         }    /* menyimpan tubuh ular dalam urutan terbalik */
 
-    for (int i = 0; i < snake->panjang; i++){
-        snake->badan[i] = tempBody[i];
+    for (int i = 0; i < SnakE->Panjang; i++){
+        SnakE->Body[i] = tempBody[i];
         }    /* mengganti posisi tubuh ular dengan tubuh yang sudah dibalik */
 
-    snake->position = snake->body[0]; /* mengatur posisi kepala sesuai dengan tubuh yang baru dibalik */
+    SnakE->Position = SnakE->Body[0]; /* mengatur posisi kepala sesuai dengan tubuh yang baru dibalik */
 
-    if(snake->speed.x !=0) {
-        snake->speed.x = -snake->speed.x; }
-    if(snake->speed.y !=0) {
-        snake->speed.y = -snake->speed.y; }
+    if(SnakE->Speed.X !=0) {
+        SnakE->Speed.X = -SnakE->Speed.X; }
+    if(SnakE->Speed.Y !=0) {
+        SnakE->Speed.Y = -SnakE->Speed.Y; }
 
     if (IsKeyPressed(KEY_SPACE)) {
-        ReverseSnake(snake);
+        ReverseSnake(SnakE);
         }
 }
