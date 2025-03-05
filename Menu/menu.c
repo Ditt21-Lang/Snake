@@ -36,12 +36,28 @@ int main() {
     Button modeButtons[3];
     InitButtons(modeButtons, modeTexts, 3, 300);
     
+    Texture2D latar = LoadTexture("latar.png");
+    
+    float bgX = 0;          
+    float scrollSpeed = 75; 
+    float scale = 1.2;      
+
     while (!WindowShouldClose()) {
+       
+        bgX -= scrollSpeed * GetFrameTime();
+
+        if (bgX <= -latar.width * scale) {
+            bgX += latar.width * scale;
+        }
+
         BeginDrawing();
-        ClearBackground(BLACK);
-        
+        ClearBackground(RAYWHITE);
+
+        // pake 2 latar yang sama, biar transisinya halus
+        DrawTextureEx(latar, (Vector2){bgX, 0}, 0.0f, scale, WHITE);
+        DrawTextureEx(latar, (Vector2){bgX + latar.width * scale, 0}, 0.0f, scale, WHITE);
+
         if (currentScreen == MENU) {
-            // Judul game
             DrawText("Snake Game", SCREEN_WIDTH / 2 - MeasureText("Snake Game", 50) / 2, 200, 50, WHITE);
             
             UpdateButtons(menuButtons, 3, &currentScreen);
@@ -50,10 +66,11 @@ int main() {
             UpdateButtons(modeButtons, 3, &currentScreen);
             DrawButtons(modeButtons, 3);
         }
-        
+
         EndDrawing();
     }
-    
+
+    UnloadTexture(latar);
     CloseWindow();
     return 0;
 }
@@ -72,14 +89,12 @@ void UpdateButtons(Button buttons[], int count, GameScreen *screen) {
         buttons[i].hover = CheckCollisionPointRec(mousePoint, buttons[i].border);
         if (buttons[i].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             if (*screen == MENU) {
-                // Jika tombol "Play" di-klik
                 if (i == 0) *screen = MODE_SELECTION;
                 else if (i == 2) {
                     CloseWindow();
                     exit(0);
                 }
             } else if (*screen == MODE_SELECTION) {
-                // Jika tombol "Back" di-klik
                 if (i == 2) *screen = MENU;
             }
         }
@@ -88,7 +103,7 @@ void UpdateButtons(Button buttons[], int count, GameScreen *screen) {
 
 void DrawButtons(Button buttons[], int count) {
     for (int i = 0; i < count; i++) {
-        Color btnColor = buttons[i].hover ? LIGHTGRAY : GRAY; // Warna saat di-hover
+        Color btnColor = buttons[i].hover ? LIGHTGRAY : GRAY;
         DrawRectangleRec(buttons[i].border, btnColor);
         DrawText(buttons[i].text, buttons[i].border.x + 35, buttons[i].border.y + 15, 20, WHITE);
     }
