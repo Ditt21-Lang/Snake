@@ -5,9 +5,9 @@
 
 typedef struct{
   Vector2 tempBody [2000];
-  Vector2 Position;
-  Vector2 Speed;
-  int Panjang;
+  Vector2 position;
+  Vector2 speed;
+  int panjang;
   } SNAKE;
 
 void ReverseSnake(SNAKE *SnakE);
