@@ -8,7 +8,7 @@ typedef struct{
     Vector2 position; //Menyimpan dua nilai, menentukan nilai koordinat x dan y. 
     Vector2 speed;
     int panjang;
-    Vector2 badan[100];
+    Vector2 badan[600];
 } Snake;
 
 void InitSnake(Snake *Snake);

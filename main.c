@@ -15,11 +15,12 @@ int main(){
     InitSnake(&Snake);
     int score = 0;
     GenerateMakanan(&food, &obstacle);
+    Texture2D tanah = LoadTexture("tanah.png");
 
 
     while(!WindowShouldClose()){
         BeginDrawing();
-        DrawGame(&food, &obstacle, score ,0 ,0 ,LoadTexture("tanah.png"));
+        DrawGame(&food, &obstacle, score ,0 ,0 ,tanah);
         if(!cekTabrakan(&Snake)){
             UpdateSnake(&Snake);
             DrawSnake(&Snake);
@@ -39,9 +40,7 @@ int main(){
             Snake.panjang--;
         }
         EndDrawing();
-
     }
-
     CloseWindow();
     return 0;
 }
