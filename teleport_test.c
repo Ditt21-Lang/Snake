@@ -5,36 +5,6 @@
 #define TINGGI_LAYAR 650
 
 
-void teleport(float *coordinateX, float *coordinateY, float layar, float object) {
-    static int trigger = 0;
-    static float x = 0;
-    static float y = 0;
-    const float speed = 5.0f;
-    float *ptr1 = coordinateX;
-    float *ptr2 = coordinateY;
-  
-    if (*coordinateX > layar) {
-        x = (layar-layar)-object;
-        y = *coordinateY;
-        trigger = 1;
-    }
-
-    if (trigger) {
-        if (IsKeyDown(KEY_RIGHT)) x += speed;
-        if (IsKeyDown(KEY_LEFT)) x -= speed;
-        if (IsKeyDown(KEY_DOWN)) y += speed;
-        if (IsKeyDown(KEY_UP)) y -= speed;
-
-        DrawCircle(x, y, object, BLUE);
-
-        if (x > object*2) {
-            *ptr1=x;
-            *ptr2=y;
-            trigger = 0;
-        }
-    }
-}
-
 void teleport_snake(float *x,float *y,int layar,float object){
      static int trigger=0;
      static float circlex_modul;
@@ -45,7 +15,7 @@ void teleport_snake(float *x,float *y,int layar,float object){
         circley_modul=*y;
         *x=0-object;
         trigger=1;
-        
+    }
         if(trigger == 1){
         if (IsKeyDown(KEY_RIGHT)) circlex_modul += speed;
         if (IsKeyDown(KEY_LEFT)) circlex_modul -= speed;
@@ -55,15 +25,9 @@ void teleport_snake(float *x,float *y,int layar,float object){
         DrawCircle(circlex_modul,circley_modul,object,BLUE);
         if(circlex_modul > layar+object){
         trigger=0;
-        }
-            
-            
-        }
+        }   
     }
-    
-    
 }
-
 
 
 
