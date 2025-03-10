@@ -5,24 +5,70 @@
 #define TINGGI_LAYAR 650
 
 
-
-
-void teleport(float *coordinate,float max,float object){
-    if(*coordinate>max-object){
-    *coordinate = *coordinate-(max+object);
+void teleport(float *coordinateX, float *coordinateY, float layar, float object) {
+    static int trigger = 0;
+    static float x = 0;
+    static float y = 0;
+    const float speed = 5.0f;
+    float *ptr1 = coordinateX;
+    float *ptr2 = coordinateY;
+  
+    if (*coordinateX > layar) {
+        x = (layar-layar)-object;
+        y = *coordinateY;
+        trigger = 1;
     }
-    else{
-    if(*coordinate<max-max){
-    *coordinate = max;
+
+    if (trigger) {
+        if (IsKeyDown(KEY_RIGHT)) x += speed;
+        if (IsKeyDown(KEY_LEFT)) x -= speed;
+        if (IsKeyDown(KEY_DOWN)) y += speed;
+        if (IsKeyDown(KEY_UP)) y -= speed;
+
+        DrawCircle(x, y, object, BLUE);
+
+        if (x > object*2) {
+            *ptr1=x;
+            *ptr2=y;
+            trigger = 0;
+        }
     }
 }
+
+void teleport_snake(float *x,float *y,int layar,float object){
+     static int trigger=0;
+     static float circlex_modul;
+     static float circley_modul;
+     const float speed=5;
+    if(*x>layar-object){
+        circlex_modul=*x;
+        circley_modul=*y;
+        *x=0-object;
+        trigger=1;
+        
+        if(trigger == 1){
+        if (IsKeyDown(KEY_RIGHT)) circlex_modul += speed;
+        if (IsKeyDown(KEY_LEFT)) circlex_modul -= speed;
+        if (IsKeyDown(KEY_DOWN)) circley_modul += speed;
+        if (IsKeyDown(KEY_UP)) circley_modul -= speed;
+        
+        DrawCircle(circlex_modul,circley_modul,object,BLUE);
+        if(circlex_modul > layar+object){
+        trigger=0;
+        }
+            
+            
+        }
+    }
+    
+    
 }
+
+
+
 
 
 int main(){
-
-
-
 // Variabel lingkaran
 float circleX = LEBAR_LAYAR / 2.0f;
 float circleY = TINGGI_LAYAR/ 2.0f;
@@ -39,9 +85,7 @@ if (IsKeyDown(KEY_LEFT)) circleX -= speed;
 if (IsKeyDown(KEY_DOWN)) circleY += speed;
 if (IsKeyDown(KEY_UP)) circleY -= speed;
 
- teleport(&circleX,LEBAR_LAYAR,radius);
-
- 
+ teleport_snake(&circleX, &circleY,LEBAR_LAYAR,radius);
  
 // Gambar
 BeginDrawing();
