@@ -5,8 +5,8 @@
 void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
     int validPosition = 0;
     while (!validPosition) {
-        makanan->position.x = rand() % GRID_WIDTH;
-        makanan->position.y = rand() % GRID_HEIGHT;
+        makanan->position.x = (rand() % GRID_WIDTH) * CELL_SIZE;
+        makanan->position.y = (rand() % GRID_HEIGHT) * CELL_SIZE;
         validPosition = 1;
 
         for (int i = 0; i < rintangan->count; i++) {
@@ -36,16 +36,16 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
 
 
 void DrawGame(Makanan *makanan, Rintangan *rintangan, int score, int lives, int level, Texture2D background) {
-    ClearBackground(BLACK);
+    ClearBackground(RAYWHITE);
     DrawTexture(background, 0, 0, WHITE);
     
-    DrawRectangle(makanan->position.x * CELL_SIZE, makanan->position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE, RED);
+    DrawRectangle(makanan->position.x, makanan->position.y , CELL_SIZE, CELL_SIZE, RED);
 
     for (int i = 0; i < rintangan->count; i++) {
         DrawRectangle(rintangan->rintangan[i].x * CELL_SIZE, rintangan->rintangan[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE, BLACK);
     }
 
-    DrawText(TextFormat("Score: %d", score), 10, 10, 20, BLACK);
-    DrawText(TextFormat("Lives: %d", lives), 10, 30, 20, BLACK);
-    DrawText(TextFormat("Level: %d", level), 10, 50, 20, BLACK);
+    DrawText(TextFormat("Score: %d", score), 10, 10, 20, WHITE);
+    DrawText(TextFormat("Lives: %d", lives), 10, 30, 20, WHITE);
+    DrawText(TextFormat("Level: %d", level), 10, 50, 20, WHITE);
 }

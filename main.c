@@ -16,6 +16,7 @@ int main(){
     int score = 0;
     GenerateMakanan(&food, &obstacle);
 
+
     while(!WindowShouldClose()){
         BeginDrawing();
         DrawGame(&food, &obstacle, score ,0 ,0 ,LoadTexture("tanah.png"));
@@ -30,6 +31,7 @@ int main(){
         if(CheckMakanan(&Snake, &food)){
             score += 100;
             Snake.panjang++;
+            GenerateMakanan(&food, &obstacle);
         }
 
         if(CheckObstacle(&Snake, &obstacle)){
