@@ -1,5 +1,4 @@
-
-#include "Marrely.h"
+#include "marrely.h"
 #include <stdlib.h>
 #include <time.h>
 
@@ -34,17 +33,21 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
     }
 }
 
-void DrawGame(Makanan *makanan, Rintangan *rintangan, int score, int lives, int level, Texture2D background) {
+void DrawGame(Makanan *makanan, Rintangan *rintangan, int score, int lives, int level, Texture2D background, Texture2D makananTexture, Texture2D rintanganTexture) {
     ClearBackground(RAYWHITE);
     DrawTexture(background, 0, 0, WHITE);
     
-    DrawRectangle(makanan->position.x * CELL_SIZE, makanan->position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE, RED);
+    Rectangle targetSize = { 0, 0, makananTexture.width, makananTexture.height };
+
+    Rectangle makananPos = { makanan->position.x * CELL_SIZE, makanan->position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
+    DrawTexturePro(makananTexture, targetSize, makananPos, (Vector2){0, 0}, 0, WHITE);
 
     for (int i = 0; i < rintangan->count; i++) {
-        DrawRectangle(rintangan->rintangan[i].x * CELL_SIZE, rintangan->rintangan[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE, BLACK);
+        Rectangle rintanganPos = { rintangan->rintangan[i].x * CELL_SIZE, rintangan->rintangan[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
+        DrawTexturePro(rintanganTexture, targetSize, rintanganPos, (Vector2){0, 0}, 0, WHITE);
     }
 
-    DrawText(TextFormat("Score: %d", score), 10, 10, 20, BLACK);
-    DrawText(TextFormat("Lives: %d", lives), 10, 30, 20, BLACK);
-    DrawText(TextFormat("Level: %d", level), 10, 50, 20, BLACK);
+    DrawText(TextFormat("Score: %d", score), 10, 10, 20, WHITE);
+    DrawText(TextFormat("Lives: %d", lives), 10, 30, 20, WHITE);
+    DrawText(TextFormat("Level: %d", level), 10, 50, 20, WHITE);
 }

@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include <stdlib.h>
 #include "Gilang.h"
+#include "Marrely.h"
 #define LEBAR_LAYAR 600
 #define TINGGI_LAYAR 800
 #define UKURAN_BLOCK 20
@@ -11,7 +12,20 @@ int main(){
     Snake Snake;
     SetTargetFPS(10);
     InitSnake(&Snake);
-
+    Texture2D background = LoadTexture("tanah.jpeg");  
+    Texture2D makananTexture = LoadTexture("makanan.png");  
+    Texture2D rintanganTexture = LoadTexture("rintangan.png");  
+    
+    srand(time(NULL));
+    
+    Makanan makanan;
+    Rintangan rintangan;
+    
+    int score = 0, lives = 3, level = 1;
+    
+    GenerateRintangan(&rintangan, level);
+    GenerateMakanan(&makanan, &rintangan);
+    
     while(!WindowShouldClose()){
         BeginDrawing();
         ClearBackground(BLACK);

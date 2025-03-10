@@ -4,11 +4,10 @@
 #include "raylib.h"
 
 #define CELL_SIZE 20
-#define GRID_WIDTH  (500 / CELL_SIZE)  
-#define GRID_HEIGHT (400 / CELL_SIZE)  
-#define SCREEN_WIDTH  500
-#define SCREEN_HEIGHT 400
-#define BORDER_THICKNESS 30
+#define GRID_WIDTH  (600 / CELL_SIZE)  
+#define GRID_HEIGHT (800 / CELL_SIZE)  
+#define SCREEN_WIDTH  600
+#define SCREEN_HEIGHT 800
 
 typedef struct {
     int x, y;
@@ -25,6 +24,6 @@ typedef struct {
 
 void GenerateMakanan(Makanan *makanan, Rintangan *rintangan);
 void GenerateRintangan(Rintangan *rintangan, int level);
-void DrawGame(Makanan *makanan, Rintangan *rintangan, int score, int lives, int level, Texture2D background);
+void DrawGame(Makanan *makanan, Rintangan *rintangan, int score, int lives, int level, Texture2D background, Texture2D makananTexture, Texture2D rintanganTexture);
 
 #endif
