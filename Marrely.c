@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-void GenerateMakanan(Makanan *makanan, Rintangan *rintangan, Snake *snake) {
+void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
     int validPosition = 0;
     while (!validPosition) {
         makanan->position.x = rand() % GRID_WIDTH;
@@ -33,46 +33,16 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
     }
 }
 
-void InitSnake(Snake *snake) {
-    snake->length = 1;
-    snake->body[0].x = GRID_WIDTH / 2;
-    snake->body[0].y = GRID_HEIGHT / 2;
-    snake->dx = 1;
-    snake->dy = 0;
-}
 
-void UpdateSnake(Snake *snake) {
-    for (int i = snake->length - 1; i > 0; i--) {
-        snake->body[i] = snake->body[i - 1];
-    }
-    snake->body[0].x += snake->dx;
-    snake->body[0].y += snake->dy;
-}
 
-int CheckCollision(Snake *snake, Rintangan *rintangan) {
-    for (int i = 0; i < rintangan->count; i++) {
-        if (snake->body[0].x == rintangan->rintangan[i].x && snake->body[0].y == rintangan->rintangan[i].y) {
-            return 1;
-        }
-    }
-    if (snake->body[0].x < 0 || snake->body[0].x >= GRID_WIDTH || snake->body[0].y < 0 || snake->body[0].y >= GRID_HEIGHT) {
-        return 1;
-    }
-    return 0;
-}
-
-void DrawGame(Makanan *makanan, Rintangan *rintangan, Snake *snake, int score, int lives, int level, Texture2D background) {
-    ClearBackground(RAYWHITE);
+void DrawGame(Makanan *makanan, Rintangan *rintangan, int score, int lives, int level, Texture2D background) {
+    ClearBackground(BLACK);
     DrawTexture(background, 0, 0, WHITE);
     
     DrawRectangle(makanan->position.x * CELL_SIZE, makanan->position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE, RED);
 
     for (int i = 0; i < rintangan->count; i++) {
         DrawRectangle(rintangan->rintangan[i].x * CELL_SIZE, rintangan->rintangan[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE, BLACK);
-    }
-
-    for (int i = 0; i < snake->length; i++) {
-        DrawRectangle(snake->body[i].x * CELL_SIZE, snake->body[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE, GREEN);
     }
 
     DrawText(TextFormat("Score: %d", score), 10, 10, 20, BLACK);

@@ -9,18 +9,32 @@ int main(){
     
     InitWindow(LEBAR_LAYAR, TINGGI_LAYAR, "Snake Game");
     Snake Snake;
+    Rintangan obstacle;
+    Makanan food;
     SetTargetFPS(10);
     InitSnake(&Snake);
+    int score = 0;
+    GenerateMakanan(&food, &obstacle);
 
     while(!WindowShouldClose()){
         BeginDrawing();
-        ClearBackground(BLACK);
+        DrawGame(&food, &obstacle, score ,0 ,0 ,LoadTexture("tanah.png"));
         if(!cekTabrakan(&Snake)){
             UpdateSnake(&Snake);
             DrawSnake(&Snake);
         }
         else{
             DrawText("Game Over", LEBAR_LAYAR/2, TINGGI_LAYAR/2, 25, RED);
+        }
+
+        if(CheckMakanan(&Snake, &food)){
+            score += 100;
+            Snake.panjang++;
+        }
+
+        if(CheckObstacle(&Snake, &obstacle)){
+            score -= 50;
+            Snake.panjang--;
         }
         EndDrawing();
 

@@ -23,17 +23,9 @@ typedef struct {
     int count;
 } Rintangan;
 
-typedef struct {
-    Position body[MAX_LENGTH];
-    int length;
-    int dx, dy;
-} Snake;
 
-void GenerateMakanan(Makanan *makanan, Rintangan *rintangan, Snake *snake);
+void GenerateMakanan(Makanan *makanan, Rintangan *rintangan);
 void GenerateRintangan(Rintangan *rintangan, int level);
-void InitSnake(Snake *snake);
-void UpdateSnake(Snake *snake);
-int CheckCollision(Snake *snake, Rintangan *rintangan);
-void DrawGame(Makanan *makanan, Rintangan *rintangan, Snake *snake, int score, int lives, int level, Texture2D background);
+void DrawGame(Makanan *makanan, Rintangan *rintangan, int score, int lives, int level, Texture2D background);
 
 #endif
