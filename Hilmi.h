@@ -4,6 +4,6 @@
 #ifndef Hilmi_H
 #define Hilmi_H
 
-void ReverseSnake(SNAKE *SnakE);
+void ReverseSnake(Snake *Snake);
 
 #endif
