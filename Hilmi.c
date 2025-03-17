@@ -25,3 +25,24 @@ void ReverseSnake(Snake *Snake){
         ReverseSnake(Snake);
         }
 }
+
+int CheckBorderCollision(Position snakeHead) {
+    if (snakeHead.x < 0 || snakeHead.x >= SCREEN_WIDTH / CELL_SIZE ||
+        snakeHead.y < 0 || snakeHead.y >= SCREEN_HEIGHT / CELL_SIZE) {
+        return 1; // Kena border
+    }
+    return 0;
+}
+
+int CheckObstacleCollision(Position snakeHead, Rintangan *rintangan) {
+    for (int i = 0; i < rintangan->count; i++) {
+        if (snakeHead.x == rintangan->rintangan[i].x && 
+            snakeHead.y == rintangan->rintangan[i].y) {
+            return 1; // Kena rintangan
+        }
+    }
+    return 0;
+}
+
+
+
