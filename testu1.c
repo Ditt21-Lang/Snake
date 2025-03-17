@@ -10,7 +10,7 @@ void teleport_snake(float *x,float *y,int layar,float object){
      static float circlex_modul;
      static float circley_modul;
      const float speed=5;
-    if(*x>=layar-object){
+    if(*x>layar-object){
         circlex_modul=*x;
         circley_modul=*y;
         *x=0-object;
@@ -29,13 +29,6 @@ void teleport_snake(float *x,float *y,int layar,float object){
     }
 }
 
-bool wall_bullet(float coor,float obj,float max){
-    if(coor+obj>max){
-        return true;
-    }
-}
-
-
 
 
 
@@ -45,26 +38,26 @@ float circleX = LEBAR_LAYAR / 2.0f;
 float circleY = TINGGI_LAYAR/ 2.0f;
 float radius = 30.0f;
 float speed = 5.0f;
-
+int haha=2;
 int buffer;
+
 // Inisialisasi window
 InitWindow(LEBAR_LAYAR,TINGGI_LAYAR, "Gerakkan Lingkaran");
 SetTargetFPS(60);
-while(!WindowShouldClose()){
-if (IsKeyDown(KEY_RIGHT)) circleX += speed;
-if (IsKeyDown(KEY_LEFT)) circleX -= speed;
-if (IsKeyDown(KEY_DOWN)) circleY += speed;
-if (IsKeyDown(KEY_UP)) circleY -= speed;
 
- teleport_snake(&circleX, &circleY,LEBAR_LAYAR,radius);
- 
-// Gambar
+while(!WindowShouldClose()){
+if(haha == 2 ){
 BeginDrawing();
 ClearBackground(RAYWHITE);
 DrawCircle((int)circleX, (int)circleY, radius, BLUE);
 DrawText("BUG cuy", 10, 10, 20, DARKGRAY);
-EndDrawing();      
+EndDrawing();  
+
+
+haha++;
 }
+}
+
 CloseWindow();
 return 0;
 }
