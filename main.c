@@ -35,10 +35,6 @@ int main(){
             GenerateMakanan(&food, &obstacle);
         }
 
-        if(CheckObstacle(&Snake, &obstacle)){
-            score -= 50;
-            Snake.panjang--;
-        }
         EndDrawing();
     }
     CloseWindow();

@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include <stdlib.h>
 #include "Gilang.h"
+#include "Marrely.h"
 #define LEBAR_LAYAR 600
 #define TINGGI_LAYAR 800
 #define UKURAN_BLOCK 20
@@ -63,13 +64,4 @@ void UpdateSnake(Snake *Snake) {
 
 bool CheckMakanan(Snake *snake, Makanan *food) {
     return (snake->badan[0].x == food->position.x && snake->badan[0].y == food->position.y);
-}
-
-bool CheckObstacle(Snake *snake, Rintangan *Obstacle){
-    for (int i = 0; i < Obstacle->count; i++){
-        if (snake->badan[0].x == Obstacle->rintangan[i].x && snake->badan[0].y == Obstacle->rintangan[i].y){
-            return true;
-        }
-    }
-    return false;
 }
