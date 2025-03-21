@@ -22,8 +22,16 @@ typedef struct {
     int count;
 } Rintangan;
 
+typedef struct {
+    Position position;
+    int direction;
+    int isVertical;
+} Enemy;
+
 void GenerateMakanan(Makanan *makanan, Rintangan *rintangan);
 void GenerateRintangan(Rintangan *rintangan, int level);
-void DrawGame(Makanan *makanan, Rintangan *rintangan, int score, int lives, int level, Texture2D background, Texture2D makananTexture, Texture2D rintanganTexture);
+void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, 
+              Texture2D background, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture);
+void MoveEnemy(Enemy *enemy);
 
 #endif

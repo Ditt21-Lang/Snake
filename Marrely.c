@@ -33,21 +33,41 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
     }
 }
 
-void DrawGame(Makanan *makanan, Rintangan *rintangan, int score, int lives, int level, Texture2D background, Texture2D makananTexture, Texture2D rintanganTexture) {
+void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, 
+              Texture2D background, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture) {
     ClearBackground(RAYWHITE);
     DrawTexture(background, 0, 0, WHITE);
-    
-    Rectangle targetSize = { 0, 0, makananTexture.width, makananTexture.height };
-
-    Rectangle makananPos = { makanan->position.x * CELL_SIZE, makanan->position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
-    DrawTexturePro(makananTexture, targetSize, makananPos, (Vector2){0, 0}, 0, WHITE);
 
     for (int i = 0; i < rintangan->count; i++) {
-        Rectangle rintanganPos = { rintangan->rintangan[i].x * CELL_SIZE, rintangan->rintangan[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
-        DrawTexturePro(rintanganTexture, targetSize, rintanganPos, (Vector2){0, 0}, 0, WHITE);
+        DrawTexturePro(rintanganTexture, (Rectangle){0, 0, rintanganTexture.width, rintanganTexture.height}, 
+                       (Rectangle){rintangan->rintangan[i].x * CELL_SIZE, rintangan->rintangan[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
+                       (Vector2){0, 0}, 0, WHITE);
     }
 
-    DrawText(TextFormat("Score: %d", score), 10, 10, 20, WHITE);
-    DrawText(TextFormat("Lives: %d", lives), 10, 30, 20, WHITE);
-    DrawText(TextFormat("Level: %d", level), 10, 50, 20, WHITE);
+    DrawTexturePro(makananTexture, (Rectangle){0, 0, makananTexture.width, makananTexture.height}, 
+                   (Rectangle){makanan->position.x * CELL_SIZE, makanan->position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
+                   (Vector2){0, 0}, 0, WHITE);
+    
+    for (int i = 0; i < enemyCount; i++) {
+        DrawTexturePro(enemyTexture, (Rectangle){0, 0, enemyTexture.width, enemyTexture.height}, 
+                       (Rectangle){enemies[i].position.x * CELL_SIZE, enemies[i].position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
+                       (Vector2){0, 0}, 0, WHITE);
+    }
+
+    DrawText(TextFormat("Score: %d", score), 10, 10, 20, BLACK);
+    DrawText(TextFormat("Level: %d", level), 10, 30, 20, BLACK);
+}
+
+void MoveEnemy(Enemy *enemy) {
+    if (enemy->isVertical) {
+        enemy->position.y += enemy->direction;
+        if (enemy->position.y <= 0 || enemy->position.y >= GRID_HEIGHT - 1) {
+            enemy->direction *= -1;
+        }
+    } else {
+        enemy->position.x += enemy->direction;
+        if (enemy->position.x <= 0 || enemy->position.x >= GRID_WIDTH - 1) {
+            enemy->direction *= -1;
+        }
+    }
 }
