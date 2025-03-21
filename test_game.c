@@ -1,71 +1,170 @@
-#include <raylib.h>
+#include "raylib.h"
+#include <stdio.h>
+#include <stdbool.h>
+#define LEBAR_LAYAR 800
+#define TINGGI_LAYAR 650
 
-#define MAX_LENGTH 100  // Panjang maksimal ular
-#define CELL_SIZE 20
+int lastbutton(){
+if(IsKeyPressed(KEY_RIGHT)){
 
-typedef struct {
-    int x, y;
-} Segment;
+return 262;
+}
+else if(IsKeyPressed(KEY_LEFT)){
 
-int i =0;
- Segment snake[MAX_LENGTH];  // Array untuk tubuh ular
-    int length = 3;  // Panjang awal ular
-    int direction = 0;  // 0 = kanan, 1 = kiri, 2 = atas, 3 = bawah
-    
-       void drawpp(int i,int length){
-             while(i < length){
-             DrawRectangle(snake[i].x * CELL_SIZE, snake[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE, GREEN);
-            i++;
-        }
-            
-            
-        }
-int main() {
-    const int screenWidth = 400, screenHeight = 400;
-    InitWindow(screenWidth, screenHeight, "Snake Game");
+return 263;
+}
+else if(IsKeyPressed(KEY_DOWN)){
 
-   
-    
-    // Inisialisasi posisi awal ular
-    for (int i = 0; i < length; i++) {
-        snake[i].x = 5 - i;  // Ular mulai dari kiri ke kanan
-        snake[i].y = 5;
+return 264;
+}
+else if(IsKeyPressed(KEY_UP)){
+
+return 265;
+}
+
+}
+
+bool yes(){
+
+if(IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_LEFT) ||IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_UP)){
+return true;
+}
+
+}
+
+
+//variable peluru
+typedef struct{
+    Vector2 koordinat_peluru;
+    float speed;
+    bool status;
+    int buffer;
+    Image gambar_peluru;
+    Texture2D texture;
+}peluru;
+
+typedef struct{
+    Vector2 koordinat_portal;
+    bool status;
+    Image gambar_portal;
+}portal;
+
+//initpeluru
+peluru mpeluru={0};
+peluru init_peluru(peluru mpeluru){
+return mpeluru;
+}
+
+//LoadImage("portual.png") langsung masukin ke fungsi
+Texture2D imgTOtexture(Image img,Texture2D texture){
+    texture=LoadTextureFromImage(img);
+    return texture;
+}
+
+//apabila p ditekan dijadikan fungsi "mainobjX","mainobjY"
+//if(IsKeyPressed //p true)
+void p_pressed(peluru *mpeluru,int *buffer_tujuan,int buffer_mengisi,Vector2 target_obj){
+    (*mpeluru).status=true;
+    (*mpeluru).koordinat_peluru.x=target_obj.x;
+    (*mpeluru).koordinat_peluru.y=target_obj.y;
+    *buffer_tujuan=buffer_mengisi;
     }
 
-    SetTargetFPS(10);  // Kecepatan permainan
-
-    while (!WindowShouldClose()) {
-        // Kontrol gerakan
-        if (IsKeyPressed(KEY_RIGHT) && direction != 1) direction = 0;
-        if (IsKeyPressed(KEY_LEFT)  && direction != 0) direction = 1;
-        if (IsKeyPressed(KEY_UP)    && direction != 3) direction = 2;
-        if (IsKeyPressed(KEY_DOWN)  && direction != 2) direction = 3;
-
-        // Geser tubuh ular dari belakang ke depan
-        for (int i = length - 1; i > 0; i--) {
-            snake[i] = snake[i - 1];
-        }
-
-        // Update posisi kepala
-        if (direction == 0) snake[0].x += 1;
-        if (direction == 1) snake[0].x -= 1;
-        if (direction == 2) snake[0].y -= 1;
-        if (direction == 3) snake[0].y += 1;
-
-        // Gambar ulang
-        BeginDrawing();
-        ClearBackground(BLACK);
-
-        // Gambar ular
-        i=0;
-        drawpp(i,length);
-        
-        
-        
-        DrawCircle(100, 30, 100, BLUE);
-        EndDrawing();
+    
+//jadi fungsikah dan ada buffer dan ditambahkan speed:
+//if(mpeluru.status){
+void move_peluru(peluru *mpeluru,float speed){
+    switch(mpeluru->buffer){
+    case 262:
+    mpeluru->koordinat_peluru.x +=speed;
+    break;
+    }
     }
 
-    CloseWindow();
-    return 0;
+
+
+//cek tembok
+bool cek_tembok(int max_layar,int x){
+if(x>max_layar){
+    return true;
+}
+}
+//init portal
+portal mportal={0};
+
+// set koordinat portal
+void activeportal(Vector2 *posisi_portal,Vector2 posisi_bullet){
+    posisi_portal->x=posisi_bullet.x;
+    posisi_portal->y=posisi_bullet.y;
+}
+
+//kalo main_obj kena portal maka dia akan teleport
+//tahap pengembangan 
+/*
+void check_portal(Vector2 posisi_portal,Vector2 main_obj){
+    if(posisiportal.x>main_obj.x && posisiportal.y < main_obj.y ){
+    
+    
+    }
+    
+}
+*/
+
+int main(){
+const int screenWidth = 800;
+const int screenHeight = 600;
+int buffer;
+
+
+// Variabel lingkaran
+float circleX = screenWidth / 2.0f;
+float circleY = screenHeight / 2.0f;
+float radius = 30.0f;
+float speed = 5.0f;
+
+
+// Inisialisasi window
+InitWindow(LEBAR_LAYAR,TINGGI_LAYAR, "Gerakkan Lingkaran");
+SetTargetFPS(60);
+
+
+while(!WindowShouldClose()){
+    
+if(yes()){
+buffer=lastbutton();
+    }
+DrawText(TextFormat("Buffer: %d", buffer), 50, 50, 30, RED);
+
+if(IsKeyPressed(KEY_P)){
+p_pressed(&mpeluru,&mpeluru.buffer,buffer,(Vector2){circleX,circleY});
+}
+
+move_peluru(&mpeluru,5);
+
+if(cek_tembok(LEBAR_LAYAR,mpeluru.koordinat_peluru.x)){
+     (mpeluru).status=false;
+    activeportal(&(mportal.koordinat_portal),mpeluru.koordinat_peluru);
+    DrawCircle(mportal.koordinat_portal.x,mportal.koordinat_portal.y,30,GOLD);
+}
+
+
+
+if (IsKeyDown(KEY_RIGHT)) circleX += speed;
+if (IsKeyDown(KEY_LEFT)) circleX -= speed;
+if (IsKeyDown(KEY_DOWN)) circleY += speed;
+if (IsKeyDown(KEY_UP)) circleY -= speed;
+
+// Gambar
+BeginDrawing();
+ClearBackground(RAYWHITE);
+if(mpeluru.status){
+DrawCircle(mpeluru.koordinat_peluru.x,mpeluru.koordinat_peluru.y,30,BLUE);
+}
+
+DrawCircle((int)circleX, (int)circleY, radius, BLUE);
+DrawText("BUG cuy", 10, 10, 20, DARKGRAY);
+EndDrawing();      
+}
+CloseWindow();
+return 0;
 }

@@ -3,9 +3,20 @@
 #include <stdbool.h>
 #define LEBAR_LAYAR 800
 #define TINGGI_LAYAR 650
+#define ATAS 0
+#define BAWAH 1
+#define KANAN 2
+#define KIRI 3
+
+typedef struct{
+    Vector2 coor;
+    bool status;
+    Image gambar_portal;
+    int arah;
+}portal;
 
 
-void teleport_snake(float *x,float *y,int layar,float object){
+void teleport_snake(portal p[],int layar,float object){
      static int trigger=0;
      static float circlex_modul;
      static float circley_modul;
@@ -28,43 +39,37 @@ void teleport_snake(float *x,float *y,int layar,float object){
         }   
     }
 }
+//mengset coor portal
+if(check_peluru=true){
+    void place_portal(objx,objy,portal *p1){
+    for(int i=0;i<KOTAK;i++){
+        if(i%2 == 0){
+        *(p1+i).coor.x=objx;
+        *(p1+i).coor.y=objy;
+        }
+        else{
+        *(p1+i).coor.x=(p1+i-1).coor.x;
+        *(p1+i).coor.y=(p1+i-1).coor.y;
 
-bool wall_bullet(float coor,float obj,float max){
-    if(coor+obj>max){
-        return true;
+        }
     }
+
 }
 
-
-
-
-
-int main(){
-// Variabel lingkaran
-float circleX = LEBAR_LAYAR / 2.0f;
-float circleY = TINGGI_LAYAR/ 2.0f;
-float radius = 30.0f;
-float speed = 5.0f;
-
-int buffer;
-// Inisialisasi window
-InitWindow(LEBAR_LAYAR,TINGGI_LAYAR, "Gerakkan Lingkaran");
-SetTargetFPS(60);
-while(!WindowShouldClose()){
-if (IsKeyDown(KEY_RIGHT)) circleX += speed;
-if (IsKeyDown(KEY_LEFT)) circleX -= speed;
-if (IsKeyDown(KEY_DOWN)) circleY += speed;
-if (IsKeyDown(KEY_UP)) circleY -= speed;
-
- teleport_snake(&circleX, &circleY,LEBAR_LAYAR,radius);
- 
-// Gambar
-BeginDrawing();
-ClearBackground(RAYWHITE);
-DrawCircle((int)circleX, (int)circleY, radius, BLUE);
-DrawText("BUG cuy", 10, 10, 20, DARKGRAY);
-EndDrawing();      
-}
-CloseWindow();
-return 0;
+int convert_coor_portal(int coor,max_lebar,int arah){
+    switch(arah){
+        case KANAN:
+        coor -= coor; //x
+        return coor;
+        break;
+        case KIRI:
+        coor = max_lebar; //x
+        return coor;
+        break;
+        case BAWAH:
+        coor = max_tinggi; 
+        break;
+        case ATAS:
+        coor -=coor;
+        break;
 }
