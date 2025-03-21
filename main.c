@@ -21,7 +21,7 @@ int main() {
     Texture2D background = LoadTexture("tanah.png");  
     Texture2D makananTexture = LoadTexture("tikus.png");  
     Texture2D rintanganTexture = LoadTexture("obstacle.png");  
-    Texture2D enemyTexture = LoadTexture("obstacle.png");
+    Texture2D enemyTexture = LoadTexture("krtTambang.png");
 
     srand(time(NULL));
     
