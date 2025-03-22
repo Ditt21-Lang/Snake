@@ -27,33 +27,30 @@ void ReverseSnake(Snake *snake) {
     ReverseSnake(&snake);
 } */
 
-void CekTabrakan(Snake *snake, Rintangan *rintangan, Enemy *enemy, int *count, int *lives) {
-    Vector2 head = snake->badan[0];                                    /*ambil posisi kepala*/    
-    /*cek tabrak border*/
-    if (head.x < 2 || head.x >= GRID_WIDTH - 2,
-        head.y < 2 || head.y >= GRID_HEIGHT - 2){
+void CekTabrakBorder(Vector2 head, Snake *snake, int *lives){
+    if (head.x < 2 || head.x >=GRID_WIDTH -2 ||
+        head.y < 2 || head.y >=GRID_HEIGHT -2){
             (*lives)--;
-            printf("Lives : %d\n", *lives);
-            return ;
+            printf("Lives : "%d\n", *lives);
         }
-    
-    /* cek tabrak rintangan*/
-    for (int i = 0; i < rintangan->count; i++){
-        if (head.x == rintangan->rintangan[i].x 
-            && head.y == rintangan->rintangan[i].y){
-                (*lives)--;
-                printf("Lives : %d\n", *lives);
-                return ;
-            }
-    }
+}
 
-    /*cek tabrak enemy*/
-    for (int i=0; i < enemy->count; i++){
-        if (head.x == enemy->enemy[i].x
-            && head.y == enemy->enemy[i].y){
+void CekTabrakRintangan(Vector2 head, Snake *snake, Rintangan *rintangan, int *count, int *lives){
+        for (int i = 0; i < rintangan->count; i++){
+            if (head.x == rintangan->rintangan[i].x
+                && head.y == rintangan->rintangan[i].y){
+                    (*lives)--;
+                    printf("Lives : %d\n", *lives);
+                }
+        }
+}
+
+void CekTabrakEnemy(Vector2 head, Snake *snake, Enemy *enemy, int *count, int *lives){
+        for (int i = 0; i < enemy->count; i++){
+            if (head.x == enemy->enemy[i].x 
+                && head.y == enemy->enemy[i].y){
                 (*lives)--;
                 printf("Lives : %d\n", *lives);
-                return ;
-            }
-      }
+                }
+        }
 }
