@@ -31,6 +31,7 @@ int main() {
     
     GenerateRintangan(&obstacle, level);
     GenerateMakanan(&food, &obstacle);
+    GenerateEnemy(enemies, &enemyCount);
     
     while (!WindowShouldClose()) {
         BeginDrawing();
