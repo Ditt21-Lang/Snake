@@ -2,17 +2,18 @@
 #include <stdlib.h>
 #include <time.h>
 
-
 void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
     int validPosition = 0;
-    
+
     while (!validPosition) {
-        makanan->position.x = rand() % (500 / CELL_SIZE); // X antara 0 - 24
-        makanan->position.y = rand() % (500 / CELL_SIZE); // Y antara 0 - 24
+        makanan->position.x = rand() % (500 / CELL_SIZE); 
+        makanan->position.y = rand() % (500 / CELL_SIZE);
         validPosition = 1;
 
+        
         for (int i = 0; i < rintangan->count; i++) {
-            if (rintangan->rintangan[i].x == makanan->position.x && rintangan->rintangan[i].y == makanan->position.y) {
+            if (rintangan->rintangan[i].x == makanan->position.x &&
+                rintangan->rintangan[i].y == makanan->position.y) {
                 validPosition = 0;
                 break;
             }
@@ -22,16 +23,31 @@ void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
 
 void GenerateRintangan(Rintangan *rintangan, int level) {
     rintangan->count = level;
+    
     Position levelRintangan[5][10] = {
-        { {5, 5}, {10, 10}, {15, 15} },  
-        { {3, 4}, {7, 8}, {11, 12}, {15, 16} },  
-        { {2, 2}, {6, 6}, {10, 10}, {14, 14}, {18, 18} },  
-        { {1, 3}, {5, 7}, {9, 11}, {13, 15}, {17, 19}, {20, 22} },  
-        { {0, 0}, {4, 4}, {8, 8}, {12, 12}, {16, 16}, {20, 20}, {24, 24} }  
+        { {3, 7}, {12, 5}, {8, 14} },  
+        { {2, 10}, {7, 3}, {14, 8}, {11, 12} },  
+        { {5, 2}, {9, 6}, {3, 13}, {16, 10}, {12, 17} },  
+        { {1, 9}, {8, 4}, {13, 11}, {6, 15}, {17, 7}, {20, 14} },  
+        { {0, 5}, {11, 3}, {4, 12}, {15, 6}, {9, 18}, {19, 8}, {23, 20} }  
     };
 
     for (int i = 0; i < rintangan->count; i++) {
         rintangan->rintangan[i] = levelRintangan[level - 1][i];
+    }
+}
+
+void GenerateEnemy(Enemy *enemy, int count, int level) {
+    Position enemyPositions[3][3] = {
+        { {5, 5} },                 
+        { {3, 4}, {7, 8} },         
+        { {2, 2}, {6, 6}, {10, 10} } 
+    };
+
+    for (int i = 0; i < count; i++) {
+        enemy[i].position = enemyPositions[level - 2][i];  
+        enemy[i].direction = 1;
+        enemy[i].isVertical = i % 2;
     }
 }
 
@@ -58,18 +74,4 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyC
 
     DrawText(TextFormat("Score: %d", score), 10, 10, 20, BLACK);
     DrawText(TextFormat("Level: %d", level), 10, 30, 20, BLACK);
-}
-
-void MoveEnemy(Enemy *enemy) {
-    if (enemy->isVertical) {
-        enemy->position.y += enemy->direction;
-        if (enemy->position.y <= 0 || enemy->position.y >= GRID_HEIGHT - 1) {
-            enemy->direction *= -1;
-        }
-    } else {
-        enemy->position.x += enemy->direction;
-        if (enemy->position.x <= 0 || enemy->position.x >= GRID_WIDTH - 1) {
-            enemy->direction *= -1;
-        }
-    }
 }
