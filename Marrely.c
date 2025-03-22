@@ -6,8 +6,8 @@ void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
     int validPosition = 0;
 
     while (!validPosition) {
-        makanan->position.x = rand() % GRID_WIDTH;  
-        makanan->position.y = rand() % GRID_HEIGHT;
+        makanan->position.x = (rand() % GRID_WIDTH) * CELL_SIZE;
+        makanan->position.y = (rand() % GRID_HEIGHT) * CELL_SIZE;
         validPosition = 1;
 
         for (int i = 0; i < rintangan->count; i++) {
@@ -62,7 +62,7 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyC
     }
 
     DrawTexturePro(makananTexture, (Rectangle){0, 0, makananTexture.width, makananTexture.height}, 
-                   (Rectangle){makanan->position.x * CELL_SIZE, makanan->position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
+                   (Rectangle){makanan->position.x, makanan->position.y, CELL_SIZE, CELL_SIZE}, 
                    (Vector2){0, 0}, 0, WHITE);
     
     for (int i = 0; i < enemyCount; i++) {
