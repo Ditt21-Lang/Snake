@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "Gilang.h"
 #include "Marrely.h"
+#include <time.h>
 
 #define LEBAR_LAYAR 600
 #define TINGGI_LAYAR 800
@@ -13,7 +14,8 @@ int main() {
     Snake Snake;
     Rintangan obstacle;
     Makanan food;
-    
+    Enemy musuh;
+
     SetTargetFPS(10);
     InitSnake(&Snake);
 
@@ -25,7 +27,7 @@ int main() {
 
     srand(time(NULL));
     
-    int score = 0, lives = 3, level = 1;
+    int score = 0, lives = 3, level = 4;
     
     GenerateRintangan(&obstacle, level);
     GenerateMakanan(&food, &obstacle);
@@ -33,7 +35,7 @@ int main() {
     while (!WindowShouldClose()) {
         BeginDrawing();
         
-        DrawGame(&food, &obstacle, score, 0, 0, background);
+       DrawGame(&food, &obstacle, &musuh, 0, score, level, background, makananTexture, enemyTexture, rintanganTexture);
 
         if (!cekTabrakan(&Snake)) {
             UpdateSnake(&Snake);
