@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
     int validPosition = 0;
+    
     while (!validPosition) {
-        makanan->position.x = rand() % GRID_WIDTH;
-        makanan->position.y = rand() % GRID_HEIGHT;
+        makanan->position.x = rand() % (500 / CELL_SIZE); // X antara 0 - 24
+        makanan->position.y = rand() % (500 / CELL_SIZE); // Y antara 0 - 24
         validPosition = 1;
 
         for (int i = 0; i < rintangan->count; i++) {
