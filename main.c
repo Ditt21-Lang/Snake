@@ -1,8 +1,8 @@
 #include "raylib.h"
 #include <stdlib.h>
+#include <time.h>
 #include "Gilang.h"
 #include "Marrely.h"
-#include <time.h>
 
 #define LEBAR_LAYAR 600
 #define TINGGI_LAYAR 800
@@ -11,14 +11,14 @@
 int main() {
     InitWindow(LEBAR_LAYAR, TINGGI_LAYAR, "Snake Game");
     
-    Snake Snake;
+    Snake snake;
     Rintangan obstacle;
     Makanan food;
-    Enemy musuh;
+    Enemy enemies[4];
+    int enemyCount = 0;
 
     SetTargetFPS(10);
-    InitSnake(&Snake);
-
+    InitSnake(&snake);
 
     Texture2D background = LoadTexture("tanah.png");  
     Texture2D makananTexture = LoadTexture("tikus.png");  
@@ -27,7 +27,7 @@ int main() {
 
     srand(time(NULL));
     
-    int score = 0, lives = 3, level = 1;
+    int score = 0, level = 1;
     
     GenerateRintangan(&obstacle, level);
     GenerateMakanan(&food, &obstacle);
@@ -35,24 +35,46 @@ int main() {
     while (!WindowShouldClose()) {
         BeginDrawing();
         
-       DrawGame(&food, &obstacle, &musuh, 0, score, level, background, makananTexture, enemyTexture, rintanganTexture);
+        ClearBackground(RAYWHITE);
+        DrawGame(&food, &obstacle, enemies, enemyCount, score, level, background, makananTexture, enemyTexture, rintanganTexture);
 
-        if (!cekTabrakan(&Snake)) {
-            UpdateSnake(&Snake);
-            DrawSnake(&Snake);
+        if (!cekTabrakan(&snake)) {
+            UpdateSnake(&snake);
+            DrawSnake(&snake);
         } else {
-            DrawText("Game Over", LEBAR_LAYAR / 2, TINGGI_LAYAR / 2, 25, RED);
+            DrawText("Game Over", LEBAR_LAYAR / 2 - 50, TINGGI_LAYAR / 2, 25, RED);
         }
 
-        if (CheckMakanan(&Snake, &food)) {
+        if (CheckMakanan(&snake, &food)) {
             score += 100;
-            Snake.panjang++;
+            snake.panjang++;
             GenerateMakanan(&food, &obstacle);
         }
 
-        if (CheckObstacle(&Snake, &obstacle)) {
+        if (CheckObstacle(&snake, &obstacle)) {
             score -= 50;
-            Snake.panjang--;
+            if (snake.panjang > 1) snake.panjang--;
+        }
+
+        if (score >= 1000) {
+            level++;
+            GenerateRintangan(&obstacle, level);
+            score = 0;
+
+            if (level == 2) enemyCount = 1;
+            if (level == 4) enemyCount = 2;
+            if (level == 5) enemyCount = 3;
+
+            for (int i = 0; i < enemyCount; i++) {
+                enemies[i].position.x = rand() % GRID_WIDTH;
+                enemies[i].position.y = rand() % GRID_HEIGHT;
+                enemies[i].direction = (rand() % 2) ? 1 : -1;
+                enemies[i].isVertical = rand() % 2;
+            }
+        }
+        
+        for (int i = 0; i < enemyCount; i++) {
+            MoveEnemy(&enemies[i]);
         }
         
         EndDrawing();
