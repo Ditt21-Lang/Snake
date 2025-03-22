@@ -27,7 +27,7 @@ int main() {
 
     srand(time(NULL));
     
-    int score = 0, lives = 3, level = 4;
+    int score = 0, lives = 3, level = 1;
     
     GenerateRintangan(&obstacle, level);
     GenerateMakanan(&food, &obstacle);
