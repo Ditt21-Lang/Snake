@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include <stdlib.h>
 #include "Gilang.h"
+#include "Hilmi.h"
 #define LEBAR_LAYAR 600
 #define TINGGI_LAYAR 800
 #define UKURAN_BLOCK 20
@@ -23,6 +24,10 @@ int main(){
             DrawText("Game Over", LEBAR_LAYAR/2, TINGGI_LAYAR/2, 25, RED);
         }
         EndDrawing();
+
+        if(IsKeyPressed(KEY_SPACE)){
+           ReverseSnake(&Snake); 
+        }
 
     }
 
