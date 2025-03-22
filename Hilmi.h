@@ -25,7 +25,7 @@ typedef struct{
 
 
 void ReverseSnake(Snake *Snake);
-void CekTabrakBorder(Vector2 head, Snake *snake, Rintangan *rintangan, int *count, int *lives);
+void CekTabrakBorder(Vector2 head, Snake *snake, int *count, int *lives);
 void CekTabrakRintangan(Vector2 head, Snake *snake, Rintangan *rintangan, int *count, int *lives);
 void CekTabrakEnemy(Vector2 head, Snake *snake, Enemy *enemy, int *count, int *lives);
 
