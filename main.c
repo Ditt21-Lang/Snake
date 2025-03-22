@@ -53,6 +53,7 @@ int main(){
         LoadTexture("howto3.png"),
         LoadTexture("howto4.png"),
     };
+
     Texture2D ssGameplay = LoadTexture("ssGameplay.png");
     Texture2D ssGameplay2 = LoadTexture("ssGameplay2.png");
     Texture2D ssGameplay3 = LoadTexture("ssGameplay3.png");
@@ -60,7 +61,7 @@ int main(){
     Texture2D musuh = LoadTexture("krtTambang.png");
     Texture2D obstacle = LoadTexture ("obstacle.png");
     Texture2D food = LoadTexture ("tikus.png");
-
+    
     Music menu = LoadMusicStream("Menu.wav");
     Sound start = LoadSound("StartGame.wav");
     Sound eat = LoadSound("Makanan.wav");
