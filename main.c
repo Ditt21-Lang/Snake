@@ -15,7 +15,7 @@ int main() {
     Rintangan obstacle;
     Makanan food;
     Enemy enemies[4];
-    int enemyCount = 0;
+    int enemyCount = 2;
 
     SetTargetFPS(10);
     InitSnake(&snake);
@@ -31,7 +31,7 @@ int main() {
     
     GenerateRintangan(&obstacle, level);
     GenerateMakanan(&food, &obstacle);
-    GenerateEnemy(enemies, &enemyCount);
+    GenerateEnemy(enemies, enemyCount, level);
     
     while (!WindowShouldClose()) {
         BeginDrawing();

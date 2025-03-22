@@ -70,6 +70,7 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyC
                        (Rectangle){enemies[i].position.x * CELL_SIZE, enemies[i].position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
                        (Vector2){0, 0}, 0, WHITE);
     }
+}
 
 void MoveEnemy(Enemy *enemy) {
     if (enemy->isVertical) {
