@@ -2,6 +2,8 @@
 #include "stdlib.h"
 #include "Hilmi.h"
 #include "Gilang.h"
+#define GRID_WIDTH 30
+#define GRID_HEIGHT 30
 
 void ReverseSnake(Snake *snake) {
     for (int i = 0; i < snake->panjang / 2; i++) {
@@ -25,8 +27,8 @@ void ReverseSnake(Snake *snake) {
     ReverseSnake(&snake);
 } */
 
-void CekTabrakan(Snake *snake, Rintangan *rintangan, int *lives) {
-    Vector head = snake->badan[0];                                    /*ambil posisi kepala*/    
+void CekTabrakan(Snake *snake, Rintangan *rintangan, Enemy *enemy, int *count, int *lives) {
+    Vector2 head = snake->badan[0];                                    /*ambil posisi kepala*/    
     /*cek tabrak border*/
     if (head.x < 2 || head.x >= GRID_WIDTH - 2,
         head.y < 2 || head.y >= GRID_HEIGHT - 2){
@@ -44,4 +46,14 @@ void CekTabrakan(Snake *snake, Rintangan *rintangan, int *lives) {
                 return ;
             }
     }
+
+    /*cek tabrak enemy*/
+    for (int i=0; i < enemy->count; i++){
+        if (head.x == enemy->enemy[i].x
+            && head.y == enemy->enemy[i].y){
+                (*lives)--;
+                printf("Lives : %d\n", *lives);
+                return ;
+            }
+      }
 }
