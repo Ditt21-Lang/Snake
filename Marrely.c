@@ -45,7 +45,7 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, int score, int lives, int 
         DrawRectangle(rintangan->rintangan[i].x * CELL_SIZE, rintangan->rintangan[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE, BLACK);
     }
 
-    DrawText(TextFormat("Score: %d", score), 10, 600, 30, BLACK);
+    DrawText(TextFormat("Score: %d", score), 10, 600, 30, WHITE);
     DrawText(TextFormat("Lives: %d", lives), 10, 630, 30, RED);
     DrawText(TextFormat("Level: %d", level), 10, 660, 30, YELLOW);
 }

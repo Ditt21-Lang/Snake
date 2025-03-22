@@ -1,13 +1,11 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef MARRELY_H
+#define MARRELY_H
 
 #include "raylib.h"
 
 #define CELL_SIZE 20
 #define GRID_WIDTH  (500 / CELL_SIZE)  
 #define GRID_HEIGHT (400 / CELL_SIZE)  
-#define SCREEN_WIDTH  500
-#define SCREEN_HEIGHT 400
 #define MAX_LENGTH 100
 
 typedef struct {
