@@ -3,7 +3,28 @@
 #include "Gilang.h"
 #ifndef Hilmi_H
 #define Hilmi_H
+#define GRID_WIDTH 30
+#define GRID_HEIGHT 30
+
+typedef struct{
+    Vector2 position;
+    Vector2 speed;
+    int panjang;
+    Vector2 badan[100];
+} Snake;
+
+typedef struct{
+    Vector2 rintangan[10];
+    int count;
+} Rintangan;
+
+typedef struct{
+    Vector2 enemy[3];
+    int count;
+} Enemy;
+
 
 void ReverseSnake(Snake *Snake);
+void CekTabrakan(Snake *snake, Rintangan *rintangan, Enemy *enemy, int *count, int *lives);
 
 #endif
