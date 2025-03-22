@@ -27,7 +27,7 @@ void ReverseSnake(Snake *snake) {
     ReverseSnake(&snake);
 } */
 
-void CekTabrakBorder(Vector2 head, Snake *snake, int *lives){
+void CekTabrakBorder(Vector2 head, Snake *snake, int *count, int *lives){
     if (head.x < 2 || head.x >=GRID_WIDTH -2 ||
         head.y < 2 || head.y >=GRID_HEIGHT -2){
             (*lives)--;
