@@ -17,6 +17,5 @@ bool cekTabrakan(Snake *Snake);
 
 //Dibutuhkan header Marrely
 bool CheckMakanan(Snake *snake, Food *food);
-bool CheckObstacle(Snake *snake, Obstacle *Obstacle);
 
 #endif
