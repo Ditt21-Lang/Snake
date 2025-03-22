@@ -31,7 +31,7 @@ void CekTabrakBorder(Vector2 head, Snake *snake, int *lives){
     if (head.x < 2 || head.x >=GRID_WIDTH -2 ||
         head.y < 2 || head.y >=GRID_HEIGHT -2){
             (*lives)--;
-            printf("Lives : "%d\n", *lives);
+            printf("Lives : %d\n", *lives);
         }
 }
 
