@@ -15,7 +15,7 @@ int main() {
     Rintangan obstacle;
     Makanan food;
     Enemy enemies[4];
-    int enemyCount = 2;
+    int enemyCount = 3;
 
     SetTargetFPS(10);
     InitSnake(&snake);
