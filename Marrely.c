@@ -36,6 +36,41 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
     }
 }
 
+void GenerateEnemy(Enemy *enemy, int count, int level) {
+    Position enemyPositions[3][3] = {
+        { {5, 5} },                 
+        { {3, 4}, {7, 8} },         
+        { {2, 2}, {6, 6}, {10, 10} } 
+    };
+
+    for (int i = 0; i < count; i++) {
+        enemy[i].position = enemyPositions[level - 2][i];  
+        enemy[i].direction = 1;
+        enemy[i].isVertical = i % 2;
+    }
+}
+
+void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, 
+              Texture2D background, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture) {
+    ClearBackground(RAYWHITE);
+    DrawTexture(background, 0, 0, WHITE);
+
+    for (int i = 0; i < rintangan->count; i++) {
+        DrawTexturePro(rintanganTexture, (Rectangle){0, 0, rintanganTexture.width, rintanganTexture.height}, 
+                       (Rectangle){rintangan->rintangan[i].x * CELL_SIZE, rintangan->rintangan[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
+                       (Vector2){0, 0}, 0, WHITE);
+    }
+
+    DrawTexturePro(makananTexture, (Rectangle){0, 0, makananTexture.width, makananTexture.height}, 
+                   (Rectangle){makanan->position.x * CELL_SIZE, makanan->position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
+                   (Vector2){0, 0}, 0, WHITE);
+    
+    for (int i = 0; i < enemyCount; i++) {
+        DrawTexturePro(enemyTexture, (Rectangle){0, 0, enemyTexture.width, enemyTexture.height}, 
+                       (Rectangle){enemies[i].position.x * CELL_SIZE, enemies[i].position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
+                       (Vector2){0, 0}, 0, WHITE);
+    }
+
 void MoveEnemy(Enemy *enemy) {
     if (enemy->isVertical) {
         enemy->position.y += enemy->direction;
