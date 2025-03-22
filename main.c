@@ -11,6 +11,7 @@
 int main(){
     
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Snave");
+    InitAudioDevice();
     SetTargetFPS(60);
     ClearBackground(RAYWHITE);
     
@@ -27,6 +28,11 @@ int main(){
     int score = 0;
     int level = 0;
     int enemyCount = 0;
+
+    bool isMusicPlaying = false;
+    bool isStartPlaying = false;
+    bool isGameOver = false;
+    bool isSoundOver = false;
     
     const char *menuTexts[] = {"Play", "How to Play", "Quit"};
     Button menuButtons[3];
@@ -54,6 +60,15 @@ int main(){
     Texture2D musuh = LoadTexture("krtTambang.png");
     Texture2D obstacle = LoadTexture ("obstacle.png");
     Texture2D food = LoadTexture ("tikus.png");
+
+    Music menu = LoadMusicStream("Menu.wav");
+    Sound start = LoadSound("StartGame.wav");
+    Sound eat = LoadSound("Makanan.wav");
+    Music game = LoadMusicStream("GamePlay.wav");
+    Sound over = LoadSound("GameOver.wav");
+
+    SetSoundVolume(start ,1.5f);
+    SetSoundVolume(eat ,1.5f);
     
     float bgX = 0;
     float scrollSpeed = 75;
@@ -65,6 +80,9 @@ int main(){
     InitSnake(&snake);
 
     while(!WindowShouldClose()){
+
+        UpdateMusicStream(menu);
+        UpdateMusicStream(game);
 
         bgX -= scrollSpeed * GetFrameTime();
         if (bgX <= -latar.width * scale) bgX += latar.width * scale;
@@ -85,10 +103,38 @@ int main(){
             SetTargetFPS(fps);
         }
 
+        if (currentScreen == MENU || currentScreen == MODE_SELECTION) {
+            if (!isMusicPlaying ) {
+                PlayMusicStream(menu);
+                SetMusicVolume(menu, 2.0f);
+                isMusicPlaying = true;
+            }
+        }
+
+        if(currentScreen == GAMEPLAY){
+            if (!isStartPlaying) {
+                PlaySound(start);
+                PlayMusicStream(game);
+                SetMusicVolume(game, 1.5f);
+                isStartPlaying = true;
+            }
+        }
+
+        if (currentScreen == GAMEPLAY && isGameOver) {   
+            StopMusicStream(game);  
+            if (!isSoundOver) {  
+                PlaySound(over);  
+                isSoundOver = true; 
+            }  
+        }
+        
+
         if (currentScreen == MENU) {
             DrawText("Snave", SCREEN_WIDTH / 2 - MeasureText("Snave", 50) / 2, 200, 50, WHITE);
             UpdateButtons(menuButtons, 3, &currentScreen);
             DrawButtons(menuButtons, 3);
+            isGameOver = false;
+            isSoundOver = false; 
         } else if (currentScreen == MODE_SELECTION) {
             UpdateButtons(modeButtons, 3, &currentScreen);
             DrawButtons(modeButtons, 3);
@@ -140,24 +186,30 @@ int main(){
 
         else if (currentScreen == GAMEPLAY){
             ClearBackground(RAYWHITE);
-            
+            StopMusicStream(menu);
+
             DrawGame(&makanan, &rintangan, &enemy, enemyCount, score, 0, tanah, food, musuh, obstacle );
             if(!cekTabrakan(&snake)){
                 UpdateSnake(&snake);
                 DrawSnake(&snake);
             }
             else{
-                DrawText("Game Over", LEBAR_LAYAR/2, TINGGI_LAYAR/2, 25, RED);
+                isGameOver = true;
+                DrawText("GAME OVER", 150, 250, 50, RED);
+                DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);  
             }
     
             if(CheckMakanan(&snake, &makanan)){
                 score += 100;
                 snake.panjang++;
                 GenerateMakanan(&makanan, &rintangan);
+                PlaySound(eat);
             }
         }
         EndDrawing();
     }
+    UnloadMusicStream(menu);
+    CloseAudioDevice();
     CloseWindow();
     return 0;
 }
