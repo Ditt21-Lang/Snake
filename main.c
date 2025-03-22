@@ -24,6 +24,7 @@ int main() {
     Texture2D makananTexture = LoadTexture("tikus.png");  
     Texture2D rintanganTexture = LoadTexture("obstacle.png");  
     Texture2D enemyTexture = LoadTexture("krtTambang.png");
+    Texture2D borderTexture = LoadTexture ("dinding.png");
 
     srand(time(NULL));
     
@@ -37,7 +38,7 @@ int main() {
         BeginDrawing();
         
         ClearBackground(RAYWHITE);
-        DrawGame(&food, &obstacle, enemies, enemyCount, score, level, background, makananTexture, enemyTexture, rintanganTexture);
+        DrawGame(&food, &obstacle, enemies, enemyCount, score, level, background, borderTexture, makananTexture, enemyTexture, rintanganTexture);
 
         if (!cekTabrakan(&snake)) {
             UpdateSnake(&snake);
@@ -85,7 +86,7 @@ int main() {
     UnloadTexture(makananTexture);
     UnloadTexture(rintanganTexture);
     UnloadTexture(enemyTexture);
-
+    UnloadTexture(borderTexture);
     CloseWindow();
     return 0;
 }
