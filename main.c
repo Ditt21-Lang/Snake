@@ -1,5 +1,7 @@
 #include "raylib.h"
 #include <stdlib.h>
+#include <time.h>
+#include "Marrely.h"
 #include "Gilang.h"
 #include "Bayu.h"
 #define LEBAR_LAYAR 600
@@ -10,6 +12,7 @@ int main(){
     
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Snave");
     SetTargetFPS(60);
+    ClearBackground(RAYWHITE);
     
     GameScreen currentScreen = MENU;
     int howToPlayPage = 0;
@@ -19,11 +22,11 @@ int main(){
     Snake snake;
     Makanan makanan;
     Rintangan rintangan;
-
-    Texture2D tanah = LoadTexture("tanah.png");
+    Enemy enemy;
 
     int score = 0;
     int level = 0;
+    int enemyCount = 0;
     
     const char *menuTexts[] = {"Play", "How to Play", "Quit"};
     Button menuButtons[3];
@@ -47,6 +50,10 @@ int main(){
     Texture2D ssGameplay = LoadTexture("ssGameplay.png");
     Texture2D ssGameplay2 = LoadTexture("ssGameplay2.png");
     Texture2D ssGameplay3 = LoadTexture("ssGameplay3.png");
+    Texture2D tanah = LoadTexture("tanah.png");
+    Texture2D musuh = LoadTexture("krtTambang.png");
+    Texture2D obstacle = LoadTexture ("obstacle.png");
+    Texture2D food = LoadTexture ("tikus.png");
     
     float bgX = 0;
     float scrollSpeed = 75;
@@ -132,7 +139,9 @@ int main(){
         }
 
         else if (currentScreen == GAMEPLAY){
-            DrawGame(&makanan, &rintangan, score, 0, level, tanah);
+            ClearBackground(RAYWHITE);
+            
+            DrawGame(&makanan, &rintangan, &enemy, enemyCount, score, 0, tanah, food, musuh, obstacle );
             if(!cekTabrakan(&snake)){
                 UpdateSnake(&snake);
                 DrawSnake(&snake);
