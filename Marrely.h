@@ -4,8 +4,8 @@
 #include "raylib.h"
 
 #define CELL_SIZE 20
-#define GRID_WIDTH  (600 / CELL_SIZE)  
-#define GRID_HEIGHT (800 / CELL_SIZE)  
+#define GRID_WIDTH  (520 / CELL_SIZE)  
+#define GRID_HEIGHT (520 / CELL_SIZE)  
 #define SCREEN_WIDTH  600
 #define SCREEN_HEIGHT 800
 

@@ -6,8 +6,8 @@ void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
     int validPosition = 0;
 
     while (!validPosition) {
-        makanan->position.x = (rand() % 600) * CELL_SIZE;
-        makanan->position.y = (rand() % 600) * CELL_SIZE;
+        makanan->position.x = (rand() % GRID_WIDTH) * CELL_SIZE;
+        makanan->position.y = (rand() % GRID_HEIGHT) * CELL_SIZE;
         validPosition = 1;
 
         for (int i = 0; i < rintangan->count; i++) {
