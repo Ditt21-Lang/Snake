@@ -121,8 +121,8 @@ int main(){
             move_peluru(&mpeluru,mpeluru.speed);
         }
 
-        if(check_peluru(mpeluru.coor.x,LEBAR_LAYAR-100,0+30) || check_peluru(mpeluru.coor.y,TINGGI_LAYAR-100,0+30) ){
-            place_portal(mpeluru.coor,mportal,2,LEBAR_LAYAR,0,TINGGI_LAYAR,0,mpeluru.buffer,10,5);
+        if(check_peluru(mpeluru.coor.x,BATAS_PORTAL_H-100,0+30) || check_peluru(mpeluru.coor.y,BATAS_PORTAL_V-100,0+30) ){
+            place_portal(mpeluru.coor,mportal,2,BATAS_PORTAL_H,0,BATAS_PORTAL_V,0,mpeluru.buffer,10,5);
             mpeluru.status=false;
             mpeluru.coor.x=400;
             mpeluru.coor.y=400;
@@ -261,7 +261,7 @@ int main(){
             DrawText(TextFormat("Score: %d", score), 10, 630, 30, GOLD);
             DrawText(TextFormat("Lives: %d", lives), 250, 630, 30, GOLD);
             DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
-            DrawText(TextFormat("cd: %f", GetTime(),tuaim), 50, 330, 30, RED);
+            DrawText(TextFormat("time: %f tuaim: %f", GetTime(),tuaim), 50, 330, 30, RED);
             DrawText("STAGE MODE", SCREEN_WIDTH / 2 - MeasureText("STAGE MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
             if(!cekTabrakan(&snake)){
                 UpdateSnake(&snake);

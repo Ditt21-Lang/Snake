@@ -5,6 +5,8 @@
 #define KIRI 263
 #define BAWAH 264
 #define ATAS 265
+#define BATAS_PORTAL_V 650
+#define BATAS_PORTAL_H 750
 #ifndef EMIR_H
 #define EMIR_H
 
