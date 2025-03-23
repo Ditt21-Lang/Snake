@@ -186,7 +186,9 @@ int main(){
             StopMusicStream(menu);
             DrawGame(&makanan, &rintangan, &enemy, enemyCount, score, level, tanah, food, musuh, obstacle );
 
-            DrawText(TextFormat("Score: %d", score), 10, 600, 30, WHITE);
+            DrawText(TextFormat("Score: %d", score), 165, 625, 50, GOLD);
+            DrawText("ENDLESS MODE", SCREEN_WIDTH / 2 - MeasureText("ENDLESS MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
+
             if(!cekTabrakan(&snake)){
                 UpdateSnake(&snake);
                 DrawSnake(&snake);
@@ -210,11 +212,11 @@ int main(){
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
             DrawGame(&makanan, &rintangan, &enemy, enemyCount, score,level, tanah, food, musuh, obstacle );
-
-            DrawText(TextFormat("Score: %d", score), 10, 600, 30, WHITE);
-            DrawText(TextFormat("Lives: %d", lives), 10, 630, 30, WHITE);
-            DrawText(TextFormat("Level: %d", level), 10, 660, 30, WHITE);
-
+            
+            DrawText(TextFormat("Score: %d", score), 10, 630, 30, GOLD);
+            DrawText(TextFormat("Lives: %d", lives), 200, 630, 30, GOLD);
+            DrawText(TextFormat("Level: %d", level), 400, 630, 30, GOLD);
+            DrawText("STAGE MODE", SCREEN_WIDTH / 2 - MeasureText("STAGE MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
             if(!cekTabrakan(&snake)){
                 UpdateSnake(&snake);
                 DrawSnake(&snake);
