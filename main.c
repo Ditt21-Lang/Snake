@@ -184,9 +184,9 @@ int main(){
         else if (currentScreen == ENDLESS){
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
-            DrawText(TextFormat("Score: %d", score), 10, 600, 30, WHITE);
-
             DrawGame(&makanan, &rintangan, &enemy, enemyCount, score, level, tanah, food, musuh, obstacle );
+
+            DrawText(TextFormat("Score: %d", score), 10, 600, 30, WHITE);
             if(!cekTabrakan(&snake)){
                 UpdateSnake(&snake);
                 DrawSnake(&snake);
@@ -209,11 +209,12 @@ int main(){
             level = 1;
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
+            DrawGame(&makanan, &rintangan, &enemy, enemyCount, score,level, tanah, food, musuh, obstacle );
+
             DrawText(TextFormat("Score: %d", score), 10, 600, 30, WHITE);
             DrawText(TextFormat("Lives: %d", lives), 10, 630, 30, WHITE);
             DrawText(TextFormat("Level: %d", level), 10, 660, 30, WHITE);
 
-            DrawGame(&makanan, &rintangan, &enemy, enemyCount, score,level, tanah, food, musuh, obstacle );
             if(!cekTabrakan(&snake)){
                 UpdateSnake(&snake);
                 DrawSnake(&snake);
