@@ -30,7 +30,7 @@ void ReverseSnake(Snake *snake) {
     reverseTimer = reverseCooldown;                             /*reset cooldown*/
 }
 
-void HandleReverseInput(Snake *snake){
+void HandleReverseInput(Snake *snake) {
     if (IsKeyPressed(KEY_SPACE) && reverseTimer <=0) {
         ReverseSnake(&snake);
     } 
@@ -43,7 +43,7 @@ void UpdateCooldown(){
     }
 }
 
-void CekTabrakBorder(Vector2 head, Snake *snake, int *count, int *lives){
+void CekTabrakBorder(Vector2 head, int *lives){
     if (head.x < 2 || head.x >=GRID_WIDTH -2 ||
         head.y < 2 || head.y >=GRID_HEIGHT -2){
             (*lives)--;
@@ -51,7 +51,7 @@ void CekTabrakBorder(Vector2 head, Snake *snake, int *count, int *lives){
         }
 }
 
-void CekTabrakRintangan(Vector2 head, Snake *snake, Rintangan *rintangan, int *count, int *lives){
+void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *count, int *lives){
         for (int i = 0; i < rintangan->count; i++){
             if (head.x == rintangan->rintangan[i].x
                 && head.y == rintangan->rintangan[i].y){
@@ -61,7 +61,7 @@ void CekTabrakRintangan(Vector2 head, Snake *snake, Rintangan *rintangan, int *c
         }
 }
 
-void CekTabrakEnemy(Vector2 head, Snake *snake, Enemy *enemy, int *count, int *lives){
+void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives){
     int i = 0;
     while (i < enemy->count){
             if (head.x == enemy->enemy[i].x 
