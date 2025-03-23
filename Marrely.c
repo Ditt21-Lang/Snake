@@ -3,28 +3,13 @@
 #include <time.h>
 
 void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
-    int validPosition = 0;
+    makanan->position.x = (rand() % GRID_WIDTH) * CELL_SIZE;
+    makanan->position.y = (rand() % GRID_HEIGHT) * CELL_SIZE;
 
-    while (!validPosition) {
-        makanan->position.x = (rand() % GRID_WIDTH) * CELL_SIZE;
-        makanan->position.y = (rand() % GRID_HEIGHT) * CELL_SIZE;
-        validPosition = 1;
-
-      
-        for (int i = 0; i < rintangan->count; i++) {
-            if (rintangan->rintangan[i].x * CELL_SIZE == makanan->position.x &&
-                rintangan->rintangan[i].y * CELL_SIZE == makanan->position.y) {
-                validPosition = 0; 
-                break;
-            }
-        }
-
-        if (makanan->position.x < 0 || makanan->position.x >= 500 || 
-            makanan->position.y < 0 || makanan->position.y >= 500) {
-            validPosition = 0;
-        }
-    }
+    makanan->position.x = Clamp(makanan->position.x, 0, 500 - CELL_SIZE);
+    makanan->position.y = Clamp(makanan->position.y, 0, 500 - CELL_SIZE);
 }
+
 
 void GenerateRintangan(Rintangan *rintangan, int level) {
     if (level < 1 || level > 5) return;  
