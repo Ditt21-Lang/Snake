@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "raylib.h"
 #include "stdlib.h"
 #include "Hilmi.h"
@@ -33,7 +34,7 @@ void ReverseSnake(Snake *snake) {
 
 void HandleReverseInput(Snake *snake) {
     if (IsKeyPressed(KEY_SPACE) && reverseTimer <=0) {
-        ReverseSnake(&snake);
+        ReverseSnake(snake);
     } 
 }
 
@@ -44,15 +45,19 @@ void UpdateCooldown(){
     }
 }
 
-void CekTabrakBorder(Vector2 head, int *lives){
+void CekTabrakDinding(Vector2 head, int *lives, bool *alive){
     if (head.x < 2 || head.x >=GRID_WIDTH -2 ||
         head.y < 2 || head.y >=GRID_HEIGHT -2){
             (*lives)--;
             printf("Lives : %d\n", *lives);
         }
+
+    if (*lives <= 0){
+        *alive = false;
+    }
 }
 
-void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *count, int *lives){
+void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives){
         for (int i = 0; i < rintangan->count; i++){
             if (head.x == rintangan->rintangan[i].x
                 && head.y == rintangan->rintangan[i].y){
@@ -65,8 +70,8 @@ void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *count, int *liv
 void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives){
     int i = 0;
     while (i < enemy->count){
-            if (head.x == enemy->enemy[i].x 
-                && head.y == enemy->enemy[i].y){
+            if (head.x == enemy[i].position.x 
+                && head.y == enemy[i].position.y){
                 (*lives)--;
                 printf("Lives : %d\n", *lives);
                 }
