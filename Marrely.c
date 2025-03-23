@@ -73,7 +73,6 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyC
     
     }
     DrawRectangle(0, 700, GetScreenWidth(), 200, WHITE);
-    DrawText(TextFormat("Score: %d", score), 10, 600, 30, WHITE);
 }
 
 void MoveEnemy(Enemy *enemy) {

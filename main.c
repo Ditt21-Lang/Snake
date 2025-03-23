@@ -94,13 +94,13 @@ int main(){
         DrawTextureEx(latar, (Vector2){bgX, 0}, 0.0f, scale, WHITE);
         DrawTextureEx(latar, (Vector2){bgX + latar.width * scale, 0}, 0.0f, scale, WHITE);
 
-        if (currentScreen == GAMEPLAY && fps != 10) {
+        if (currentScreen == ENDLESS && fps != 10 || currentScreen == STAGE && fps != 10) {
             fps = 10;
             SetTargetFPS(fps);
             UnloadTexture(latar);
         }
         
-        if (currentScreen != GAMEPLAY && fps != 60) {
+        if (currentScreen != ENDLESS && fps != 60 || currentScreen == STAGE && fps != 60) {
             fps = 60;
             SetTargetFPS(fps);
         }
@@ -113,7 +113,7 @@ int main(){
             }
         }
 
-        if(currentScreen == GAMEPLAY){
+        if(currentScreen == ENDLESS){
             if (!isStartPlaying) {
                 PlaySound(start);
                 PlayMusicStream(game);
@@ -122,7 +122,7 @@ int main(){
             }
         }
 
-        if (currentScreen == GAMEPLAY && isGameOver) {   
+        if (currentScreen == ENDLESS && isGameOver) {   
             StopMusicStream(game);  
             if (!isSoundOver) {  
                 PlaySound(over);  
@@ -186,9 +186,10 @@ int main(){
             DrawText(backButton.text, backButton.border.x + 60, backButton.border.y + 15, 20, WHITE);
         }
 
-        else if (currentScreen == GAMEPLAY){
+        else if (currentScreen == ENDLESS){
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
+            DrawText(TextFormat("Score: %d", score), 10, 600, 30, WHITE);
 
             DrawGame(&makanan, &rintangan, &enemy, enemyCount, score, 0, tanah, food, musuh, obstacle );
             if(!cekTabrakan(&snake)){
