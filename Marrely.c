@@ -72,7 +72,8 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyC
                        (Vector2){0, 0}, 0, WHITE);
     
     }
-    DrawRectangle(0, 700, GetScreenWidth(), 200, WHITE);
+    DrawRectangle(0, 700, GetScreenWidth(), 200,  WHITE);
+    DrawRectangle(0, 600, GetScreenWidth(), 100,  BLACK);
 }
 
 void MoveEnemy(Enemy *enemy) {

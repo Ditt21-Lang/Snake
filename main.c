@@ -27,6 +27,7 @@ int main(){
 
     int score = 0;
     int level = 0;
+    int lives = 0;
     int enemyCount = 0;
 
     bool isMusicPlaying = false;
@@ -94,17 +95,11 @@ int main(){
         DrawTextureEx(latar, (Vector2){bgX, 0}, 0.0f, scale, WHITE);
         DrawTextureEx(latar, (Vector2){bgX + latar.width * scale, 0}, 0.0f, scale, WHITE);
 
-        if (currentScreen == ENDLESS && fps != 10 || currentScreen == STAGE && fps != 10) {
+        if ((currentScreen == ENDLESS || currentScreen == STAGE) && fps != 10) {
             fps = 10;
             SetTargetFPS(fps);
-            UnloadTexture(latar);
         }
         
-        if (currentScreen != ENDLESS && fps != 60 || currentScreen == STAGE && fps != 60) {
-            fps = 60;
-            SetTargetFPS(fps);
-        }
-
         if (currentScreen == MENU || currentScreen == MODE_SELECTION) {
             if (!isMusicPlaying ) {
                 PlayMusicStream(menu);
@@ -113,7 +108,7 @@ int main(){
             }
         }
 
-        if(currentScreen == ENDLESS){
+        if(currentScreen == ENDLESS || currentScreen == STAGE){
             if (!isStartPlaying) {
                 PlaySound(start);
                 PlayMusicStream(game);
@@ -191,7 +186,34 @@ int main(){
             StopMusicStream(menu);
             DrawText(TextFormat("Score: %d", score), 10, 600, 30, WHITE);
 
-            DrawGame(&makanan, &rintangan, &enemy, enemyCount, score, 0, tanah, food, musuh, obstacle );
+            DrawGame(&makanan, &rintangan, &enemy, enemyCount, score, level, tanah, food, musuh, obstacle );
+            if(!cekTabrakan(&snake)){
+                UpdateSnake(&snake);
+                DrawSnake(&snake);
+            }
+            else{
+                isGameOver = true;
+                DrawText("GAME OVER", 150, 250, 50, RED);
+                DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);  
+            }
+    
+            if(CheckMakanan(&snake, &makanan)){
+                score += 100;
+                snake.panjang++;
+                GenerateMakanan(&makanan, &rintangan);
+                PlaySound(eat);
+            }
+        }
+
+        else if (currentScreen == STAGE){
+            level = 1;
+            ClearBackground(RAYWHITE);
+            StopMusicStream(menu);
+            DrawText(TextFormat("Score: %d", score), 10, 600, 30, WHITE);
+            DrawText(TextFormat("Lives: %d", lives), 10, 630, 30, WHITE);
+            DrawText(TextFormat("Level: %d", level), 10, 660, 30, WHITE);
+
+            DrawGame(&makanan, &rintangan, &enemy, enemyCount, score,level, tanah, food, musuh, obstacle );
             if(!cekTabrakan(&snake)){
                 UpdateSnake(&snake);
                 DrawSnake(&snake);
@@ -212,6 +234,10 @@ int main(){
         EndDrawing();
     }
 
+    UnloadTexture(latar); 
+    UnloadTexture(food);
+    UnloadTexture(musuh);
+    UnloadTexture(obstacle);
     UnloadTexture(snake.tekstur);
     UnloadMusicStream(menu);
     CloseAudioDevice();
