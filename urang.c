@@ -233,8 +233,8 @@ mportal[0].cooldown=10;
 while(!WindowShouldClose()){
     
 if(yes()){
-buffer=lastbutton();
-    }
+    buffer=lastbutton();
+}
     
    
 DrawText(TextFormat("Buffer: %d", buffer), 50, 50, 30, RED);

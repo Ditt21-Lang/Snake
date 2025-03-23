@@ -4,6 +4,7 @@
 #include "Marrely.h"
 #include "Gilang.h"
 #include "Bayu.h"
+#include "emir.h"
 #define LEBAR_LAYAR 600
 #define TINGGI_LAYAR 800
 #define UKURAN_BLOCK 20
@@ -25,10 +26,21 @@ int main(){
     Rintangan rintangan;
     Enemy enemy;
 
+    //peluru
+    peluru mpeluru={0};
+    mpeluru.speed=50;
+    mpeluru.status=false;
+
+    //portal
+    portal mportal[2];
+    mportal[0].status=false;
+    mportal[1].status=false;
+
     int score = 0;
     int level = 0;
     int lives = 0;
     int enemyCount = 0;
+    int buffer;
 
     bool isMusicPlaying = false;
     bool isStartPlaying = false;
@@ -64,6 +76,8 @@ int main(){
     Texture2D food = LoadTexture ("resources/tikus.png");
     Texture2D dinding = LoadTexture ("resources/dinding.png");
     snake.tekstur = LoadTexture ("resources/teksturUlar.png");
+    Image kayu=LoadImage("resources/portal2.png");
+    Texture2D textuar=menggambar(&kayu,100,100);
 
     Music menu = LoadMusicStream("resources/Menu.wav");
     Sound start = LoadSound("resources/StartGame.wav");
@@ -74,9 +88,12 @@ int main(){
     SetSoundVolume(start ,1.5f);
     SetSoundVolume(eat ,1.5f);
     
+    float tuaim=0;
+    mportal[0].cooldown=10;
     float bgX = 0;
     float scrollSpeed = 75;
     float scale = 1.2;
+    float radius = 30.0f;
 
     GenerateRintangan(&rintangan, level);
     GenerateMakanan(&makanan, &rintangan);
@@ -84,6 +101,33 @@ int main(){
     InitSnake(&snake);
 
     while(!WindowShouldClose()){
+        if(yes()){
+            buffer=lastbutton();
+        }   
+        
+        tuaim+=GetFrameTime(); 
+
+        if(tuaim >=10){
+            tuaim=0;
+        }
+
+        cooldown(&mportal[0].cooldown);
+        if(IsKeyPressed(KEY_P) && mportal[0].cooldown == 0){
+            p_pressed(&mpeluru,buffer,(Vector2){snake.badan[0].x, snake.badan[0].y});
+            mportal[0].cooldown=10;
+        }
+
+        if(mpeluru.status == true){
+            move_peluru(&mpeluru,mpeluru.speed);
+        }
+
+        if(check_peluru(mpeluru.coor.x,LEBAR_LAYAR-100,0+30) || check_peluru(mpeluru.coor.y,TINGGI_LAYAR-100,0+30) ){
+            place_portal(mpeluru.coor,mportal,2,LEBAR_LAYAR,0,TINGGI_LAYAR,0,mpeluru.buffer,10,5);
+            mpeluru.status=false;
+            mpeluru.coor.x=400;
+            mpeluru.coor.y=400;
+        }
+        teleport_portal(&snake.badan[0].x,&snake.badan[0].y,mportal,100,100,2);
 
         UpdateMusicStream(menu);
         UpdateMusicStream(game);
@@ -188,6 +232,7 @@ int main(){
             DrawGame(&makanan, &rintangan, &enemy, enemyCount, score, level, dinding, tanah, food, musuh, obstacle );
 
             DrawText(TextFormat("Score: %d", score), 165, 625, 50, GOLD);
+            DrawText(TextFormat("time: %f tuaim: %f", GetTime(),tuaim), 50, 330, 30, RED);
             DrawText("ENDLESS MODE", SCREEN_WIDTH / 2 - MeasureText("ENDLESS MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
 
             if(!cekTabrakan(&snake)){
@@ -243,6 +288,15 @@ int main(){
                 enemyCount = enemyCount + 1;
                 GenerateEnemy(&enemy, enemyCount, level);
             }
+            if(mpeluru.status){
+                DrawCircle((int)mpeluru.coor.x, (int)mpeluru.coor.y, radius, GOLD);
+            }
+            if(cooldown(&mportal[0].activation) == false){
+                draw_portal(textuar,2,mportal,100,100);
+                }else{
+                    mportal[0].status=false;
+                    mportal[1].status=false;
+                }
             MoveEnemy(&enemy);
         }
         EndDrawing();
