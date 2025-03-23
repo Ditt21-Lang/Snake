@@ -5,8 +5,6 @@
 #include "Gilang.h"
 #include "Marrely.h"
 
-
-
 float reverseCooldown = 20.0f;                                      /*cooldown dalam detik*/
 float reverseTimer = 0.0f;
 

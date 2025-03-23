@@ -98,6 +98,7 @@ int main(){
     float scale = 1.2;
     float radius = 10.0f;
 
+
     GenerateRintangan(&rintangan, level);
     GenerateMakanan(&makanan, &rintangan);
 
@@ -259,9 +260,9 @@ int main(){
             DrawGame(&makanan, &rintangan, &enemy, enemyCount, score,level, dinding, tanah, food, musuh, obstacle );
             
             DrawText(TextFormat("Score: %d", score), 10, 630, 30, GOLD);
-            DrawText(TextFormat("Lives: %d", lives), 250, 630, 30, GOLD);
+            DrawText(TextFormat("Lives: %d", lives), 10, 660, 30, GOLD);
             DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
-            DrawText(TextFormat("time: %f tuaim: %f", GetTime(),tuaim), 50, 330, 30, RED);
+            DrawText(TextFormat("Cooldown: %f", GetTime(),tuaim), 420, 660, 30, RED);
             DrawText("STAGE MODE", SCREEN_WIDTH / 2 - MeasureText("STAGE MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
             if(!cekTabrakan(&snake)){
                 UpdateSnake(&snake);
