@@ -36,49 +36,20 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
         rintangan->rintangan[i] = levelRintangan[level - 1][i];
     }
 }
-    void GenerateEnemy(Enemy *enemy, int count, int level) {
-        Position enemyPositions1[] = { {12, 12} };
-        Position enemyPositions2[] = { {10, 14}, {14, 10} };
-        Position enemyPositions3[] = { {9, 9}, {13, 13}, {15, 11} };
-        Position enemyPositions4[] = { {8, 8}, {12, 12}, {16, 16}, {10, 14} };
-    
-        Position *selectedPositions = NULL;
-        int maxEnemies = 0;
-    
-        switch (level) {
-            case 2:
-                selectedPositions = enemyPositions1;
-                maxEnemies = sizeof(enemyPositions1) / sizeof(Position);
-                break;
-            case 3:
-                selectedPositions = enemyPositions2;
-                maxEnemies = sizeof(enemyPositions2) / sizeof(Position);
-                break;
-            case 4:
-                selectedPositions = enemyPositions3;
-                maxEnemies = sizeof(enemyPositions3) / sizeof(Position);
-                break;
-            case 5:
-                selectedPositions = enemyPositions4;
-                maxEnemies = sizeof(enemyPositions4) / sizeof(Position);
-                break;
-            default:
-                selectedPositions = enemyPositions1;
-                maxEnemies = sizeof(enemyPositions1) / sizeof(Position);
-                break;
-        }
-    
-        int enemyCount = (count > maxEnemies) ? maxEnemies : count;
-    
-        for (int i = 0; i < enemyCount; i++) {
-            enemy[i].position.x = selectedPositions[i].x * CELL_SIZE;
-            enemy[i].position.y = selectedPositions[i].y * CELL_SIZE;
-            enemy[i].direction = 1;
-            enemy[i].isVertical = i % 2;
-        }
+
+void GenerateEnemy(Enemy *enemy, int count, int level) {
+    Position enemyPositions[3][3] = {
+        { {12, 12} },                   
+        { {10, 14}, {14, 10} },          
+        { {9, 9}, {13, 13}, {15, 11} }
+    };
+
+    for (int i = 0; i < count; i++) {
+        enemy[i].position = enemyPositions[level - 2][i];  
+        enemy[i].direction = 1;
+        enemy[i].isVertical = i % 2;
     }
-    
-   
+}
 
 void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, Texture2D background, Texture2D borderTexture, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture){
 
