@@ -202,12 +202,9 @@ int main(){
             }
             
             if (howToPlayPage == 0) {
-                int howto1Y = 150;
-                int ssGameplayY = howto1Y + 100;
-                int howto2Y = ssGameplayY + 180;
-                DrawScaledTexture(howToPlayImages[0], SCREEN_WIDTH / 2, howto1Y, BOX_WIDTH);
-                DrawScaledTexture(ssGameplay, SCREEN_WIDTH / 2, ssGameplayY, BOX_WIDTH);
-                DrawScaledTexture(howToPlayImages[1], SCREEN_WIDTH / 2, howto2Y, BOX_WIDTH);
+                DrawScaledTexture(howToPlayImages[0], SCREEN_WIDTH / 2, 150, BOX_WIDTH);
+                DrawScaledTexture(ssGameplay, SCREEN_WIDTH / 2, 250, BOX_WIDTH);
+                DrawScaledTexture(howToPlayImages[1], SCREEN_WIDTH / 2, 430, BOX_WIDTH);
             } else if (howToPlayPage == 1) {
                 DrawScaledTexture(howToPlayImages[2], SCREEN_WIDTH / 2, 150, BOX_WIDTH);
                 DrawScaledTexture(ssGameplay2, SCREEN_WIDTH / 2, 350, BOX_WIDTH);
