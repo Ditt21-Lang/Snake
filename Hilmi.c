@@ -6,20 +6,20 @@
 #define GRID_HEIGHT 30
 
 
-float reverseCooldown = 20.0f;                                      /* waktu cooldown dalam detik*/
+float reverseCooldown = 20.0f;                                      /*cooldown dalam detik*/
 float reverseTimer = 0.0f;
 
 void ReverseSnake(Snake *snake) {
-    if (reverseTimer > 0) return;
+    if (reverseTimer > 0) return;                                 /*kalau masih cooldown, jangan reverse*/  
 
     for (int i = 0; i < snake->panjang / 2; i++) {
-        Vector2 temp = snake->badan[i];                                 /* simpan sementara bagian badan diposisi i*/
+        Vector2 temp = snake->badan[i];                                 
         snake->badan[i] = snake->badan[snake->panjang - 1 - i];
         snake->badan[snake->panjang - 1 - i] = temp;
      }
 
-    snake->position = snake->badan[0];                                  /* pastiin kepala di posisi yang benar*/
-    /*menentukan arah gerak baru*/
+    snake->position = snake->badan[0];                                  /* pastikan kepala ada di posisi yang benar*/
+    /*tentukan arah gerak baru setelah direverse*/
     Vector2 diff = (Vector2){ 
         snake->badan[0].x - snake->badan[1].x, 
         snake->badan[0].y - snake->badan[1].y 
@@ -27,8 +27,10 @@ void ReverseSnake(Snake *snake) {
 
     snake->speed = diff;                                        /* perbarui kecepatan*/
 
-    reverseTimer = reverseCooldown;
+    reverseTimer = reverseCooldown;                             /*reset cooldown*/
+}
 
+void HandleReverseInput(Snake *snake){
     if (IsKeyPressed(KEY_SPACE) && reverseTimer <=0) {
         ReverseSnake(&snake);
     } 
@@ -36,7 +38,7 @@ void ReverseSnake(Snake *snake) {
 
 void UpdateCooldown(){
     if (reverseTimer > 0){
-        reverseTimer -= GetFrameTime();                 /* kurangi cooldown sesuai deltaTime*/    
+        reverseTimer -= GetFrameTime();                 /* kurangi cooldown berdasarkan deltaTime*/    
         if (reverseTimer < 0) reverseTimer = 0;
     }
 }
@@ -60,11 +62,13 @@ void CekTabrakRintangan(Vector2 head, Snake *snake, Rintangan *rintangan, int *c
 }
 
 void CekTabrakEnemy(Vector2 head, Snake *snake, Enemy *enemy, int *count, int *lives){
-        for (int i = 0; i < enemy->count; i++){
+    int i = 0;
+    while (i < enemy->count){
             if (head.x == enemy->enemy[i].x 
                 && head.y == enemy->enemy[i].y){
                 (*lives)--;
                 printf("Lives : %d\n", *lives);
                 }
+                i++;
         }
 }
