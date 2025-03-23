@@ -5,9 +5,14 @@
 void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
     int validPosition = 0;
 
+    int batasKiri = 2;  
+    int batasKanan = GRID_WIDTH - 3; 
+    int batasAtas = 2;
+    int batasBawah = GRID_HEIGHT - 3;  
+
     while (!validPosition) {
-        makanan->position.x = (rand() % GRID_WIDTH) * CELL_SIZE;
-        makanan->position.y = (rand() % GRID_HEIGHT) * CELL_SIZE;
+        makanan->position.x = (rand() % (batasKanan - batasKiri + 1) + batasKiri) * CELL_SIZE;
+        makanan->position.y = (rand() % (batasBawah - batasAtas + 1) + batasAtas) * CELL_SIZE;
         validPosition = 1;
 
       
