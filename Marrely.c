@@ -38,7 +38,7 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
 }
 
 void GenerateEnemy(Enemy *enemy, int count, int level) {
-    if (level < 2) return;
+    if (level < 2) return; 
     Position enemyPositions[3][3] = {
         { {12, 12} },                   
         { {10, 14}, {14, 10} },          

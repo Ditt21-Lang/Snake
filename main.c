@@ -17,7 +17,6 @@ int main() {
     Enemy enemies[4];
     int enemyCount = 0;
 
-    
     SetTargetFPS(10);
     InitSnake(&snake);
 
@@ -62,16 +61,19 @@ int main() {
         if (score >= 1000) {
             level++;
             GenerateRintangan(&obstacle, level);
-            enemyCount++;
             score = 0;
-            
-        for (int i = 0; i < enemyCount; i++) {
-            enemies[i].position.x = rand() % GRID_WIDTH;
-            enemies[i].position.y = rand() % GRID_HEIGHT;
-            enemies[i].direction = (rand() % 2) ? 1 : -1;
-            enemies[i].isVertical = rand() % 2;
-        };
-    
+
+            if (level == 2) enemyCount = 1;
+            if (level == 4) enemyCount = 2;
+            if (level == 5) enemyCount = 3;
+
+            for (int i = 0; i < enemyCount; i++) {
+                enemies[i].position.x = rand() % GRID_WIDTH;
+                enemies[i].position.y = rand() % GRID_HEIGHT;
+                enemies[i].direction = (rand() % 2) ? 1 : -1;
+                enemies[i].isVertical = rand() % 2;
+            }
+        }
         
         for (int i = 0; i < enemyCount; i++) {
             MoveEnemy(&enemies[i]);
@@ -87,5 +89,4 @@ int main() {
     UnloadTexture(borderTexture);
     CloseWindow();
     return 0;
-}
 }
