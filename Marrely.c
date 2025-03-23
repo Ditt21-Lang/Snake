@@ -24,11 +24,11 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
     rintangan->count = level;
     
     Position levelRintangan[5][10] = {
-    { {12, 12}, {0, 6}, {24, 18} },
-    { {13, 10}, {5, 24}, {24, 4}, {0, 16} },
-    { {6, 0}, {18, 24}, {12, 12}, {24, 7}, {0, 18} },
-    { {0, 0}, {24, 24}, {12, 12}, {6, 6}, {18, 18}, {12, 0} },
-    { {0, 12}, {24, 12}, {12, 0}, {12, 24}, {6, 6}, {18, 18}, {24, 24} }
+    { {10, 12}, {14, 14}, {12, 8} },
+    { {9, 11}, {15, 13}, {11, 9}, {13, 15} },
+    { {8, 10}, {16, 12}, {12, 14}, {14, 8}, {10, 16} },
+    { {9, 13}, {11, 15}, {13, 9}, {15, 11}, {12, 12}, {14, 14} },
+    { {10, 14}, {14, 10}, {12, 16}, {16, 12}, {8, 12}, {12, 8}, {12, 12} }
 }; 
     
 
@@ -39,9 +39,9 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
 
 void GenerateEnemy(Enemy *enemy, int count, int level) {
     Position enemyPositions[3][3] = {
-        { {8, 8} },                   
-        { {3, 4}, {18, 6} },          
-        { {2, 2}, {12, 12}, {22, 22} } 
+        { {12, 12} },                   
+        { {10, 14}, {14, 10} },          
+        { {9, 9}, {13, 13}, {15, 11} }
     };
 
     for (int i = 0; i < count; i++) {
@@ -80,18 +80,18 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyC
 void MoveEnemy(Enemy *enemy) {
     int batasKiri = 1;
     int batasAtas = 1;
-    int batasKanan = (500 / CELL_SIZE) - 1; 
-    int batasBawah = (500 / CELL_SIZE) - 1; 
+    int batasKanan = (600 / CELL_SIZE) - 1; 
+    int batasBawah = (600 / CELL_SIZE) - 1; 
 
     if (enemy->isVertical) {
         enemy->position.y += enemy->direction;
-        if (enemy->position.y < 0 || enemy->position.y >= GRID_HEIGHT) {
+        if (enemy->position.y < 0 || enemy->position.y >= batasBawah) {
             enemy->direction *= -1;
             enemy->position.y += enemy->direction;
         }
     } else {
         enemy->position.x += enemy->direction;
-        if (enemy->position.x < 0 || enemy->position.x >= GRID_WIDTH) {
+        if (enemy->position.x < 0 || enemy->position.x >= batasKanan) {
           enemy->direction *= -1;
           enemy->position.x += enemy->direction; 
         }
