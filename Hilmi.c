@@ -4,6 +4,7 @@
 #include "Hilmi.h"
 #include "Gilang.h"
 #include "Marrely.h"
+#include "dinding.h"
 #define GRID_WIDTH 30
 #define GRID_HEIGHT 30
 
