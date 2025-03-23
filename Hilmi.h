@@ -5,7 +5,7 @@
 #define Hilmi_H
 #define GRID_WIDTH 30
 #define GRID_HEIGHT 30
-
+#define REVERSE_COOLDOWN 20.0f
 
 typedef struct{
     Vector2 rintangan[10];
@@ -17,8 +17,10 @@ typedef struct{
     int count;
 } Enemy;
 
+extern float reverseTimer;
 
 void ReverseSnake(Snake *Snake);
+void UpdateCooldown();
 void CekTabrakBorder(Vector2 head, Snake *snake, int *count, int *lives);
 void CekTabrakRintangan(Vector2 head, Snake *snake, Rintangan *rintangan, int *count, int *lives);
 void CekTabrakEnemy(Vector2 head, Snake *snake, Enemy *enemy, int *count, int *lives);
