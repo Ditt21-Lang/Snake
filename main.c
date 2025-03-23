@@ -62,25 +62,10 @@ int main() {
             level++;
             GenerateRintangan(&obstacle, level);
             score = 0;
+            if (level >= 2) enemyCount = level - 1;  
 
-            if (level == 2) enemyCount = 1;
-            if (level == 4) enemyCount = 2;
-            if (level == 5) enemyCount = 3;
-
-            for (int i = 0; i < enemyCount; i++) {
-                enemies[i].position.x = rand() % GRID_WIDTH;
-                enemies[i].position.y = rand() % GRID_HEIGHT;
-                enemies[i].direction = (rand() % 2) ? 1 : -1;
-                enemies[i].isVertical = rand() % 2;
-            }
+            GenerateEnemy(enemies, enemyCount, level);
         }
-        
-        for (int i = 0; i < enemyCount; i++) {
-            MoveEnemy(&enemies[i]);
-        }
-        
-        EndDrawing();
-    }
 
     UnloadTexture(background);
     UnloadTexture(makananTexture);
@@ -89,4 +74,5 @@ int main() {
     UnloadTexture(borderTexture);
     CloseWindow();
     return 0;
+}
 }
