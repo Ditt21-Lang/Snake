@@ -8,8 +8,8 @@ void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
     do {
         validPosition = true;
 
-        makanan->position.x = (rand() % GRID_WIDTH) * CELL_SIZE;
-        makanan->position.y = (rand() % GRID_HEIGHT) * CELL_SIZE;
+        makanan->position.x = (rand() % GRID_WIDTH - 4) + 2;
+        makanan->position.y = (rand() % GRID_HEIGHT- 4) + 2;
 
         if (makanan->position.x < 0 || makanan->position.x >= 500 ||
             makanan->position.y < 0 || makanan->position.y >= 500) {
