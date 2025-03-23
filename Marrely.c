@@ -10,27 +10,31 @@ void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
         makanan->position.y = (rand() % GRID_HEIGHT) * CELL_SIZE;
         validPosition = 1;
 
+      
         for (int i = 0; i < rintangan->count; i++) {
-            if (rintangan->rintangan[i].x == makanan->position.x &&
-                rintangan->rintangan[i].y == makanan->position.y) {
-                validPosition = 0;
+            if (rintangan->rintangan[i].x * CELL_SIZE == makanan->position.x && rintangan->rintangan[i].y * CELL_SIZE == makanan->position.y) {
+                validPosition = 0; 
                 break;
             }
+        }
+
+        if (makanan->position.x < 0 || makanan->position.x >= SCREEN_WIDTH || makanan->position.y < 0 || makanan->position.y >= SCREEN_HEIGHT) {
+            validPosition = 0;
         }
     }
 }
 
 void GenerateRintangan(Rintangan *rintangan, int level) {
+    if (level < 1 || level > 5) return;  
     rintangan->count = level;
-    
+
     Position levelRintangan[5][10] = {
-    { {10, 12}, {14, 14}, {12, 8} },
-    { {9, 11}, {15, 13}, {11, 9}, {13, 15} },
-    { {8, 10}, {16, 12}, {12, 14}, {14, 8}, {10, 16} },
-    { {9, 13}, {11, 15}, {13, 9}, {15, 11}, {12, 12}, {14, 14} },
-    { {10, 14}, {14, 10}, {12, 16}, {16, 12}, {8, 12}, {12, 8}, {12, 12} }
-}; 
-    
+        { {10, 12}, {14, 14}, {12, 8} },
+        { {9, 11}, {15, 13}, {11, 9}, {13, 15} },
+        { {8, 10}, {16, 12}, {12, 14}, {14, 8}, {10, 16} },
+        { {9, 13}, {11, 15}, {13, 9}, {15, 11}, {12, 12}, {14, 14} },
+        { {10, 14}, {14, 10}, {12, 16}, {16, 12}, {8, 12}, {12, 8}, {12, 12} }
+    };
 
     for (int i = 0; i < rintangan->count; i++) {
         rintangan->rintangan[i] = levelRintangan[level - 1][i];
@@ -38,7 +42,7 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
 }
 
 void GenerateEnemy(Enemy *enemy, int count, int level) {
-    if (level < 2) return; 
+    if (level < 2) return;  
     Position enemyPositions[3][3] = {
         { {12, 12} },                   
         { {10, 14}, {14, 10} },          
@@ -52,8 +56,8 @@ void GenerateEnemy(Enemy *enemy, int count, int level) {
     }
 }
 
-void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, Texture2D background, Texture2D borderTexture, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture){
-
+void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, 
+              Texture2D background, Texture2D borderTexture, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture) {
 
     ClearBackground(RAYWHITE);
     DrawTexture(background, 0, 0, WHITE);
@@ -78,23 +82,24 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyC
     DrawText(TextFormat("Score: %d", score), 10, 10, 20, BLACK);
     DrawText(TextFormat("Level: %d", level), 10, 30, 20, BLACK);
 }
+
 void MoveEnemy(Enemy *enemy) {
     int batasKiri = 1;
     int batasAtas = 1;
-    int batasKanan = (600 / CELL_SIZE) - 1; 
-    int batasBawah = (600 / CELL_SIZE) - 1; 
+    int batasKanan =  (600 / CELL_SIZE) - 1;  
+    int batasBawah =  (600 / CELL_SIZE) - 1;  
 
     if (enemy->isVertical) {
         enemy->position.y += enemy->direction;
-        if (enemy->position.y < 0 || enemy->position.y >= batasBawah) {
+        if (enemy->position.y <= batasAtas || enemy->position.y >= batasBawah) {
             enemy->direction *= -1;
             enemy->position.y += enemy->direction;
         }
     } else {
         enemy->position.x += enemy->direction;
-        if (enemy->position.x < 0 || enemy->position.x >= batasKanan) {
-          enemy->direction *= -1;
-          enemy->position.x += enemy->direction; 
+        if (enemy->position.x <= batasKiri || enemy->position.x >= batasKanan) {
+            enemy->direction *= -1;
+            enemy->position.x += enemy->direction;
         }
     }
 }
