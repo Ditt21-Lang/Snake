@@ -4,8 +4,8 @@
 #include "raylib.h"
 
 #define CELL_SIZE 20
-#define GRID_WIDTH  (500 / CELL_SIZE)  
-#define GRID_HEIGHT (400 / CELL_SIZE)  
+#define GRID_WIDTH  (520 / CELL_SIZE)  
+#define GRID_HEIGHT (520 / CELL_SIZE)  
 #define MAX_LENGTH 100
 
 typedef struct {

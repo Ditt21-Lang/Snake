@@ -214,8 +214,8 @@ int main(){
             DrawGame(&makanan, &rintangan, &enemy, enemyCount, score,level, tanah, food, musuh, obstacle );
             
             DrawText(TextFormat("Score: %d", score), 10, 630, 30, GOLD);
-            DrawText(TextFormat("Lives: %d", lives), 200, 630, 30, GOLD);
-            DrawText(TextFormat("Level: %d", level), 400, 630, 30, GOLD);
+            DrawText(TextFormat("Lives: %d", lives), 250, 630, 30, GOLD);
+            DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
             DrawText("STAGE MODE", SCREEN_WIDTH / 2 - MeasureText("STAGE MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
             if(!cekTabrakan(&snake)){
                 UpdateSnake(&snake);
