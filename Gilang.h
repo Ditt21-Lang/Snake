@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "raylib.h"
+#include "Marrely.h"
 #ifndef GILANG_H
 #define GILANG_H
 
@@ -14,5 +15,9 @@ void InitSnake(Snake *Snake);
 void DrawSnake(Snake *Snake);
 void UpdateSnake(Snake *Snake);
 bool cekTabrakan(Snake *Snake);
+
+//Dibutuhkan header Marrely
+bool CheckMakanan(Snake *snake, Makanan *food);
+bool CheckObstacle(Snake *snake, Rintangan *Obstacle);
 
 #endif

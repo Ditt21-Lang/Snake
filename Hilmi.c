@@ -4,9 +4,7 @@
 #include "Hilmi.h"
 #include "Gilang.h"
 #include "Marrely.h"
-#include "dinding.h"
-#define GRID_WIDTH 30
-#define GRID_HEIGHT 30
+
 
 
 float reverseCooldown = 20.0f;                                      /*cooldown dalam detik*/
@@ -46,16 +44,16 @@ void UpdateCooldown(){
     }
 }
 
-void CekTabrakDinding(Vector2 head, int *lives, bool *alive){
-    if (head.x < 2 || head.x >=GRID_WIDTH -2 ||
-        head.y < 2 || head.y >=GRID_HEIGHT -2){
-            (*lives)--;
-            printf("Lives : %d\n", *lives);
-        }
+void CekTabrakDinding(Snake *snake, int *lives, bool *alive){
+    Position newHead = {snake->badan[0].x + snake->position.x,
+                      snake->badan[0].y + snake->position.y};
 
-    if (*lives <= 0){
-        *alive = false;
-    }
+    if (newHead.x < 2 || newHead.x >= GRID_WIDTH - 2 ||
+        newHead.y < 2 || newHead.y >= GRID_HEIGHT -2) {
+            (*lives)--;
+            *alive = false;
+            return;
+        }
 }
 
 void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives){
