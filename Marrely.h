@@ -6,7 +6,8 @@
 #define CELL_SIZE 20
 #define GRID_WIDTH  (520 / CELL_SIZE)  
 #define GRID_HEIGHT (520 / CELL_SIZE)  
-#define MAX_LENGTH 100
+#define SCREEN_WIDTH  600
+#define SCREEN_HEIGHT 800
 
 typedef struct {
     int x, y;

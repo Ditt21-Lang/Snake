@@ -22,12 +22,13 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
     rintangan->count = level;
     
     Position levelRintangan[5][10] = {
-        { {3, 7}, {12, 5}, {8, 14} },
-        { {2, 10}, {7, 3}, {14, 8}, {11, 12} },
-        { {5, 2}, {9, 6}, {3, 13}, {16, 10}, {12, 17} },
-        { {1, 9}, {8, 4}, {13, 11}, {6, 15}, {17, 7}, {20, 14} },
-        { {0, 5}, {11, 3}, {4, 12}, {15, 6}, {9, 18}, {19, 8}, {23, 20} }
-    };
+    { {10, 12}, {14, 14}, {12, 8} },
+    { {9, 11}, {15, 13}, {11, 9}, {13, 15} },
+    { {8, 10}, {16, 12}, {12, 14}, {14, 8}, {10, 16} },
+    { {9, 13}, {11, 15}, {13, 9}, {15, 11}, {12, 12}, {14, 14} },
+    { {10, 14}, {14, 10}, {12, 16}, {16, 12}, {8, 12}, {12, 8}, {12, 12} }
+}; 
+    
 
     for (int i = 0; i < rintangan->count; i++) {
         rintangan->rintangan[i] = levelRintangan[level - 1][i];
@@ -35,10 +36,11 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
 }
 
 void GenerateEnemy(Enemy *enemy, int count, int level) {
+    if (level < 2) return; 
     Position enemyPositions[3][3] = {
-        { {5, 5} },                 
-        { {3, 4}, {7, 8} },         
-        { {2, 2}, {6, 6}, {10, 10} } 
+        { {12, 12} },                   
+        { {10, 14}, {14, 10} },          
+        { {9, 9}, {13, 13}, {15, 11} }
     };
 
     for (int i = 0; i < count; i++) {
@@ -48,8 +50,11 @@ void GenerateEnemy(Enemy *enemy, int count, int level) {
     }
 }
 
-void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level,Texture2D borderTexture, 
-              Texture2D background, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture) {
+void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, Texture2D background, Texture2D borderTexture, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture){
+
+
+    ClearBackground(RAYWHITE);
+    DrawTexture(borderTexture, 0, 0, WHITE);
     DrawTexture(background, 0, 0, WHITE);
 
     for (int i = 0; i < rintangan->count; i++) {
@@ -59,12 +64,8 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyC
     }
 
     DrawTexturePro(makananTexture, (Rectangle){0, 0, makananTexture.width, makananTexture.height}, 
-                    (Rectangle){makanan->position.x, makanan->position.y, CELL_SIZE, CELL_SIZE}, 
-                    (Vector2){0, 0}, 0, WHITE);
-
-
-
-
+                   (Rectangle){makanan->position.x, makanan->position.y, CELL_SIZE, CELL_SIZE}, 
+                   (Vector2){0, 0}, 0, WHITE);
     
     for (int i = 0; i < enemyCount; i++) {
         DrawTexturePro(enemyTexture, (Rectangle){0, 0, enemyTexture.width, enemyTexture.height}, 
@@ -76,17 +77,23 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyC
     DrawRectangle(0, 600, GetScreenWidth(), 100, (Color){0, 0, 0, 200}); 
 
 }
-
 void MoveEnemy(Enemy *enemy) {
+    int batasKiri = 1;
+    int batasAtas = 1;
+    int batasKanan = (600 / CELL_SIZE) - 1; 
+    int batasBawah = (600 / CELL_SIZE) - 1; 
+
     if (enemy->isVertical) {
         enemy->position.y += enemy->direction;
-        if (enemy->position.y < 0 || enemy->position.y >= GRID_HEIGHT) {
+        if (enemy->position.y < 0 || enemy->position.y >= batasBawah) {
             enemy->direction *= -1;
+            enemy->position.y += enemy->direction;
         }
     } else {
         enemy->position.x += enemy->direction;
-        if (enemy->position.x < 0 || enemy->position.x >= GRID_WIDTH) {
-            enemy->direction *= -1;
+        if (enemy->position.x < 0 || enemy->position.x >= batasKanan) {
+          enemy->direction *= -1;
+          enemy->position.x += enemy->direction; 
         }
     }
 }
