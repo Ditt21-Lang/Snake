@@ -6,21 +6,56 @@
 #define UKURAN_BLOCK 20
 
 
+
 void InitSnake(Snake *Snake){
     Snake->position = (Vector2){LEBAR_LAYAR/2, TINGGI_LAYAR/2};
-    Snake->speed= (Vector2){UKURAN_BLOCK, 0};
-    Snake->panjang = 5;
+    Snake->speed = (Vector2){UKURAN_BLOCK, 0};
+    Snake->panjang = 8;
 
 
     for (int i = 0; i < Snake->panjang; i++) {
         Snake->badan[i] = (Vector2){ Snake->position.x - i * UKURAN_BLOCK, Snake->position.y };
-        // Snake->position.x akan membuat badan lainnya ke sebelah kiri dengan mengurangi posisi sebesar 20.
+        Snake->snakeSprites[i] = (Rectangle){i * 20, 0, 20, 20};
     }
 }
 
 void DrawSnake(Snake *Snake) {
-    for (int i = 0; i < Snake->panjang; i++) {
-        DrawRectangleV(Snake->badan[i], (Vector2){UKURAN_BLOCK, UKURAN_BLOCK}, BLUE);
+    int i = 0;
+    while (i < Snake->panjang) {
+        int spriteIndex = 1;
+        float rotation = 0;
+        if (i == 0) { // kepala
+            spriteIndex = 0;
+            if (Snake->speed.x > 0) rotation = 90;
+            if (Snake->speed.x < 0) rotation = 270;
+            if (Snake->speed.y > 0) rotation = 180;
+        }else if (i == Snake->panjang - 1) { // ekor
+            spriteIndex = 2;
+            Position tailDirection = {Snake->badan[i - 1].x - Snake->badan[i].x, Snake->badan[i - 1].y - Snake->badan[i].y};
+            if (tailDirection.x > 0) rotation = 90;
+            if (tailDirection.x < 0) rotation = 270;
+            if (tailDirection.y > 0) rotation = 180;
+        }else{
+            Position prevDirection = {Snake->badan[i - 1].x - Snake->badan[i].x, Snake->badan[i - 1].y - Snake->badan[i].y};
+            Position nextDirection = {Snake->badan[i + 1].x - Snake->badan[i].x, Snake->badan[i + 1].y - Snake->badan[i].y};
+
+            spriteIndex = snakeSpritesheet(prevDirection, nextDirection);
+            if (spriteIndex == -1) {
+                if (prevDirection.x != 0 && nextDirection.x != 0) {  // ke kanan/kiri
+                    spriteIndex = 7; // sprite untuk badan lurus ke kiri/kanan
+                } else if (prevDirection.y != 0 && nextDirection.y != 0) {  // ke atas/bawah
+                    spriteIndex = 1; // sprite untuk badan lurus ke atas/bawah
+                }
+            }
+        }
+                
+        Vector2 position = { Snake->badan[i].x, Snake->badan[i].y };
+        Rectangle destRect = { position.x + UKURAN_BLOCK / 2, position.y + UKURAN_BLOCK / 2, UKURAN_BLOCK, UKURAN_BLOCK };
+        Vector2 origin = { UKURAN_BLOCK / 2, UKURAN_BLOCK / 2 };
+
+        DrawTexturePro(Snake->tekstur, Snake->snakeSprites[spriteIndex], destRect, origin, rotation, WHITE);
+        
+        i = i + 1;
     }
 }
 
