@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Bayu.h"
+#include "Gilang.h"
 
 void InitButtons(Button buttons[], const char *texts[], int count, int startY) {
     for (int i = 0; i < count; i++) {
@@ -45,4 +46,30 @@ void DrawScaledTexture(Texture2D texture, int x, int y, int maxWidth) {
     DrawTexturePro(texture, (Rectangle){0, 0, texture.width, texture.height}, 
                    (Rectangle){x - newWidth / 2, y, newWidth, newHeight}, 
                    (Vector2){0, 0}, 0.0f, WHITE);
+}
+
+int snakeSpritesheet(Position prevDirection, Position nextDirection) {
+
+    int spriteIndex = 0;
+    if (prevDirection.x < 0 && nextDirection.y < 0) { 
+        spriteIndex = 4; // kiri ke Atas
+    } else if (prevDirection.x > 0 && nextDirection.y < 0) { 
+        spriteIndex = 3; // kanan ke Atas
+    } else if (prevDirection.x < 0 && nextDirection.y > 0) { 
+        spriteIndex = 6; // kiri ke Bawah
+    } else if (prevDirection.x > 0 && nextDirection.y > 0) { 
+        spriteIndex = 5; // kanan ke Bawah
+    } else if (prevDirection.y < 0 && nextDirection.x < 0) { 
+        spriteIndex = 4; // atas ke Kiri
+    } else if (prevDirection.y < 0 && nextDirection.x > 0) { 
+        spriteIndex = 3; // atas ke Kanan
+    } else if (prevDirection.y > 0 && nextDirection.x < 0) { 
+        spriteIndex = 6; // bawah ke Kiri
+    } else if (prevDirection.y > 0 && nextDirection.x > 0) { 
+        spriteIndex = 5; // bawah ke Kanan
+    } else { 
+        spriteIndex = -1; // Default sprite (misal kepala atau badan)
+    }
+    return spriteIndex;
+    
 }

@@ -9,6 +9,8 @@ typedef struct{
     Vector2 speed;
     int panjang;
     Vector2 badan[100];
+    Rectangle snakeSprites[100];
+    Texture2D tekstur;
 } Snake;
 
 void InitSnake(Snake *Snake);

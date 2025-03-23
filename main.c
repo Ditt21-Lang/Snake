@@ -46,27 +46,28 @@ int main(){
     Button nextButton = {{SCREEN_WIDTH / 2 + 50, 680, 100, 40}, "Next", false};
     Button backButton = {{SCREEN_WIDTH / 2 - 100, 730, 200, 50}, "Back", false};
     
-    Texture2D latar = LoadTexture("latar.png");
+    Texture2D latar = LoadTexture("resources/latar.png");
     Texture2D howToPlayImages[4] = {
-        LoadTexture("howto1.png"),
-        LoadTexture("howto2.png"),
-        LoadTexture("howto3.png"),
-        LoadTexture("howto4.png"),
+        LoadTexture("resources/howto1.png"),
+        LoadTexture("resources/howto2.png"),
+        LoadTexture("resources/howto3.png"),
+        LoadTexture("resources/howto4.png"),
     };
 
-    Texture2D ssGameplay = LoadTexture("ssGameplay.png");
-    Texture2D ssGameplay2 = LoadTexture("ssGameplay2.png");
-    Texture2D ssGameplay3 = LoadTexture("ssGameplay3.png");
-    Texture2D tanah = LoadTexture("tanah.png");
-    Texture2D musuh = LoadTexture("krtTambang.png");
-    Texture2D obstacle = LoadTexture ("obstacle.png");
-    Texture2D food = LoadTexture ("tikus.png");
-    
-    Music menu = LoadMusicStream("Menu.wav");
-    Sound start = LoadSound("StartGame.wav");
-    Sound eat = LoadSound("Makanan.wav");
-    Music game = LoadMusicStream("GamePlay.wav");
-    Sound over = LoadSound("GameOver.wav");
+    Texture2D ssGameplay = LoadTexture("resources/ssGameplay.png");
+    Texture2D ssGameplay2 = LoadTexture("resources/ssGameplay2.png");
+    Texture2D ssGameplay3 = LoadTexture("resources/ssGameplay3.png");
+    Texture2D tanah = LoadTexture("resources/tanah.png");
+    Texture2D musuh = LoadTexture("resources/krtTambang.png");
+    Texture2D obstacle = LoadTexture ("resources/obstacle.png");
+    Texture2D food = LoadTexture ("resources/tikus.png");
+    snake.tekstur = LoadTexture ("resources/teksturUlar.png");
+
+    Music menu = LoadMusicStream("resources/Menu.wav");
+    Sound start = LoadSound("resources/StartGame.wav");
+    Sound eat = LoadSound("resources/Makanan.wav");
+    Music game = LoadMusicStream("resources/GamePlay.wav");
+    Sound over = LoadSound("resources/GameOver.wav");
 
     SetSoundVolume(start ,1.5f);
     SetSoundVolume(eat ,1.5f);
@@ -209,6 +210,8 @@ int main(){
         }
         EndDrawing();
     }
+
+    UnloadTexture(snake.tekstur);
     UnloadMusicStream(menu);
     CloseAudioDevice();
     CloseWindow();
