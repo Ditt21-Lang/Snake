@@ -20,10 +20,10 @@ typedef struct{
 extern float reverseTimer;
 
 void ReverseSnake(Snake *Snake);
-void UpdateCooldown();
 void HandleReverseInput(Snake *Snake);
-void CekTabrakBorder(Vector2 head, Snake *snake, int *count, int *lives);
-void CekTabrakRintangan(Vector2 head, Snake *snake, Rintangan *rintangan, int *count, int *lives);
-void CekTabrakEnemy(Vector2 head, Snake *snake, Enemy *enemy, int *count, int *lives);
+void UpdateCooldown();
+void CekTabrakBorder(Vector2 head, int *lives);
+void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *count, int *lives);
+void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives);
 
 #endif
