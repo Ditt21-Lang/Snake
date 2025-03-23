@@ -48,7 +48,7 @@ void GenerateEnemy(Enemy *enemy, int count, int level) {
     }
 }
 
-void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, 
+void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level,Texture2D borderTexture, 
               Texture2D background, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture) {
     DrawTexture(background, 0, 0, WHITE);
 

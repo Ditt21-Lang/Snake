@@ -62,6 +62,7 @@ int main(){
     Texture2D musuh = LoadTexture("resources/krtTambang.png");
     Texture2D obstacle = LoadTexture ("resources/obstacle.png");
     Texture2D food = LoadTexture ("resources/tikus.png");
+    Texture2D dinding = LoadTexture ("resources/dinding/png");
     snake.tekstur = LoadTexture ("resources/teksturUlar.png");
 
     Music menu = LoadMusicStream("resources/Menu.wav");
@@ -184,7 +185,7 @@ int main(){
         else if (currentScreen == ENDLESS){
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
-            DrawGame(&makanan, &rintangan, &enemy, enemyCount, score, level, tanah, food, musuh, obstacle );
+            DrawGame(&makanan, &rintangan, &enemy, enemyCount, score, level,dinding, tanah, food, musuh, obstacle );
 
             DrawText(TextFormat("Score: %d", score), 165, 625, 50, GOLD);
             DrawText("ENDLESS MODE", SCREEN_WIDTH / 2 - MeasureText("ENDLESS MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
@@ -211,7 +212,7 @@ int main(){
             level = 1;
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
-            DrawGame(&makanan, &rintangan, &enemy, enemyCount, score,level, tanah, food, musuh, obstacle );
+            DrawGame(&makanan, &rintangan, &enemy, enemyCount, score,level, dinding, tanah, food, musuh, obstacle );
             
             DrawText(TextFormat("Score: %d", score), 10, 630, 30, GOLD);
             DrawText(TextFormat("Lives: %d", lives), 250, 630, 30, GOLD);
