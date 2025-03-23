@@ -77,7 +77,7 @@ int main(){
     Texture2D dinding = LoadTexture ("resources/dinding.png");
     snake.tekstur = LoadTexture ("resources/teksturUlar.png");
     Image kayu=LoadImage("resources/portal2.png");
-    Texture2D textuar=menggambar(&kayu,100,100);
+    Texture2D textuar=menggambar(&kayu,50,50);
 
     Music menu = LoadMusicStream("resources/Menu.wav");
     Sound start = LoadSound("resources/StartGame.wav");
@@ -93,7 +93,7 @@ int main(){
     float bgX = 0;
     float scrollSpeed = 75;
     float scale = 1.2;
-    float radius = 30.0f;
+    float radius = 10.0f;
 
     GenerateRintangan(&rintangan, level);
     GenerateMakanan(&makanan, &rintangan);
@@ -232,7 +232,6 @@ int main(){
             DrawGame(&makanan, &rintangan, &enemy, enemyCount, score, level, dinding, tanah, food, musuh, obstacle );
 
             DrawText(TextFormat("Score: %d", score), 165, 625, 50, GOLD);
-            DrawText(TextFormat("time: %f tuaim: %f", GetTime(),tuaim), 50, 330, 30, RED);
             DrawText("ENDLESS MODE", SCREEN_WIDTH / 2 - MeasureText("ENDLESS MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
 
             if(!cekTabrakan(&snake)){
@@ -262,6 +261,7 @@ int main(){
             DrawText(TextFormat("Score: %d", score), 10, 630, 30, GOLD);
             DrawText(TextFormat("Lives: %d", lives), 250, 630, 30, GOLD);
             DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
+            DrawText(TextFormat("cd: %f", GetTime(),tuaim), 50, 330, 30, RED);
             DrawText("STAGE MODE", SCREEN_WIDTH / 2 - MeasureText("STAGE MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
             if(!cekTabrakan(&snake)){
                 UpdateSnake(&snake);
@@ -292,7 +292,7 @@ int main(){
                 DrawCircle((int)mpeluru.coor.x, (int)mpeluru.coor.y, radius, GOLD);
             }
             if(cooldown(&mportal[0].activation) == false){
-                draw_portal(textuar,2,mportal,100,100);
+                draw_portal(textuar,2,mportal,20,20);
                 }else{
                     mportal[0].status=false;
                     mportal[1].status=false;
