@@ -24,12 +24,13 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
     rintangan->count = level;
     
     Position levelRintangan[5][10] = {
-        { {3, 7}, {12, 5}, {8, 14} },
-        { {2, 10}, {7, 3}, {14, 8}, {11, 12} },
-        { {5, 2}, {9, 6}, {3, 13}, {16, 10}, {12, 17} },
-        { {1, 9}, {8, 4}, {13, 11}, {6, 15}, {17, 7}, {20, 14} },
-        { {0, 5}, {11, 3}, {4, 12}, {15, 6}, {9, 18}, {19, 8}, {23, 20} }
-    };
+    { {12, 12}, {0, 6}, {24, 18} },
+    { {13, 10}, {5, 24}, {24, 4}, {0, 16} },
+    { {6, 0}, {18, 24}, {12, 12}, {24, 7}, {0, 18} },
+    { {0, 0}, {24, 24}, {12, 12}, {6, 6}, {18, 18}, {12, 0} },
+    { {0, 12}, {24, 12}, {12, 0}, {12, 24}, {6, 6}, {18, 18}, {24, 24} }
+}; 
+    
 
     for (int i = 0; i < rintangan->count; i++) {
         rintangan->rintangan[i] = levelRintangan[level - 1][i];
@@ -38,9 +39,9 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
 
 void GenerateEnemy(Enemy *enemy, int count, int level) {
     Position enemyPositions[3][3] = {
-        { {5, 5} },                 
-        { {3, 4}, {7, 8} },         
-        { {2, 2}, {6, 6}, {10, 10} } 
+        { {8, 8} },                   
+        { {3, 4}, {18, 6} },          
+        { {2, 2}, {12, 12}, {22, 22} } 
     };
 
     for (int i = 0; i < count; i++) {
