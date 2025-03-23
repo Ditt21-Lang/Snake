@@ -13,6 +13,13 @@ typedef struct {
     int x, y;
 } Position;
 
+typedef struct{
+    Position position;
+    int direction;
+    int isVertical;
+    int count;
+} Enemy;
+
 typedef struct {
     Position position;
 } Makanan;
@@ -21,12 +28,6 @@ typedef struct {
     Position rintangan[10];
     int count;
 } Rintangan;
-
-typedef struct {
-    Position position;
-    int direction;
-    int isVertical;
-} Enemy;
 
 void GenerateMakanan(Makanan *makanan, Rintangan *rintangan);
 void GenerateRintangan(Rintangan *obstacle, int level);

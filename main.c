@@ -67,12 +67,11 @@ int main() {
             GenerateEnemy(enemies, enemyCount, level);
         }
 
-        EndDrawing();
 
         if(IsKeyPressed(KEY_SPACE)){
            ReverseSnake(&snake); 
         }
-
+        EndDrawing();
     }
     UnloadTexture(background);
     UnloadTexture(makananTexture);
