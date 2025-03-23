@@ -61,6 +61,7 @@ int main() {
         if (score >= 1000) {
             level++;
             GenerateRintangan(&obstacle, level);
+            enemyCount++;
             score = 0;
 
             if (level == 2) enemyCount = 1;
