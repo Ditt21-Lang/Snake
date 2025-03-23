@@ -6,12 +6,6 @@
 #define GRID_WIDTH 30
 #define GRID_HEIGHT 30
 
-typedef struct{
-    Vector2 position;
-    Vector2 speed;
-    int panjang;
-    Vector2 badan[100];
-} Snake;
 
 typedef struct{
     Vector2 rintangan[10];
