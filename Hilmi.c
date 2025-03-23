@@ -5,7 +5,13 @@
 #define GRID_WIDTH 30
 #define GRID_HEIGHT 30
 
+
+float reverseCooldown = 20.0f;                                      /* waktu cooldown dalam detik*/
+float reverseTimer = 0.0f;
+
 void ReverseSnake(Snake *snake) {
+    if (reverseTimer > 0) return;
+
     for (int i = 0; i < snake->panjang / 2; i++) {
         Vector2 temp = snake->badan[i];                                 /* simpan sementara bagian badan diposisi i*/
         snake->badan[i] = snake->badan[snake->panjang - 1 - i];
@@ -21,11 +27,19 @@ void ReverseSnake(Snake *snake) {
 
     snake->speed = diff;                                        /* perbarui kecepatan*/
 
+    reverseTimer = reverseCooldown;
+
+    if (IsKeyPressed(KEY_SPACE) && reverseTimer <=0) {
+        ReverseSnake(&snake);
+    } 
 }
 
-/* if (IsKeyPressed(KEY_SPACE)) {
-    ReverseSnake(&snake);
-} */
+void UpdateCooldown(){
+    if (reverseTimer > 0){
+        reverseTimer -= GetFrameTime();                 /* kurangi cooldown sesuai deltaTime*/    
+        if (reverseTimer < 0) reverseTimer = 0;
+    }
+}
 
 void CekTabrakBorder(Vector2 head, Snake *snake, int *count, int *lives){
     if (head.x < 2 || head.x >=GRID_WIDTH -2 ||
