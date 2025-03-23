@@ -50,7 +50,6 @@ void GenerateEnemy(Enemy *enemy, int count, int level) {
 
 void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, 
               Texture2D background, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture) {
-    ClearBackground(RAYWHITE);
     DrawTexture(background, 0, 0, WHITE);
 
     for (int i = 0; i < rintangan->count; i++) {
@@ -73,6 +72,7 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyC
                        (Vector2){0, 0}, 0, WHITE);
     
     }
+    DrawRectangle(0, 700, GetScreenWidth(), 200, WHITE);
     DrawText(TextFormat("Score: %d", score), 10, 600, 30, WHITE);
 }
 
