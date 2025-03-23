@@ -68,13 +68,13 @@ int main() {
             GenerateEnemy(enemies, enemyCount, level);
         }
 
-   
-}
-UnloadTexture(background);
-UnloadTexture(makananTexture);
-UnloadTexture(rintanganTexture);
-UnloadTexture(enemyTexture);
-UnloadTexture(borderTexture);
-CloseWindow();
-return 0;
+        EndDrawing();
+    }
+    UnloadTexture(background);
+    UnloadTexture(makananTexture);
+    UnloadTexture(rintanganTexture);
+    UnloadTexture(enemyTexture);
+    UnloadTexture(borderTexture);
+    CloseWindow();
+    return 0;
 }
