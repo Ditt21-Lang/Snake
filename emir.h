@@ -7,6 +7,8 @@
 #define KIRI 263
 #define BAWAH 264
 #define ATAS 265
+#ifndef EMIR_H
+#define EMIR_H
 
 //variable peluru
 typedef struct{
@@ -31,13 +33,13 @@ typedef struct{
 
 
 //utilitas
-int lastbutton()
+int lastbutton();
     bool yes();
     
 //peluru
-void p_pressed(peluru *mpeluru,int buffer_mengisi,Vector2 target_obj)
-void move_peluru(peluru *mpeluru,float speed)
-    bool check_peluru(float coor,int lebar_tinggi,int min)
+void p_pressed(peluru *mpeluru,int buffer_mengisi,Vector2 target_obj);
+void move_peluru(peluru *mpeluru,float speed);
+    bool check_peluru(float coor,int lebar_tinggi,int min);
     
     
     
@@ -49,3 +51,5 @@ bool cooldown(float *target);
     Texture2D menggambar(Image *edit,int width,int height);
     void draw_portal(Texture2D purtal,int kotak,portal *mportal,int lgambar,int tgambar);
 void teleport_portal(float *targetx,float *targety,portal mportal[],int lgambar,int tgambar,int kotak);
+
+#endif

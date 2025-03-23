@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include "emir.h"
 #define LEBAR_LAYAR 800
 #define TINGGI_LAYAR 650
 #define KANAN 262

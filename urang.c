@@ -277,7 +277,7 @@ if(check_peluru(mpeluru.coor.x,LEBAR_LAYAR-100,0+30) || check_peluru(mpeluru.coo
     mpeluru.coor.y=400;
 }
 
-teleport_portal(&circleX,&circleY,&mportal,100,100,2);
+teleport_portal(&circleX,&circleY,mportal,100,100,2);
 // Gambar
 BeginDrawing();
 ClearBackground(RAYWHITE);
