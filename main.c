@@ -38,7 +38,7 @@ int main() {
         BeginDrawing();
         
         ClearBackground(RAYWHITE);
-        DrawGame(&food, &obstacle, enemies, enemyCount, score, level, background, borderTexture, makananTexture, enemyTexture, rintanganTexture);
+        DrawGame(&food, &obstacle, enemies, enemyCount, score, 0, level, borderTexture, background, makananTexture, enemyTexture, rintanganTexture);
 
         if (!cekTabrakan(&snake)) {
             UpdateSnake(&snake);
