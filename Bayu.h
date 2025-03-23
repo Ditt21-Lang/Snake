@@ -13,7 +13,8 @@ typedef enum {
     MENU,
     MODE_SELECTION,
     HOW_TO_PLAY,
-    GAMEPLAY
+    ENDLESS,
+    STAGE
 } GameScreen;
 
 typedef struct {

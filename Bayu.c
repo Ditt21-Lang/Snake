@@ -24,7 +24,8 @@ void UpdateButtons(Button buttons[], int count, GameScreen *screen) {
                     exit(0);
                 }
             } else if (*screen == MODE_SELECTION) {
-                if (i == 0 || i == 1) *screen = GAMEPLAY;
+                if (i == 0) *screen = ENDLESS;
+                else if (i == 1) *screen = STAGE;
                 else if (i == 2) *screen = MENU;
             }
         }
@@ -46,3 +47,4 @@ void DrawScaledTexture(Texture2D texture, int x, int y, int maxWidth) {
                    (Rectangle){x - newWidth / 2, y, newWidth, newHeight}, 
                    (Vector2){0, 0}, 0.0f, WHITE);
 }
+
