@@ -50,14 +50,9 @@ void GenerateEnemy(Enemy *enemy, int count, int level) {
     }
 }
 
-<<<<<<< HEAD
-void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, Texture2D background,Texture2D borderTexture, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture){
+void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, Texture2D background, Texture2D borderTexture, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture){
 
 
-=======
-void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, 
-              Texture2D background, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture) {
->>>>>>> 7d17f0e7ef189c278cd846439ff95f8149b3fcf5
     ClearBackground(RAYWHITE);
     DrawTexture(background, 0, 0, WHITE);
     DrawTexture(borderTexture, 0, 0, WHITE);
@@ -77,24 +72,27 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyC
                        (Rectangle){enemies[i].position.x * CELL_SIZE, enemies[i].position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
                        (Vector2){0, 0}, 0, WHITE);
     }
-<<<<<<< HEAD
+
     DrawText(TextFormat("Score: %d", score), 10, 10, 20, BLACK);
     DrawText(TextFormat("Level: %d", level), 10, 30, 20, BLACK);
 }
-=======
-}
-
->>>>>>> 7d17f0e7ef189c278cd846439ff95f8149b3fcf5
 void MoveEnemy(Enemy *enemy) {
+    int batasKiri = 1;
+    int batasAtas = 1;
+    int batasKanan = (500 / CELL_SIZE) - 1; 
+    int batasBawah = (500 / CELL_SIZE) - 1; 
+
     if (enemy->isVertical) {
         enemy->position.y += enemy->direction;
         if (enemy->position.y < 0 || enemy->position.y >= GRID_HEIGHT) {
             enemy->direction *= -1;
+            enemy->position.y += enemy->direction;
         }
     } else {
         enemy->position.x += enemy->direction;
         if (enemy->position.x < 0 || enemy->position.x >= GRID_WIDTH) {
-            enemy->direction *= -1;
+          enemy->direction *= -1;
+          enemy->position.x += enemy->direction; 
         }
     }
 }
