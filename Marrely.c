@@ -12,13 +12,15 @@ void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
 
       
         for (int i = 0; i < rintangan->count; i++) {
-            if (rintangan->rintangan[i].x * CELL_SIZE == makanan->position.x && rintangan->rintangan[i].y * CELL_SIZE == makanan->position.y) {
+            if (rintangan->rintangan[i].x * CELL_SIZE == makanan->position.x &&
+                rintangan->rintangan[i].y * CELL_SIZE == makanan->position.y) {
                 validPosition = 0; 
                 break;
             }
         }
 
-        if (makanan->position.x < 0 || makanan->position.x >= SCREEN_WIDTH || makanan->position.y < 0 || makanan->position.y >= SCREEN_HEIGHT) {
+        if (makanan->position.x < 0 || makanan->position.x >= 500 || 
+            makanan->position.y < 0 || makanan->position.y >= 500) {
             validPosition = 0;
         }
     }
