@@ -11,8 +11,8 @@ void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
         makanan->position.x = (rand() % GRID_WIDTH - 4) + 2;
         makanan->position.y = (rand() % GRID_HEIGHT- 4) + 2;
 
-        if (makanan->position.x < 0 || makanan->position.x >= 500 ||
-            makanan->position.y < 0 || makanan->position.y >= 500) {
+        if (makanan->position.x < 0 || makanan->position.x >= 400||
+            makanan->position.y < 0 || makanan->position.y >= 400) {
             validPosition = false;
             continue; 
         }
