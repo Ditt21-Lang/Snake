@@ -66,10 +66,13 @@ int main(){
         LoadTexture("resources/howto3.png"),
         LoadTexture("resources/howto4.png"),
     };
-
-    Texture2D ssGameplay = LoadTexture("resources/ssGameplay.png");
-    Texture2D ssGameplay2 = LoadTexture("resources/ssGameplay2.png");
-    Texture2D ssGameplay3 = LoadTexture("resources/ssGameplay3.png");
+    
+    Texture2D ssGameplayImages[3] = {
+        LoadTexture("resources/ssGameplay.png"),
+        LoadTexture("resources/ssGameplay2.png"),
+        LoadTexture("resources/ssGameplay3.png"),
+    };
+    
     Texture2D tanah = LoadTexture("resources/tanah.png");
     Texture2D musuh = LoadTexture("resources/krtTambang.png");
     Texture2D obstacle = LoadTexture ("resources/obstacle.png");
@@ -203,14 +206,14 @@ int main(){
             
             if (howToPlayPage == 0) {
                 DrawScaledTexture(howToPlayImages[0], SCREEN_WIDTH / 2, 150, BOX_WIDTH);
-                DrawScaledTexture(ssGameplay, SCREEN_WIDTH / 2, 250, BOX_WIDTH);
+                DrawScaledTexture(ssGameplayImages[0], SCREEN_WIDTH / 2, 250, BOX_WIDTH);
                 DrawScaledTexture(howToPlayImages[1], SCREEN_WIDTH / 2, 430, BOX_WIDTH);
             } else if (howToPlayPage == 1) {
                 DrawScaledTexture(howToPlayImages[2], SCREEN_WIDTH / 2, 150, BOX_WIDTH);
-                DrawScaledTexture(ssGameplay2, SCREEN_WIDTH / 2, 350, BOX_WIDTH);
+                DrawScaledTexture(ssGameplayImages[1], SCREEN_WIDTH / 2, 350, BOX_WIDTH);
             } else if (howToPlayPage == 2) {
                 DrawScaledTexture(howToPlayImages[3], SCREEN_WIDTH / 2, 150, BOX_WIDTH);
-                DrawScaledTexture(ssGameplay3, SCREEN_WIDTH / 2, 400, BOX_WIDTH);
+                DrawScaledTexture(ssGameplayImages[2], SCREEN_WIDTH / 2, 400, BOX_WIDTH);
             }
             
             DrawRectangleRec(prevButton.border, prevButton.hover ? LIGHTGRAY : GRAY);
