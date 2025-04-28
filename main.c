@@ -263,6 +263,7 @@ int main(){
                     isStartPlaying = false;
                 }
                 if (gameOverButtons[1].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    InitSnake(&snake);
                     currentScreen = MENU;
                     score = 0;
                     lives = 3;
@@ -316,6 +317,7 @@ int main(){
                     isStartPlaying = false;
                 }
                 if (gameOverButtons[1].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    InitSnake(&snake);
                     currentScreen = MENU;
                     score = 0;
                     lives = 3;
