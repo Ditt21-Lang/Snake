@@ -187,6 +187,7 @@ int main(){
             isGameOver = false;
             isSoundOver = false; 
         } else if (currentScreen == MODE_SELECTION) {
+            DrawText("Mode Selection", SCREEN_WIDTH / 2 - MeasureText("Mode Selection", 50) / 2, 200, 50, WHITE);
             UpdateButtons(modeButtons, 3, &currentScreen);
             DrawButtons(modeButtons, 3);
         } else if (currentScreen == HOW_TO_PLAY) {
