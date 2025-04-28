@@ -55,6 +55,11 @@ int main(){
     Button modeButtons[3];
     InitButtons(modeButtons, modeTexts, 3, 300);
     
+    const char *gameOverTexts[] = {"Restart", "Main Menu"};
+    Button gameOverButtons[2];
+    InitButtons(gameOverButtons, gameOverTexts, 2, 350);
+
+    
     Button prevButton = {{SCREEN_WIDTH / 2 - 150, 680, 100, 40}, "Prev", false};
     Button nextButton = {{SCREEN_WIDTH / 2 + 50, 680, 100, 40}, "Next", false};
     Button backButton = {{SCREEN_WIDTH / 2 - 100, 730, 200, 50}, "Back", false};
@@ -243,6 +248,30 @@ int main(){
                 isGameOver = true;
                 DrawText("GAME OVER", 150, 250, 50, RED);
                 DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);  
+                
+                UpdateButtons(gameOverButtons, 2, &currentScreen);
+                DrawButtons(gameOverButtons, 2);
+                
+                if (gameOverButtons[0].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    InitSnake(&snake);
+                    score = 0;
+                    lives = 3;
+                    enemyCount = 0;
+                    GenerateRintangan(&rintangan, level);
+                    GenerateMakanan(&makanan, &rintangan);
+                    isGameOver = false;
+                    isStartPlaying = false;
+                }
+                if (gameOverButtons[1].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    currentScreen = MENU;
+                    score = 0;
+                    lives = 3;
+                    isGameOver = false;
+                    isStartPlaying = false;
+                    
+                    fps = 60;
+                    SetTargetFPS(fps);
+                }
             }
     
             if(CheckMakanan(&snake, &makanan)){
@@ -272,6 +301,30 @@ int main(){
                 isGameOver = true;
                 DrawText("GAME OVER", 150, 250, 50, RED);
                 DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);  
+                
+                UpdateButtons(gameOverButtons, 2, &currentScreen);
+                DrawButtons(gameOverButtons, 2);
+                
+                if (gameOverButtons[0].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    InitSnake(&snake);
+                    score = 0;
+                    lives = 3;
+                    enemyCount = 0;
+                    GenerateRintangan(&rintangan, level);
+                    GenerateMakanan(&makanan, &rintangan);
+                    isGameOver = false;
+                    isStartPlaying = false;
+                }
+                if (gameOverButtons[1].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    currentScreen = MENU;
+                    score = 0;
+                    lives = 3;
+                    isGameOver = false;
+                    isStartPlaying = false;
+                    
+                    fps = 60;
+                    SetTargetFPS(fps);
+                }
             }
     
             if(CheckMakanan(&snake, &makanan)){
