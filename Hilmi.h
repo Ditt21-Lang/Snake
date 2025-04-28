@@ -14,7 +14,7 @@ void ReverseSnake(Snake *Snake);
 void HandleReverseInput(Snake *Snake);
 void UpdateCooldown();
 void CekTabrakDinding(Snake *snake, int *lives, bool *alive);
-void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives);
-void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives);
+void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives, bool *alive);
+void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive);
 
 #endif

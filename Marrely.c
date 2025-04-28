@@ -93,23 +93,48 @@ void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyC
 
 }
 
-void MoveEnemy(Enemy *enemy) {
+// void MoveEnemy(Enemy *enemy) {
+//     int batasKiri = 1;
+//     int batasAtas = 1;
+//     int batasKanan =  (600 / CELL_SIZE) - 1;  
+//     int batasBawah =  (600 / CELL_SIZE) - 1;  
+
+//     if (enemy->isVertical) {
+//         enemy->position.y += enemy->direction;
+//         if (enemy->position.y <= batasAtas || enemy->position.y >= batasBawah) {
+//             enemy->direction *= -1;
+//             enemy->position.y += enemy->direction;
+//         }
+//     } else {
+//         enemy->position.x += enemy->direction;
+//         if (enemy->position.x <= batasKiri || enemy->position.x >= batasKanan) {
+//             enemy->direction *= -1;
+//             enemy->position.x += enemy->direction;
+//         }
+//     }
+// }    kode lama ale
+
+
+void MoveEnemy(Enemy *enemy, int enemyCount) {
     int batasKiri = 1;
     int batasAtas = 1;
-    int batasKanan =  (600 / CELL_SIZE) - 1;  
-    int batasBawah =  (600 / CELL_SIZE) - 1;  
+    int batasKanan = (CELL_SIZE) - 1;
+    int batasBawah = (CELL_SIZE) - 1;
 
-    if (enemy->isVertical) {
-        enemy->position.y += enemy->direction;
-        if (enemy->position.y <= batasAtas || enemy->position.y >= batasBawah) {
-            enemy->direction *= -1;
-            enemy->position.y += enemy->direction;
-        }
-    } else {
-        enemy->position.x += enemy->direction;
-        if (enemy->position.x <= batasKiri || enemy->position.x >= batasKanan) {
-            enemy->direction *= -1;
-            enemy->position.x += enemy->direction;
+    for (int i = 0; i < enemyCount; i++) {
+        if (enemy[i].isVertical) {
+            enemy[i].position.y += enemy[i].direction;
+            if (enemy[i].position.y <= batasAtas || enemy[i].position.y >= batasBawah) {
+                enemy[i].direction *= -1;
+                enemy[i].position.y += enemy[i].direction;
+            }
+        } else {
+            enemy[i].position.x += enemy[i].direction;
+            if (enemy[i].position.x <= batasKiri || enemy[i].position.x >= batasKanan) {
+                enemy[i].direction *= -1;
+                enemy[i].position.x += enemy[i].direction;
+            }
         }
     }
-}
+}  //kode baru ale yang aku benerin
+

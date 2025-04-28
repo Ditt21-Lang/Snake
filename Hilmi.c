@@ -51,29 +51,66 @@ void CekTabrakDinding(Snake *snake, int *lives, bool *alive){
     if (newHead.x < 2 || newHead.x >= GRID_WIDTH - 2 ||
         newHead.y < 2 || newHead.y >= GRID_HEIGHT -2) {
             (*lives)--;
-            *alive = false;
+            if (*lives <=0){
+                *alive = false;    
+            } else {
+                *alive = true;
+            }
             return;
         }
 }
 
-void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives){
+void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives, bool *alive){
         for (int i = 0; i < rintangan->count; i++){
             if (head.x == rintangan->rintangan[i].x
                 && head.y == rintangan->rintangan[i].y){
                     (*lives)--;
-                    printf("Lives : %d\n", *lives);
+                    if (*lives <=0){
+                        *alive = false;    
+                    } else {
+                        *alive = true;
+                    }
+                    return;
                 }
+            
         }
 }
 
-void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives){
+
+// void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
+//     int i = 0;
+//     while (i < enemy->count){
+//             if (head.x == enemy[i].position.x 
+//                 && head.y == enemy[i].position.y){
+//                 (*lives)--;
+//                 if (*lives <=0){
+//                     *alive = false;
+//                   } else {
+//                     *alive = true;
+//                   }
+//                 }
+//                 printf("Lives : %d\n", *lives);
+//             }
+//             i++;
+// }      kode lama yang error
+
+void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
     int i = 0;
-    while (i < enemy->count){
-            if (head.x == enemy[i].position.x 
-                && head.y == enemy[i].position.y){
-                (*lives)--;
-                printf("Lives : %d\n", *lives);
-                }
-                i++;
+    bool collision = false;  
+    while (i < *count) {
+        if (head.x == enemy[i].position.x && head.y == enemy[i].position.y) {
+            (*lives)--;  
+            collision = true;
+            if (*lives <= 0) {
+                *alive = false;  
+            } else {
+                *alive = true;
+            }
         }
-}
+        i++;
+    }
+    
+    if (collision) {
+        printf("Lives: %d\n", *lives); 
+    }
+}   //kode baru 
