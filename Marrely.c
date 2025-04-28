@@ -34,16 +34,16 @@ void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
 
 
 void GenerateRintangan(Rintangan *rintangan, int level) {
-    if (level < 1 || level > 5) return;  
     rintangan->count = level;
-
+    
     Position levelRintangan[5][10] = {
-        { {10, 12}, {14, 14}, {12, 8} },
-        { {9, 11}, {15, 13}, {11, 9}, {13, 15} },
-        { {8, 10}, {16, 12}, {12, 14}, {14, 8}, {10, 16} },
-        { {9, 13}, {11, 15}, {13, 9}, {15, 11}, {12, 12}, {14, 14} },
-        { {10, 14}, {14, 10}, {12, 16}, {16, 12}, {8, 12}, {12, 8}, {12, 12} }
-    };
+    { {10, 12}, {14, 14}, {12, 8} },
+    { {9, 11}, {15, 13}, {11, 9}, {13, 15} },
+    { {8, 10}, {16, 12}, {12, 14}, {14, 8}, {10, 16} },
+    { {9, 13}, {11, 15}, {13, 9}, {15, 11}, {12, 12}, {14, 14} },
+    { {10, 14}, {14, 10}, {12, 16}, {16, 12}, {8, 12}, {12, 8}, {12, 12} }
+}; 
+    
 
     for (int i = 0; i < rintangan->count; i++) {
         rintangan->rintangan[i] = levelRintangan[level - 1][i];
@@ -51,7 +51,7 @@ void GenerateRintangan(Rintangan *rintangan, int level) {
 }
 
 void GenerateEnemy(Enemy *enemy, int count, int level) {
-    if (level < 2) return;  
+    if (level < 2) return; 
     Position enemyPositions[3][3] = {
         { {12, 12} },                   
         { {10, 14}, {14, 10} },          
