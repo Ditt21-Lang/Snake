@@ -13,8 +13,8 @@ extern float reverseTimer;
 void ReverseSnake(Snake *Snake);
 void HandleReverseInput(Snake *Snake);
 void UpdateCooldown();
-void CekTabrakDinding(Snake *snake, int *lives, bool *alive);
-void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives, bool *alive);
-void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive);
+bool CekTabrakDinding(Snake *snake, int *lives, bool *alive);
+bool CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives, bool *alive);
+bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive);
 
 #endif

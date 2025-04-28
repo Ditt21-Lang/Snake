@@ -34,6 +34,7 @@ void GenerateMakanan(Makanan *makanan, Rintangan *rintangan) {
 
 
 void GenerateRintangan(Rintangan *rintangan, int level) {
+    if (level < 1 || level > 5) return;  
     rintangan->count = level;
     
     Position levelRintangan[5][10] = {

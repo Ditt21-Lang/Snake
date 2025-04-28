@@ -277,7 +277,7 @@ int main(){
                 }
             }
     
-            if(CheckMakanan(&snake, &makanan)){
+            if(CheckMakanan(&snake, &makanan) ){
                 score += 100;
                 snake.panjang++;
                 GenerateMakanan(&makanan, &rintangan);
@@ -287,7 +287,7 @@ int main(){
             
         }
 
-        else if (currentScreen == STAGE){
+        else if (currentScreen == STAGE ){
             level = 1;
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
@@ -300,6 +300,7 @@ int main(){
             DrawText("STAGE MODE", SCREEN_WIDTH / 2 - MeasureText("STAGE MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
             if(!cekTabrakan(&snake)){
                 UpdateSnake(&snake);
+                HandleReverseInput(&snake);
                 DrawSnake(&snake);
             }
             else{
@@ -349,43 +350,10 @@ int main(){
                 GenerateEnemy(&enemy, enemyCount, level);
             }
 
-            if (CekTabrakDinding(&snake, &lives, &isGameOver)) {
-                isGameOver = true;
-                DrawText("GAME OVER", 150, 250, 50, RED);
-                DrawText(TextFormat("Score : %i", score), 230, 300, 30, RED);
-                DrawText(TextFormat("Lives : %i", lives), 230, 350, 30, RED);
-                DrawText("Press R to Restart", 150, 400, 30, RED);
-                DrawText("Press M to go to Menu", 150, 450, 30, RED);
-            } else {
-                DrawText(TextFormat("Lives: %d", lives), 250, 630, 30, GOLD);
-                DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
-                DrawText(TextFormat("time: %f tuaim: %f", GetTime(), tuaim), 50, 330, 30, RED);
+            if(CekTabrakRintangan((Vector2){snake.badan[0].x, snake.badan[0].y}, &rintangan, &lives, &isGameOver)){
+                printf("mati");
             }
-        
-            if (HandleReverseInput(&snake)) {
-                ReverseSnake(&snake);
-            }
-        
-                UpdateCooldown();
-        
-            if (CekTabrakRintangan(&snake, &rintangan, &lives, &isGameOver)) {
-                isGameOver = true;
-                DrawText("GAME OVER", 150, 250, 50, RED);
-                DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);
-                DrawText(TextFormat("Lives: %i", lives), 230, 350, 30, RED);
-                DrawText("Press R to Restart", 150, 400, 30, RED);
-                DrawText("Press M to go to Menu", 150, 450, 30, RED);
-            }
-        
-            if (CekTabrakEnemy((Vector2){snake.badan[0].x, snake.badan[0].y}, enemy, &enemyCount, &lives, &isGameOver)) {
-                isGameOver = true;
-                DrawText("GAME OVER", 150, 250, 50, RED);
-                DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);
-                DrawText(TextFormat("Lives: %i", lives), 230, 350, 30, RED);
-                DrawText("Press R to Restart", 150, 400, 30, RED);
-                DrawText("Press M to go to Menu", 150, 450, 30, RED);
-            }
-            
+            UpdateCooldown();
         }
 
             if(mpeluru.status){
@@ -397,11 +365,11 @@ int main(){
                     mportal[0].status=false;
                     mportal[1].status=false;
                 }
-            MoveEnemy(&enemy);
+            MoveEnemy(&enemy, enemyCount);
+        EndDrawing();    
         }
-        EndDrawing();
-    }
-
+        
+    
     UnloadTexture(latar); 
     UnloadTexture(food);
     UnloadTexture(musuh);

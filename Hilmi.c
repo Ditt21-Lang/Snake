@@ -42,7 +42,7 @@ void UpdateCooldown(){
     }
 }
 
-void CekTabrakDinding(Snake *snake, int *lives, bool *alive){
+bool CekTabrakDinding(Snake *snake, int *lives, bool *alive){
     Position newHead = {snake->badan[0].x + snake->position.x,
                       snake->badan[0].y + snake->position.y};
 
@@ -54,11 +54,12 @@ void CekTabrakDinding(Snake *snake, int *lives, bool *alive){
             } else {
                 *alive = true;
             }
-            return;
+            return true;
         }
+    return false;
 }
 
-void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives, bool *alive){
+bool CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives, bool *alive){
         for (int i = 0; i < rintangan->count; i++){
             if (head.x == rintangan->rintangan[i].x
                 && head.y == rintangan->rintangan[i].y){
@@ -68,10 +69,11 @@ void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives, bool *al
                     } else {
                         *alive = true;
                     }
-                    return;
+                    return true;
                 }
             
         }
+        return false;
 }
 
 
@@ -92,7 +94,7 @@ void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives, bool *al
 //             i++;
 // }      kode lama yang error
 
-void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
+bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
     int i = 0;
     bool collision = false;  
     while (i < *count) {
