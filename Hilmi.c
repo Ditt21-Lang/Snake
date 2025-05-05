@@ -42,38 +42,33 @@ void UpdateCooldown(){
     }
 }
 
-bool CekTabrakDinding(Snake *snake, int *lives, bool *alive){
-    Position newHead = {snake->badan[0].x + snake->position.x,
-                      snake->badan[0].y + snake->position.y};
+bool CekTabrakDinding(Snake *snake) {
+    float headX = snake->badan[0].x;
+    float headY = snake->badan[0].y;
 
-    if (newHead.x < 2 || newHead.x >= GRID_WIDTH - 2 ||
-        newHead.y < 2 || newHead.y >= GRID_HEIGHT -2) {
-            (*lives)--;
-            if (*lives <=0){
-                *alive = false;    
-            } else {
-                *alive = true;
-            }
-            return true;
-        }
-    return false;
+    if (headX < 0 || headX >= 520 || headY < 0 || headY >= 520){
+        return true;
+    } else if (headX < 0 || headX <= 20 || headY < 0 || headY <= 20){
+        return true;
+    } else {
+        return false;
+    }
 }
 
-bool CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives, bool *alive){
-        for (int i = 0; i < rintangan->count; i++){
-            if (head.x == rintangan->rintangan[i].x
-                && head.y == rintangan->rintangan[i].y){
-                    (*lives)--;
-                    if (*lives <=0){
-                        *alive = false;    
-                    } else {
-                        *alive = true;
-                    }
-                    return true;
-                }
-            
+
+bool CekTabrakRintangan(Snake snake, Vector2 head, Rintangan *rintangan){
+    int KepalaX = (int)(head.x / CELL_SIZE);
+    int KepalaY = (int)(head.y/CELL_SIZE);
+
+    for (int i = 0; i < snake.panjang; i ++){
+        if (KepalaX == rintangan->rintangan[i].x &&
+            KepalaY == rintangan->rintangan[i].y) {
+            return true;
         }
-        return false;
+        else {
+            return false;
+        }
+    }
 }
 
 

@@ -38,7 +38,7 @@ int main(){
     mportal[1].status=false;
 
     int score = 0;
-    int level = 0;
+    int level = 1;
     int lives = 0;
     int enemyCount = 0;
     int buffer;
@@ -288,7 +288,6 @@ int main(){
         }
 
         else if (currentScreen == STAGE ){
-            level = 1;
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
             DrawGame(&makanan, &rintangan, &enemy, enemyCount, score,level, dinding, tanah, food, musuh, obstacle );
@@ -298,7 +297,7 @@ int main(){
             DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
             DrawText(TextFormat("Cooldown: %f", GetTime(),tuaim), 420, 660, 30, RED);
             DrawText("STAGE MODE", SCREEN_WIDTH / 2 - MeasureText("STAGE MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
-            if(!cekTabrakan(&snake)){
+            if(!cekTabrakan(&snake) && !CekTabrakDinding(&snake)){
                 UpdateSnake(&snake);
                 HandleReverseInput(&snake);
                 DrawSnake(&snake);
@@ -350,9 +349,10 @@ int main(){
                 GenerateEnemy(&enemy, enemyCount, level);
             }
 
-            if(CekTabrakRintangan((Vector2){snake.badan[0].x, snake.badan[0].y}, &rintangan, &lives, &isGameOver)){
-                printf("mati");
+            if(CekTabrakRintangan(snake, snake.badan[0], &rintangan)){
+                lives = lives - 1;
             }
+
             UpdateCooldown();
         }
 
