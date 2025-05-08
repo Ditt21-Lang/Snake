@@ -39,7 +39,7 @@ int main(){
 
     int score = 0;
     int level = 1;
-    int lives = 0;
+    int lives = 3;
     int enemyCount = 0;
     int buffer;
 
@@ -137,6 +137,7 @@ int main(){
             mpeluru.coor.x=400;
             mpeluru.coor.y=400;
         }
+
         teleport_portal(&snake.badan[0].x,&snake.badan[0].y,mportal,100,100,2);
 
         UpdateMusicStream(menu);
@@ -171,15 +172,6 @@ int main(){
                 isStartPlaying = true;
             }
         }
-
-        if ((currentScreen == ENDLESS || currentScreen == STAGE )&& isGameOver) {   
-            StopMusicStream(game);  
-            if (!isSoundOver) {  
-                PlaySound(over);  
-                isSoundOver = true; 
-            }  
-        }
-        
 
         if (currentScreen == MENU) {
             DrawText("Snave", SCREEN_WIDTH / 2 - MeasureText("Snave", 50) / 2, 200, 50, WHITE);
@@ -248,43 +240,14 @@ int main(){
             }
             else{
                 isGameOver = true;
-                DrawText("GAME OVER", 150, 250, 50, RED);
-                DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);  
-                
-                UpdateButtons(gameOverButtons, 2, &currentScreen);
-                DrawButtons(gameOverButtons, 2);
-                
-                if (gameOverButtons[0].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    InitSnake(&snake);
-                    score = 0;
-                    lives = 3;
-                    enemyCount = 0;
-                    GenerateRintangan(&rintangan, level);
+                if(CheckMakanan(&snake, &makanan) ){
+                    score += 100;
+                    snake.panjang++;
                     GenerateMakanan(&makanan, &rintangan);
-                    isGameOver = false;
-                    isStartPlaying = false;
+                    PlaySound(eat);
                 }
-                if (gameOverButtons[1].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    InitSnake(&snake);
-                    currentScreen = MENU;
-                    score = 0;
-                    lives = 3;
-                    isGameOver = false;
-                    isStartPlaying = false;
-                    
-                    fps = 60;
-                    SetTargetFPS(fps);
-                }
+                     
             }
-    
-            if(CheckMakanan(&snake, &makanan) ){
-                score += 100;
-                snake.panjang++;
-                GenerateMakanan(&makanan, &rintangan);
-                PlaySound(eat);
-            }
-                   
-            
         }
 
         else if (currentScreen == STAGE ){
@@ -297,39 +260,14 @@ int main(){
             DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
             DrawText(TextFormat("Cooldown: %f", GetTime(),tuaim), 420, 660, 30, RED);
             DrawText("STAGE MODE", SCREEN_WIDTH / 2 - MeasureText("STAGE MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
-            if(!cekTabrakan(&snake) && !CekTabrakDinding(&snake)){
-                UpdateSnake(&snake);
-                HandleReverseInput(&snake);
-                DrawSnake(&snake);
-            }
-            else{
-                isGameOver = true;
-                DrawText("GAME OVER", 150, 250, 50, RED);
-                DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);  
-                
-                UpdateButtons(gameOverButtons, 2, &currentScreen);
-                DrawButtons(gameOverButtons, 2);
-                
-                if (gameOverButtons[0].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    InitSnake(&snake);
-                    score = 0;
-                    lives = 3;
-                    enemyCount = 0;
-                    GenerateRintangan(&rintangan, level);
-                    GenerateMakanan(&makanan, &rintangan);
-                    isGameOver = false;
-                    isStartPlaying = false;
+            if(!isGameOver){
+                if(!cekTabrakan(&snake) && !CekTabrakDinding(&snake)){
+                    UpdateSnake(&snake);
+                    HandleReverseInput(&snake);
+                    DrawSnake(&snake);
                 }
-                if (gameOverButtons[1].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    InitSnake(&snake);
-                    currentScreen = MENU;
-                    score = 0;
-                    lives = 3;
-                    isGameOver = false;
-                    isStartPlaying = false;
-                    
-                    fps = 60;
-                    SetTargetFPS(fps);
+                else{
+                    isGameOver = true;
                 }
             }
     
@@ -350,26 +288,92 @@ int main(){
             }
 
             if(CekTabrakRintangan(snake, snake.badan[0], &rintangan)){
-                lives = lives - 1;
+                if(!isGameOver){
+                    lives = lives - 1;
+                    if (lives == 0){
+                        isGameOver = true;
+                    }
+                }
             }
 
             UpdateCooldown();
-        }
-
             if(mpeluru.status){
                 DrawCircle((int)mpeluru.coor.x, (int)mpeluru.coor.y, radius, GOLD);
             }
+
             if(cooldown(&mportal[0].activation) == false){
                 draw_portal(textuar,2,mportal,20,20);
-                }else{
-                    mportal[0].status=false;
-                    mportal[1].status=false;
-                }
-            MoveEnemy(&enemy, enemyCount);
-        EndDrawing();    
+            }else{
+                mportal[0].status=false;
+                mportal[1].status=false;
+            }
+            
+            MoveEnemy(&enemy, enemyCount);    
         }
-        
-    
+
+        if ((currentScreen == ENDLESS || currentScreen == STAGE ) && isGameOver) {   
+            StopMusicStream(game);  
+            if (!isSoundOver) {  
+                PlaySound(over);  
+                isSoundOver = true;
+            }
+
+            DrawText("GAME OVER", 150, 250, 50, RED);
+            DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);  
+            
+            UpdateButtons(gameOverButtons, 2, &currentScreen);
+            DrawButtons(gameOverButtons, 2);
+            
+            if (gameOverButtons[0].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                InitSnake(&snake);
+                score = 0;
+                lives = 3;
+                enemyCount = 0;
+                GenerateRintangan(&rintangan, level);
+                GenerateMakanan(&makanan, &rintangan);
+                isGameOver = false;
+                isStartPlaying = false;
+            }
+            if (gameOverButtons[1].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                InitSnake(&snake);
+                currentScreen = MENU;
+                score = 0;
+                lives = 3;
+                isGameOver = false;
+                isStartPlaying = false;
+                
+                fps = 60;
+                SetTargetFPS(fps);
+            }
+
+            if (gameOverButtons[0].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                InitSnake(&snake);
+                score = 0;
+                lives = 3;
+                enemyCount = 0;
+                level = 1;
+                GenerateRintangan(&rintangan, level);
+                GenerateMakanan(&makanan, &rintangan);
+                isGameOver = false;
+                isStartPlaying = false;
+                isSoundOver = false;
+            }
+            if (gameOverButtons[1].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                InitSnake(&snake);
+                currentScreen = MENU;
+                score = 0;
+                lives = 3;
+                level = 1;
+                isGameOver = false;
+                isStartPlaying = false;
+                isSoundOver = false;
+                
+                fps = 60;
+                SetTargetFPS(fps);
+            }
+        }  
+        EndDrawing();
+    }
     UnloadTexture(latar); 
     UnloadTexture(food);
     UnloadTexture(musuh);
@@ -378,5 +382,5 @@ int main(){
     UnloadMusicStream(menu);
     CloseAudioDevice();
     CloseWindow();
-    return 0;
+    return 0;      
 }

@@ -46,9 +46,9 @@ bool CekTabrakDinding(Snake *snake) {
     float headX = snake->badan[0].x;
     float headY = snake->badan[0].y;
 
-    if (headX < 0 || headX >= 520 || headY < 0 || headY >= 520){
+    if (headX >= 540 || headY >= 540){
         return true;
-    } else if (headX < 0 || headX <= 20 || headY < 0 || headY <= 20){
+    } else if (headX <= 20 || headY <= 20){
         return true;
     } else {
         return false;
