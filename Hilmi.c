@@ -43,8 +43,8 @@ void UpdateCooldown(){
 }
 
 bool CekTabrakDinding(Snake *snake) {
-    float headX = snake->badan[0].x;
-    float headY = snake->badan[0].y;
+    float headX = snake->badan->x;
+    float headY = snake->badan->y;
 
     if (headX >= 540 || headY >= 540){
         return true;

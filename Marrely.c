@@ -57,7 +57,7 @@ void GenerateEnemy(Enemy *enemy, int count, int level) {
         { {12, 12} },                   
         { {10, 14}, {14, 10} },          
         { {9, 9}, {13, 13}, {15, 11} }
-    };
+    };  
 
     for (int i = 0; i < count; i++) {
         enemy[i].position = enemyPositions[level - 2][i];  
