@@ -30,7 +30,7 @@ typedef struct RintanganNode {
 
 // Fungsi utama
 void GenerateMakanan(Makanan *makanan, RintanganNode *rintanganHead);
-void GenerateRintangan(RintanganNode **head, int level);
+void GenerateRintangan(RintanganNode **, int level);
 void GenerateEnemy(Enemy *enemy, int count, int level);
 void DrawGame(Makanan *makanan, RintanganNode *rintanganHead, Enemy *enemy, int enemyCount,
               int score, int level,

@@ -56,19 +56,19 @@ bool CekTabrakDinding(Snake *snake) {
 }
 
 
-bool CekTabrakRintangan(Snake snake, Vector2 head, Rintangan *rintangan){
+bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead) {
     int KepalaX = (int)(head.x / CELL_SIZE);
-    int KepalaY = (int)(head.y/CELL_SIZE);
+    int KepalaY = (int)(head.y / CELL_SIZE);
 
-    for (int i = 0; i < snake.panjang; i ++){
-        if (KepalaX == rintangan->rintangan[i].x &&
-            KepalaY == rintangan->rintangan[i].y) {
-            return true;
+    RintanganNode *current = rintanganHead;
+
+    while (current != NULL) {
+        if (KepalaX == current->posisi.x && KepalaY == current->posisi.y) {
+            return true;  
         }
-        else {
-            return false;
-        }
+        current = current->next;
     }
+    return false; 
 }
 
 
