@@ -1,12 +1,9 @@
 #include "raylib.h"
 #include <stdlib.h>
 #include "Gilang.h"
-#include "Bayu.h"
 #define LEBAR_LAYAR 600
 #define TINGGI_LAYAR 800
 #define UKURAN_BLOCK 20
-
-
 
 void InitSnake(Snake *snake){
     float startX = LEBAR_LAYAR/2;
@@ -27,8 +24,8 @@ void InitSnake(Snake *snake){
             newNode->sprite = (Rectangle){0, 0, 20, 20};
         } else if (i == 7){
             newNode->sprite = (Rectangle){40, 0, 20, 20};
-        } else {
-            newNode->sprite = (Rectangle){140, 0, 20, 20};
+        } else{
+            newNode->sprite = (Rectangle){140, 0 ,20, 20};
         }
 
         if(snake->head == NULL && snake->tail == NULL){
@@ -43,55 +40,73 @@ void InitSnake(Snake *snake){
     }
 }
 
+Vector2 getDir(Vector2 A, Vector2 B){
+    return (Vector2){A.x - B.x, A.y - B.y};
+}
+
 void DrawSnake(Snake *snake, Texture2D texture) {
     SnakeNode* current = snake->head;
     while (current != NULL) {
-        DrawTextureRec(
-            texture,                  // texture spritesheet
-            current->sprite,           // potongan sprite node ini
-            current->position,         // posisi di layar
-            WHITE                      // warna (putih supaya tidak berubah warna)
-        );
+        Vector2 tikpus = (Vector2){UKURAN_BLOCK / 2.0f, UKURAN_BLOCK / 2.0f};
+        Rectangle ukuran = {current->position.x + UKURAN_BLOCK / 2.0f, 
+                            current->position.y + UKURAN_BLOCK / 2.0f, 
+                            UKURAN_BLOCK, 
+                            UKURAN_BLOCK};
+
+        float rotation = 0;
+        if(current == snake->head){
+            current->sprite = (Rectangle){0, 0, 20, 20};
+            if (snake->speed.x > 0){
+                rotation = 90;
+            } else if (snake->speed.x < 0){
+                rotation = 270;
+            } else if (snake->speed.y > 0){
+                rotation = 180;
+            } else if (snake->speed.y < 0){
+                rotation = 0;
+            }
+
+        } else if (current->next == NULL){
+            current->sprite = (Rectangle){40, 0, 20, 20};
+            Vector2 direction = getDir(current->prev->position, current->position);
+            if (direction.x > 0){
+                rotation = 90;
+            } else if (direction.x < 0){
+                rotation = 270;
+            } else if (direction.y > 0){
+                rotation = 180;
+            } else if (direction.y < 0){
+                rotation = 0;
+            }
+        } else {
+            Vector2 prevDir = getDir(current->prev->position, current->position);
+            Vector2 nextDir = getDir(current->position, current->next->position);
+
+            if ((prevDir.x > 0 && nextDir.y > 0) || (prevDir.y < 0 && nextDir.x < 0)) {
+                current->sprite = (Rectangle){60, 0, 20, 20};
+            } else if ((prevDir.x < 0 && nextDir.y > 0) || (prevDir.y < 0 && nextDir.x > 0)){
+                current->sprite = (Rectangle){80, 0, 20, 20};
+            } else if ((prevDir.x > 0 && nextDir.y < 0) || (prevDir.y > 0 && nextDir.x < 0)){
+                current->sprite = (Rectangle){100, 0, 20, 20};
+            } else if ((prevDir.x < 0 && nextDir.y < 0) || (prevDir.y > 0 && nextDir.x > 0)){
+                current->sprite = (Rectangle){120, 0, 20, 20};
+            }
+
+            // Badan lurus horizontal
+            else if (prevDir.x != 0 && nextDir.x != 0) {
+                current->sprite = (Rectangle){140, 0, 20, 20};
+            }
+            // Badan lurus vertikal
+            else if (prevDir.y != 0 && nextDir.y != 0) {
+                current->sprite = (Rectangle){20, 0, 20, 20};
+            }
+        }
+        DrawTexturePro(texture, current->sprite, ukuran, tikpus, rotation, WHITE);
+
         current = current->next;
     }
 }
-    // int i = 0;
-    // while (i < Snake->panjang) {
-    //     int spriteIndex = 1;
-    //     float rotation = 0;
-    //     if (i == 0) { // kepala
-    //         spriteIndex = 0;
-    //         if (Snake->speed.x > 0) rotation = 90;
-    //         if (Snake->speed.x < 0) rotation = 270;
-    //         if (Snake->speed.y > 0) rotation = 180;
-    //     }else if (i == Snake->panjang - 1) { // ekor
-    //         spriteIndex = 2;
-    //         Position tailDirection = {Snake->badan[i - 1].x - Snake->badan[i].x, Snake->badan[i - 1].y - Snake->badan[i].y};
-    //         if (tailDirection.x > 0) rotation = 90;
-    //         if (tailDirection.x < 0) rotation = 270;
-    //         if (tailDirection.y > 0) rotation = 180;
-    //     }else{
-    //         Position prevDirection = {Snake->badan[i - 1].x - Snake->badan[i].x, Snake->badan[i - 1].y - Snake->badan[i].y};
-    //         Position nextDirection = {Snake->badan[i + 1].x - Snake->badan[i].x, Snake->badan[i + 1].y - Snake->badan[i].y};
 
-    //         spriteIndex = snakeSpritesheet(prevDirection, nextDirection);
-    //         if (spriteIndex == -1) {
-    //             if (prevDirection.x != 0 && nextDirection.x != 0) {  // ke kanan/kiri
-    //                 spriteIndex = 7; // sprite untuk badan lurus ke kiri/kanan
-    //             } else if (prevDirection.y != 0 && nextDirection.y != 0) {  // ke atas/bawah
-    //                 spriteIndex = 1; // sprite untuk badan lurus ke atas/bawah
-    //             }
-    //         }
-    //     }
-                
-    //     Vector2 position = { Snake->badan[i].x, Snake->badan[i].y };
-    //     Rectangle destRect = { position.x + UKURAN_BLOCK / 2, position.y + UKURAN_BLOCK / 2, UKURAN_BLOCK, UKURAN_BLOCK };
-    //     Vector2 origin = { UKURAN_BLOCK / 2, UKURAN_BLOCK / 2 };
-
-    //     DrawTexturePro(Snake->tekstur, Snake->snakeSprites[spriteIndex], destRect, origin, rotation, WHITE);
-        
-    //     i = i + 1;
-    // }
 
 
 bool cekTabrakan(Snake *snake){
@@ -130,47 +145,20 @@ void UpdateSnake(Snake *snake) {
         current->position = current->prev->position;
         current = current->prev;
     } 
-
-    // Perbarui posisi kepala dengan menambahkan kecepatan
+        // Perbarui posisi kepala dengan menambahkan kecepatan
     snake->head->position.x += snake->speed.x;
     snake->head->position.y += snake->speed.y;
 
     cekTabrakan(snake);
 } 
 
+void tambahNode(Snake *snake){
+    SnakeNode* newbody = (SnakeNode*)malloc(sizeof(SnakeNode));
+    newbody->prev = snake->tail;
+    snake->tail->next = newbody;
+    snake->tail = newbody;
+}
+
 bool CheckMakanan(Snake *snake, Makanan *food) {
-    if (snake->head->position.x == food->position.x && snake->head->position.y == food->position.y){
-        return true;
-    }
-    return false;
-}
-
-void tambahEkor(Snake *snake){
-    SnakeNode* newNode = (SnakeNode*)malloc(sizeof(SnakeNode));
-    if (newNode == NULL){
-        printf("Ekor gagal ditambahkan");
-    }
-
-    newNode->position = snake->tail->position;
-    newNode->sprite = (Rectangle){40, 0, 20, 20};
-    newNode->prev = snake->tail;
-    newNode->next = NULL;
-
-    snake->tail->next = newNode;
-    snake->tail = newNode;
-    snake->panjang = snake->panjang + 1;
-}
-
-void freeSnake(Snake *snake){
-    SnakeNode* current;
-    current = snake->head;
-    while (current != NULL){
-        SnakeNode* next = current->next;
-        free(current);
-        current = next;
-    }
-
-    snake->head = NULL;
-    snake->tail = NULL;
-    snake->panjang = 0;
+    return (snake->head->position.x == food->position.x && snake->head->position.y == food->position.y);
 }
