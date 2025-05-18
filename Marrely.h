@@ -13,27 +13,43 @@ typedef struct {
     int x, y;
 } Position;
 
-typedef struct{
-    Position position;
-    int direction;
-    int isVertical;
-    int count;
-} Enemy;
 
 typedef struct {
     Position position;
 } Makanan;
 
 typedef struct {
-    Position rintangan[10];
-    int count;
-} Rintangan;
+    Position position;
+    int direction;
+    int isVertical;
+} Enemy;
 
-void GenerateMakanan(Makanan *makanan, Rintangan *rintangan);
-void GenerateRintangan(Rintangan *obstacle, int level);
-void GenerateEnemy(Enemy *enemy, int count, int level);
-void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, Texture2D borderTexture, Texture2D background, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture);
-void MoveEnemy(Enemy *enemy, int enemyCount);
+typedef struct EnemyNode {
+    Enemy enemy;
+    struct EnemyNode *next;
+} EnemyNode;
+
+typedef struct LevelEnemyData {
+    int Level;
+    EnemyNode *enemyList;
+    struct LevelEnemyData *next;
+} LevelEnemyData;
+
+typedef struct RintanganNode {
+    Position posisi;
+    struct RintanganNode *next;
+} RintanganNode;
+
+void GenerateMakanan(Makanan *makanan, RintanganNode *rintanganHead);
+void GenerateRintangan(RintanganNode **head, int level);
+void GenerateEnemy(EnemyNode **head, int count, int level);
+void DrawGame(Makanan *makanan, RintanganNode *rintanganHead, EnemyNode *enemyHead, 
+              int score, int level, 
+              Texture2D background, Texture2D borderTexture, 
+              Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture)
+void MoveEnemy(EnemyNode *head);
+void FreeRintangan(RintanganNode *head);
+void FreeEnemy(EnemyNode *head);
 
 #endif
 
