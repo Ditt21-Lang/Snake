@@ -13,15 +13,6 @@ void FreeRintangan(RintanganNode **head) {
     *head = NULL;
 }
 
-void FreeEnemy(EnemyNode **head) {
-    EnemyNode *curr = *head;
-    while (curr != NULL) {
-        EnemyNode *temp = curr;
-        curr = curr->next;
-        free(temp);
-    }
-    *head = NULL;
-}
 
 void GenerateMakanan(Makanan *makanan, RintanganNode *rintanganHead) {
     int validPosition = 0;
@@ -76,9 +67,8 @@ void GenerateRintangan(RintanganNode **head, int level) {
        *head = newNode;
     }
 }
-void GenerateEnemy(EnemyNode **head, int count, int level){
+void GenerateEnemy(Enemy *enemy, int count, int level) {
     if (level < 2) return; 
-
     Position enemyPositions[3][3] = {
         { {12, 12} },                   
         { {10, 14}, {14, 10} },          
@@ -86,51 +76,40 @@ void GenerateEnemy(EnemyNode **head, int count, int level){
     };
 
     for (int i = 0; i < count; i++) {
-         EnemyNode *newNode = (EnemyNode *)malloc(sizeof(EnemyNode));
-        newNode->enemy.position = enemyPositions[level - 2][i];
-        newNode->enemy.direction = 1;
-        newNode->enemy.isVertical = i % 2;
-        newNode->next = *head;
-        *head = newNode;
+        enemy[i].position = enemyPositions[level - 2][i];  
+        enemy[i].direction = 1;
+        enemy[i].isVertical = i % 2;
     }
 }
 
-void DrawGame(Makanan *makanan, RintanganNode *rintanganHead, EnemyNode *enemyHead, 
-              int score, int level, 
-              Texture2D background, Texture2D borderTexture, 
-              Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture) {
+void DrawGame(Makanan *makanan, Rintangan *rintangan, Enemy *enemies, int enemyCount, int score, int level, 
+              Texture2D background, Texture2D borderTexture, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture) {
 
     ClearBackground(RAYWHITE);
     DrawTexture(borderTexture, 0, 0, WHITE);
     DrawTexture(background, 0, 0, WHITE);
 
-   
-    RintanganNode *currR = rintanganHead;
-    while (currR != NULL) {
-        DrawTexturePro(rintanganTexture, 
-                       (Rectangle){0, 0, rintanganTexture.width, rintanganTexture.height}, 
-                       (Rectangle){currR->posisi.x * CELL_SIZE, currR->posisi.y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
-                       (Vector2){0, 0}, 0, WHITE);
-        currR = currR->next;
-    }
-
-    DrawTexturePro(makananTexture, 
-                   (Rectangle){0, 0, makananTexture.width, makananTexture.height}, 
+   RintanganNode *curr = rintangan;
+while (curr != NULL) {
+    DrawTexturePro(rintanganTexture,
+        (Rectangle){0, 0, rintanganTexture.width, rintanganTexture.height},
+        (Rectangle){curr->posisi.x * CELL_SIZE, curr->posisi.y * CELL_SIZE, CELL_SIZE, CELL_SIZE},
+        (Vector2){0, 0}, 0, WHITE);
+    curr = curr->next;
+}
+    DrawTexturePro(makananTexture, (Rectangle){0, 0, makananTexture.width, makananTexture.height}, 
                    (Rectangle){makanan->position.x, makanan->position.y, CELL_SIZE, CELL_SIZE}, 
                    (Vector2){0, 0}, 0, WHITE);
-
-    EnemyNode *currE = enemyHead;
-    while (currE != NULL) {
-        DrawTexturePro(enemyTexture, 
-                       (Rectangle){0, 0, enemyTexture.width, enemyTexture.height}, 
-                       (Rectangle){currE->enemy.position.x * CELL_SIZE, currE->enemy.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
-                       (Vector2){0, 0}, 0, WHITE);
-        currE = currE->next;
-    }
-
     
-    DrawRectangle(0, 700, GetScreenWidth(), 200, LIGHTGRAY);
+    for (int i = 0; i < enemyCount; i++) {
+        DrawTexturePro(enemyTexture, (Rectangle){0, 0, enemyTexture.width, enemyTexture.height}, 
+                       (Rectangle){enemies[i].position.x * CELL_SIZE, enemies[i].position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
+                       (Vector2){0, 0}, 0, WHITE);
+    
+    }
+    DrawRectangle(0, 700, GetScreenWidth(), 200,  LIGHTGRAY);
     DrawRectangle(0, 600, GetScreenWidth(), 100, (Color){0, 0, 0, 200}); 
+
 }
 
 // void MoveEnemy(Enemy *enemy) {
@@ -155,30 +134,25 @@ void DrawGame(Makanan *makanan, RintanganNode *rintanganHead, EnemyNode *enemyHe
 // }    kode lama ale
 
 
-void MoveEnemy(EnemyNode *head) {
+void MoveEnemy(Enemy *enemy, int enemyCount) {
     int batasKiri = 1;
     int batasAtas = 1;
-    int batasKanan = GRID_WIDTH - 1;
-    int batasBawah = GRID_HEIGHT - 1;
+    int batasKanan = GRID_WIDTH - 2;   // Lebih aman agar tidak ke luar batas
+    int batasBawah = GRID_HEIGHT - 2;
 
-    EnemyNode *curr = head;
-    while (curr != NULL) {
-        if (curr->enemy.isVertical) {
-            curr->enemy.position.y += curr->enemy.direction;
-            if (curr->enemy.position.y <= batasAtas || curr->enemy.position.y >= batasBawah) {
-                curr->enemy.direction *= -1;
-                curr->enemy.position.y += curr->enemy.direction;
+    for (int i = 0; i < enemyCount; i++) {
+        if (enemy[i].isVertical) {
+            enemy[i].position.y += enemy[i].direction;
+            if (enemy[i].position.y <= batasAtas || enemy[i].position.y >= batasBawah) {
+                enemy[i].direction *= -1;
+                enemy[i].position.y += enemy[i].direction;
             }
         } else {
-            curr->enemy.position.x += curr->enemy.direction;
-            if (curr->enemy.position.x <= batasKiri || curr->enemy.position.x >= batasKanan) {
-                curr->enemy.direction *= -1;
-                curr->enemy.position.x += curr->enemy.direction;
+            enemy[i].position.x += enemy[i].direction;
+            if (enemy[i].position.x <= batasKiri || enemy[i].position.x >= batasKanan) {
+                enemy[i].direction *= -1;
+                enemy[i].position.x += enemy[i].direction;
             }
         }
-        curr = curr->next;
     }
-}
-
- //kode baru ale yang aku benerin
-
+}//kode baru ale yang aku benerin
