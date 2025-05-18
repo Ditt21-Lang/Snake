@@ -45,10 +45,10 @@ void UpdateCooldown(){
 void CekTabrakDinding(Snake *snake, int *lives, bool *alive){
     Position newHead = {snake->badan[0].x + snake->position.x,
                       snake->badan[0].y + snake->position.y};
-
-    if (newHead.x < 2 || newHead.x >= GRID_WIDTH - 2 ||
-        newHead.y < 2 || newHead.y >= GRID_HEIGHT -2) {
-            (*lives)--;
+    int margin = 2;
+    if (newHead.x < margin || newHead.x >= GRID_WIDTH - margin ||
+        newHead.y < margin || newHead.y >= GRID_HEIGHT - margin) {
+            (*lives); //--;
             if (*lives <=0){
                 *alive = false;    
             } else {
@@ -62,7 +62,7 @@ void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives, bool *al
         for (int i = 0; i < rintangan->count; i++){
             if (head.x == rintangan->rintangan[i].x
                 && head.y == rintangan->rintangan[i].y){
-                    (*lives)--;
+                    (*lives); //--;
                     if (*lives <=0){
                         *alive = false;    
                     } else {
@@ -97,7 +97,7 @@ void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *al
     bool collision = false;  
     while (i < *count) {
         if (head.x == enemy[i].position.x && head.y == enemy[i].position.y) {
-            (*lives)--;  
+            (*lives); //--;  
             collision = true;
             if (*lives <= 0) {
                 *alive = false;  

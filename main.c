@@ -349,41 +349,41 @@ int main(){
                 GenerateEnemy(&enemy, enemyCount, level);
             }
 
-            if (CekTabrakDinding(&snake, &lives, &isGameOver)) {
-                isGameOver = true;
-                DrawText("GAME OVER", 150, 250, 50, RED);
-                DrawText(TextFormat("Score : %i", score), 230, 300, 30, RED);
-                DrawText(TextFormat("Lives : %i", lives), 230, 350, 30, RED);
-                DrawText("Press R to Restart", 150, 400, 30, RED);
-                DrawText("Press M to go to Menu", 150, 450, 30, RED);
+            CekTabrakDinding(&snake, &lives, &isGameOver);
+               if (!isGameOver) {
+                // DrawText("GAME OVER", 150, 250, 50, RED);
+                // DrawText(TextFormat("Score : %i", score), 230, 300, 30, RED);
+                // DrawText(TextFormat("Lives : %i", lives), 230, 350, 30, RED);
+                // DrawText("Press R to Restart", 150, 400, 30, RED);
+                // DrawText("Press M to go to Menu", 150, 450, 30, RED);
             } else {
-                DrawText(TextFormat("Lives: %d", lives), 250, 630, 30, GOLD);
-                DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
-                DrawText(TextFormat("time: %f tuaim: %f", GetTime(), tuaim), 50, 330, 30, RED);
+                // DrawText(TextFormat("Lives: %d", lives), 250, 630, 30, GOLD);
+                // DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
+                // DrawText(TextFormat("time: %f tuaim: %f", GetTime(), tuaim), 50, 330, 30, RED);
             }
         
-            if (HandleReverseInput(&snake)) {
-                ReverseSnake(&snake);
+            HandleReverseInput(&snake); 
+            ReverseSnake(&snake);
+            
+        
+            UpdateCooldown();
+        
+            CekTabrakRintangan((Vector2){snake.badan[0].x, snake.badan[0].y}, &rintangan, &lives, &isGameOver);
+              if (!isGameOver) {
+                // DrawText("GAME OVER", 150, 250, 50, RED);
+                // DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);
+                // DrawText(TextFormat("Lives: %i", lives), 230, 350, 30, RED);
+                // DrawText("Press R to Restart", 150, 400, 30, RED);
+                // DrawText("Press M to go to Menu", 150, 450, 30, RED);
             }
         
-                UpdateCooldown();
-        
-            if (CekTabrakRintangan(&snake, &rintangan, &lives, &isGameOver)) {
-                isGameOver = true;
-                DrawText("GAME OVER", 150, 250, 50, RED);
-                DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);
-                DrawText(TextFormat("Lives: %i", lives), 230, 350, 30, RED);
-                DrawText("Press R to Restart", 150, 400, 30, RED);
-                DrawText("Press M to go to Menu", 150, 450, 30, RED);
-            }
-        
-            if (CekTabrakEnemy((Vector2){snake.badan[0].x, snake.badan[0].y}, enemy, &enemyCount, &lives, &isGameOver)) {
-                isGameOver = true;
-                DrawText("GAME OVER", 150, 250, 50, RED);
-                DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);
-                DrawText(TextFormat("Lives: %i", lives), 230, 350, 30, RED);
-                DrawText("Press R to Restart", 150, 400, 30, RED);
-                DrawText("Press M to go to Menu", 150, 450, 30, RED);
+            CekTabrakEnemy((Vector2){snake.badan[0].x, snake.badan[0].y}, &enemy, &enemyCount, &lives, &isGameOver);
+              if (!isGameOver) {
+                // DrawText("GAME OVER", 150, 250, 50, RED);
+                // DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);
+                // DrawText(TextFormat("Lives: %i", lives), 230, 350, 30, RED);
+                // DrawText("Press R to Restart", 150, 400, 30, RED);
+                // DrawText("Press M to go to Menu", 150, 450, 30, RED);
             }
             
         }
@@ -397,11 +397,9 @@ int main(){
                     mportal[0].status=false;
                     mportal[1].status=false;
                 }
-            MoveEnemy(&enemy);
-        }
+            MoveEnemy(&enemy, 1);
         EndDrawing();
     }
-
     UnloadTexture(latar); 
     UnloadTexture(food);
     UnloadTexture(musuh);
@@ -411,4 +409,6 @@ int main(){
     CloseAudioDevice();
     CloseWindow();
     return 0;
+    
+
 }
