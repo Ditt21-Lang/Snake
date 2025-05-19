@@ -24,7 +24,7 @@ extern float reverseTimer;
 
 
 
-void ReverseSnake(Snake *Snake);
+// void ReverseSnake(Snake *Snake);
 void HandleReverseInput(Snake *Snake);
 void UpdateCooldown();
 bool CekTabrakDinding(Snake *snake);

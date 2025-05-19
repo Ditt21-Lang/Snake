@@ -8,32 +8,32 @@
 float reverseCooldown = 20.0f;                                      /*cooldown dalam detik*/
 float reverseTimer = 0.0f;
 
-void ReverseSnake(Snake *snake) {
-    if (reverseTimer > 0) return;                                 /*kalau masih cooldown, jangan reverse*/  
+// void ReverseSnake(Snake *snake) {
+//     if (reverseTimer > 0) return;                                 /*kalau masih cooldown, jangan reverse*/  
 
-    for (int i = 0; i < snake->panjang / 2; i++) {
-        Vector2 temp = snake->badan[i];                                 
-        snake->badan[i] = snake->badan[snake->panjang - 1 - i];
-        snake->badan[snake->panjang - 1 - i] = temp;
-     }
+//     for (int i = 0; i < snake->panjang / 2; i++) {
+//         Vector2 temp = snake->badan[i];                                 
+//         snake->badan[i] = snake->badan[snake->panjang - 1 - i];
+//         snake->badan[snake->panjang - 1 - i] = temp;
+//      }
 
-    snake->position = snake->badan[0];                                  /* pastikan kepala ada di posisi yang benar*/
-    /*tentukan arah gerak baru setelah direverse*/
-    Vector2 diff = (Vector2){ 
-        snake->badan[0].x - snake->badan[1].x, 
-        snake->badan[0].y - snake->badan[1].y 
-    };
+//     snake->position = snake->badan[0];                                  /* pastikan kepala ada di posisi yang benar*/
+//     /*tentukan arah gerak baru setelah direverse*/
+//     Vector2 diff = (Vector2){ 
+//         snake->badan[0].x - snake->badan[1].x, 
+//         snake->badan[0].y - snake->badan[1].y 
+//     };
 
-    snake->speed = diff;                                        /* perbarui kecepatan*/
+//     snake->speed = diff;                                        /* perbarui kecepatan*/
 
-    reverseTimer = reverseCooldown;                             /*reset cooldown*/
-}
+//     reverseTimer = reverseCooldown;                             /*reset cooldown*/
+// }
 
-void HandleReverseInput(Snake *snake) {
-    if (IsKeyPressed(KEY_SPACE) && reverseTimer <=0) {
-        ReverseSnake(snake);
-    } 
-}
+// void HandleReverseInput(Snake *snake) {
+//     if (IsKeyPressed(KEY_SPACE) && reverseTimer <=0) {
+//         ReverseSnake(snake);
+//     } 
+// }
 
 void UpdateCooldown(){
     if (reverseTimer > 0){
@@ -43,8 +43,8 @@ void UpdateCooldown(){
 }
 
 bool CekTabrakDinding(Snake *snake) {
-    float headX = snake->badan[0].x;
-    float headY = snake->badan[0].y;
+    float headX = snake->head->position.x;
+    float headY = snake->head->position.y;
 
     if (headX >= 540 || headY >= 540){
         return true;
