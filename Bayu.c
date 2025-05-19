@@ -1,13 +1,8 @@
-#include "raylib.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include "Bayu.h"
-#include "Gilang.h"
-
 
 
 ButtonNode* InitButtons(int startY) {
-    return NULL; // Now we'll add buttons one by one
+    return NULL;
 }
 
 void AppendButton(ButtonNode** head, const char* text, int yPos) {
@@ -87,9 +82,7 @@ void DrawScaledTexture(Texture2D texture, int x, int y, int maxWidth) {
     float scale = (texture.width > maxWidth) ? (float)maxWidth / texture.width : 1.0f;
     int newWidth = texture.width * scale;
     int newHeight = texture.height * scale;
-    DrawTexturePro(texture, (Rectangle){0, 0, texture.width, texture.height}, 
-                   (Rectangle){x - newWidth / 2, y, newWidth, newHeight}, 
-                   (Vector2){0, 0}, 0.0f, WHITE);
+    DrawTexturePro(texture, (Rectangle){0, 0, texture.width, texture.height}, (Rectangle){x - newWidth / 2, y, newWidth, newHeight}, (Vector2){0, 0}, 0.0f, WHITE);
 }
 
 void AddTexture(TextureNode **head, const char *path, int page, Vector2 position) {
