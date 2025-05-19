@@ -42,36 +42,33 @@ void UpdateCooldown(){
     }
 }
 
-void CekTabrakDinding(Snake *snake, int *lives, bool *alive){
-    Position newHead = {snake->badan[0].x + snake->position.x,
-                      snake->badan[0].y + snake->position.y};
-    int margin = 2;
-    if (newHead.x < margin || newHead.x >= GRID_WIDTH - margin ||
-        newHead.y < margin || newHead.y >= GRID_HEIGHT - margin) {
-            (*lives); //--;
-            if (*lives <=0){
-                *alive = false;    
-            } else {
-                *alive = true;
-            }
-            return;
-        }
+bool CekTabrakDinding(Snake *snake) {
+    float headX = snake->badan[0].x;
+    float headY = snake->badan[0].y;
+
+    if (headX >= 540 || headY >= 540){
+        return true;
+    } else if (headX <= 20 || headY <= 20){
+        return true;
+    } else {
+        return false;
+    }
 }
 
-void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives, bool *alive){
-        for (int i = 0; i < rintangan->count; i++){
-            if (head.x == rintangan->rintangan[i].x
-                && head.y == rintangan->rintangan[i].y){
-                    (*lives); //--;
-                    if (*lives <=0){
-                        *alive = false;    
-                    } else {
-                        *alive = true;
-                    }
-                    return;
-                }
-            
+
+bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead) {
+    int KepalaX = (int)(head.x / CELL_SIZE);
+    int KepalaY = (int)(head.y / CELL_SIZE);
+
+    RintanganNode *current = rintanganHead;
+
+    while (current != NULL) {
+        if (KepalaX == current->posisi.x && KepalaY == current->posisi.y) {
+            return true;  
         }
+        current = current->next;
+    }
+    return false; 
 }
 
 
@@ -92,23 +89,67 @@ void CekTabrakRintangan(Vector2 head, Rintangan *rintangan, int *lives, bool *al
 //             i++;
 // }      kode lama yang error
 
-void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
-    int i = 0;
-    bool collision = false;  
-    while (i < *count) {
-        if (head.x == enemy[i].position.x && head.y == enemy[i].position.y) {
-            (*lives); //--;  
-            collision = true;
-            if (*lives <= 0) {
-                *alive = false;  
-            } else {
-                *alive = true;
-            }
-        }
-        i++;
-    }
+// bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
+//     int i = 0;
+//     bool collision = false;  
+//     while (i < *count) {
+//         if (head.x == enemy[i].position.x && head.y == enemy[i].position.y) {
+//             (*lives); //--;  
+//             collision = true;
+//             if (*lives <= 0) {
+//                 *alive = false;  
+//             } else {
+//                 *alive = true;
+//             }
+//         }
+//         i++;
+//     }
     
-    if (collision) {
-        printf("Lives: %d\n", *lives); 
+//     if (collision) {
+//         printf("Lives: %d\n", *lives); 
+//     }
+// }   //kode baru 
+
+EnemyList GenerateEnemy(int level) {
+    EnemyList list = {NULL, 0};
+
+    Position enemyPositions[3][3] = {
+        { {12, 12} },
+        { {10, 14}, {14, 10} },
+        { {9, 9}, {13, 13}, {15, 11} }
+    };
+
+    int jumlah = 0;
+    if (level == 2) {
+        jumlah = 1;
+    } else if (level == 3) {
+        jumlah = 2;
+    } else if (level == 4) {
+        jumlah = 3;
+    } else if (level == 5) {
+        jumlah = 3;
     }
-}   //kode baru 
+
+    Enemy *tail = NULL;
+    int i;
+    for (i = 0; i < jumlah; i++){
+        Enemy *newEnemy = malloc(sizeof(Enemy));
+        if (!newEnemy) break; //cek alokasi memori
+
+        newEnemy->position = enemyPositions[level - 2 ][i];
+        newEnemy->direction = 1;
+        newEnemy->isVertical = 1 % 2;
+        newEnemy->next = NULL;
+
+        if (list.head == NULL) {
+            list.head = newEnemy;
+            tail = newEnemy;
+        } else {
+            tail->next = newEnemy;
+            tail = newEnemy;
+        }
+        list.count++;
+    }
+
+    return list;
+}

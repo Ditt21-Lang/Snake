@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "Gilang.h"
 #ifndef BAYU_H
 #define BAYU_H
@@ -18,16 +19,30 @@ typedef enum {
     STAGE
 } GameScreen;
 
-typedef struct {
+typedef struct ButtonNode {
     Rectangle border;
-    const char *text;
+    char* text;
     bool hover;
-} Button;
+    struct ButtonNode* next;
+} ButtonNode;
 
-void InitButtons(Button buttons[], const char *texts[], int count, int startY);
-void UpdateButtons(Button buttons[], int count, GameScreen *screen);
-void DrawButtons(Button buttons[], int count);
+typedef struct TextureNode {
+    Texture2D texture;
+    int page;
+    Vector2 position;
+    struct TextureNode *next;
+} TextureNode;
+
+ButtonNode* InitButtons(int startY);
+void AppendButton(ButtonNode** head, const char* text, int yPos);
+void UpdateButtons(ButtonNode *head, GameScreen *screen);
+void DrawButtons(ButtonNode *head);
+void FreeButtons(ButtonNode *head);
 void DrawScaledTexture(Texture2D texture, int x, int y, int maxWidth);
+void AddTexture(TextureNode **head, const char *path, int page, Vector2 position);
+void FreeTextures(TextureNode *head);
+ButtonNode* TextNode(const char* text, int yPos);
+ButtonNode* CreateButton(const char* text, int yPos);
 int snakeSpritesheet(Position prevDirection, Position nextDirection);
 
 #endif

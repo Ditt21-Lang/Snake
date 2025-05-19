@@ -24,7 +24,7 @@ int main(){
 
     Snake snake;
     Makanan makanan;
-    Rintangan rintangan;
+    RintanganNode *rintangan = NULL;
     Enemy enemy;
 
     //peluru
@@ -38,8 +38,8 @@ int main(){
     mportal[1].status=false;
 
     int score = 0;
-    int level = 0;
-    int lives = 0;
+    int level = 1;
+    int lives = 3;
     int enemyCount = 0;
     int buffer;
 
@@ -48,36 +48,56 @@ int main(){
     bool isGameOver = false;
     bool isSoundOver = false;
     
-    const char *menuTexts[] = {"Play", "How to Play", "Quit"};
-    Button menuButtons[3];
-    InitButtons(menuButtons, menuTexts, 3, 300);
-    
-    const char *modeTexts[] = {"Endless Mode", "Stage Mode", "Back"};
-    Button modeButtons[3];
-    InitButtons(modeButtons, modeTexts, 3, 300);
-    
-    const char *gameOverTexts[] = {"Restart", "Main Menu"};
-    Button gameOverButtons[2];
-    InitButtons(gameOverButtons, gameOverTexts, 2, 350);
+    ButtonNode* menuButtons = InitButtons(300);
+    AppendButton(&menuButtons, "Play", 300);
+    AppendButton(&menuButtons, "How to Play", 400);
+    AppendButton(&menuButtons, "Quit", 500);
 
-    
-    Button prevButton = {{SCREEN_WIDTH / 2 - 150, 680, 100, 40}, "Prev", false};
-    Button nextButton = {{SCREEN_WIDTH / 2 + 50, 680, 100, 40}, "Next", false};
-    Button backButton = {{SCREEN_WIDTH / 2 - 100, 730, 200, 50}, "Back", false};
-    
+    ButtonNode* modeButtons = InitButtons(300);
+    AppendButton(&modeButtons, "Endless Mode", 300);
+    AppendButton(&modeButtons, "Stage Mode", 400);
+    AppendButton(&modeButtons, "Back", 500);
+
+    ButtonNode* gameOverButtons = InitButtons(350);
+    AppendButton(&gameOverButtons, "Restart", 350);
+    AppendButton(&gameOverButtons, "Main Menu", 450);
+
+    ButtonNode *howToButtons = NULL;
+
+    ButtonNode *newNode = (ButtonNode *)malloc(sizeof(ButtonNode));
+    newNode->border = (Rectangle){SCREEN_WIDTH / 2 - 100, 730, 200, 50};
+    newNode->text = strdup("Back"); 
+    newNode->hover = false;
+    newNode->next = howToButtons;
+    howToButtons = newNode;
+
+    newNode = (ButtonNode *)malloc(sizeof(ButtonNode));
+    newNode->border = (Rectangle){SCREEN_WIDTH / 2 + 50, 680, 100, 40};
+    newNode->text = strdup("Next");
+    newNode->hover = false;
+    newNode->next = howToButtons;
+    howToButtons = newNode;
+
+    newNode = (ButtonNode *)malloc(sizeof(ButtonNode));
+    newNode->border = (Rectangle){SCREEN_WIDTH / 2 - 150, 680, 100, 40};
+    newNode->text = strdup("Prev");
+    newNode->hover = false;
+    newNode->next = howToButtons;
+    howToButtons = newNode;
+
+    TextureNode *howToPlayTextures = NULL;
+    TextureNode *ssGameplayTextures = NULL;
+
     Texture2D latar = LoadTexture("resources/latar.png");
-    Texture2D howToPlayImages[4] = {
-        LoadTexture("resources/howto1.png"),
-        LoadTexture("resources/howto2.png"),
-        LoadTexture("resources/howto3.png"),
-        LoadTexture("resources/howto4.png"),
-    };
+
+    AddTexture(&howToPlayTextures, "resources/howto1.png", 0, (Vector2){SCREEN_WIDTH / 2, 150});
+    AddTexture(&howToPlayTextures, "resources/howto2.png", 0, (Vector2){SCREEN_WIDTH / 2, 430});
+    AddTexture(&howToPlayTextures, "resources/howto3.png", 1, (Vector2){SCREEN_WIDTH / 2, 150});
+    AddTexture(&howToPlayTextures, "resources/howto4.png", 2, (Vector2){SCREEN_WIDTH / 2, 150});
     
-    Texture2D ssGameplayImages[3] = {
-        LoadTexture("resources/ssGameplay.png"),
-        LoadTexture("resources/ssGameplay2.png"),
-        LoadTexture("resources/ssGameplay3.png"),
-    };
+    AddTexture(&ssGameplayTextures, "resources/ssGameplay.png", 0, (Vector2){SCREEN_WIDTH / 2, 250});
+    AddTexture(&ssGameplayTextures, "resources/ssGameplay2.png", 1, (Vector2){SCREEN_WIDTH / 2, 350});
+    AddTexture(&ssGameplayTextures, "resources/ssGameplay3.png", 2, (Vector2){SCREEN_WIDTH / 2, 400});
     
     Texture2D tanah = LoadTexture("resources/tanah.png");
     Texture2D musuh = LoadTexture("resources/krtTambang.png");
@@ -106,7 +126,7 @@ int main(){
 
 
     GenerateRintangan(&rintangan, level);
-    GenerateMakanan(&makanan, &rintangan);
+    GenerateMakanan(&makanan, rintangan);
 
     InitSnake(&snake);
 
@@ -137,6 +157,7 @@ int main(){
             mpeluru.coor.x=400;
             mpeluru.coor.y=400;
         }
+
         teleport_portal(&snake.badan[0].x,&snake.badan[0].y,mportal,100,100,2);
 
         UpdateMusicStream(menu);
@@ -172,171 +193,128 @@ int main(){
             }
         }
 
-        if ((currentScreen == ENDLESS || currentScreen == STAGE )&& isGameOver) {   
-            StopMusicStream(game);  
-            if (!isSoundOver) {  
-                PlaySound(over);  
-                isSoundOver = true; 
-            }  
-        }
-        
-
         if (currentScreen == MENU) {
             DrawText("Snave", SCREEN_WIDTH / 2 - MeasureText("Snave", 50) / 2, 200, 50, WHITE);
-            UpdateButtons(menuButtons, 3, &currentScreen);
-            DrawButtons(menuButtons, 3);
+            UpdateButtons(menuButtons, &currentScreen);
+            DrawButtons(menuButtons);
             isGameOver = false;
             isSoundOver = false; 
         } else if (currentScreen == MODE_SELECTION) {
             DrawText("Mode Selection", SCREEN_WIDTH / 2 - MeasureText("Mode Selection", 50) / 2, 200, 50, WHITE);
-            UpdateButtons(modeButtons, 3, &currentScreen);
-            DrawButtons(modeButtons, 3);
+            UpdateButtons(modeButtons, &currentScreen);
+            DrawButtons(modeButtons);
         } else if (currentScreen == HOW_TO_PLAY) {
             DrawRectangle(SCREEN_WIDTH / 2 - 200, 100, BOX_WIDTH, BOX_HEIGHT, DARKGRAY);
             
             DrawText("How to Play", SCREEN_WIDTH / 2 - MeasureText("How to Play", 30) / 2, 110, 30, WHITE);
+            DrawButtons(howToButtons);
 
             Vector2 mousePoint = GetMousePosition();
-            
-            prevButton.hover = CheckCollisionPointRec(mousePoint, prevButton.border);
-            nextButton.hover = CheckCollisionPointRec(mousePoint, nextButton.border);
-            backButton.hover = CheckCollisionPointRec(mousePoint, backButton.border);
-            
-            if (prevButton.hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && howToPlayPage > 0) {
-                howToPlayPage--;
-            }
-            if (nextButton.hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && howToPlayPage < 2) {
-                howToPlayPage++;
-            }
-            if (backButton.hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                currentScreen = MENU;
-            }
-            
-            if (howToPlayPage == 0) {
-                DrawScaledTexture(howToPlayImages[0], SCREEN_WIDTH / 2, 150, BOX_WIDTH);
-                DrawScaledTexture(ssGameplayImages[0], SCREEN_WIDTH / 2, 250, BOX_WIDTH);
-                DrawScaledTexture(howToPlayImages[1], SCREEN_WIDTH / 2, 430, BOX_WIDTH);
-            } else if (howToPlayPage == 1) {
-                DrawScaledTexture(howToPlayImages[2], SCREEN_WIDTH / 2, 150, BOX_WIDTH);
-                DrawScaledTexture(ssGameplayImages[1], SCREEN_WIDTH / 2, 350, BOX_WIDTH);
-            } else if (howToPlayPage == 2) {
-                DrawScaledTexture(howToPlayImages[3], SCREEN_WIDTH / 2, 150, BOX_WIDTH);
-                DrawScaledTexture(ssGameplayImages[2], SCREEN_WIDTH / 2, 400, BOX_WIDTH);
+            ButtonNode *current = howToButtons;
+
+            while (current != NULL) {
+                current->hover = CheckCollisionPointRec(mousePoint, current->border);
+                
+                if (current->hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    if (strcmp(current->text, "Prev") == 0 && howToPlayPage > 0) {
+                        howToPlayPage--;
+                    }
+                    else if (strcmp(current->text, "Next") == 0 && howToPlayPage < 2) {
+                        howToPlayPage++;
+                    }
+                    else if (strcmp(current->text, "Back") == 0) {
+                        currentScreen = MENU;
+                    }
+                }
+                
+                current = current->next;
             }
             
-            DrawRectangleRec(prevButton.border, prevButton.hover ? LIGHTGRAY : GRAY);
-            DrawText(prevButton.text, prevButton.border.x + 20, prevButton.border.y + 10, 20, WHITE);
+            TextureNode *textureCurrent = howToPlayTextures;
+            while (textureCurrent != NULL) {
+                if (textureCurrent->page == howToPlayPage) {
+                    DrawScaledTexture(textureCurrent->texture, textureCurrent->position.x, textureCurrent->position.y, BOX_WIDTH);
+                }
+                textureCurrent = textureCurrent->next;
+            }
+
+            textureCurrent = ssGameplayTextures;
+            while (textureCurrent != NULL) {
+                if (textureCurrent->page == howToPlayPage) {
+                    DrawScaledTexture(textureCurrent->texture, textureCurrent->position.x, textureCurrent->position.y, BOX_WIDTH);
+                }
+                textureCurrent = textureCurrent->next;
+            }
             
-            DrawRectangleRec(nextButton.border, nextButton.hover ? LIGHTGRAY : GRAY);
-            DrawText(nextButton.text, nextButton.border.x + 20, nextButton.border.y + 10, 20, WHITE);
-            
-            DrawRectangleRec(backButton.border, backButton.hover ? LIGHTGRAY : GRAY);
-            DrawText(backButton.text, backButton.border.x + 60, backButton.border.y + 15, 20, WHITE);
+            while (current != NULL) {
+                DrawRectangleRec(current->border, current->hover ? LIGHTGRAY : GRAY);
+                
+                float textX, textY;
+                int fontSize = 20;
+                
+                if (strcmp(current->text, "Back") == 0) {
+                    textX = current->border.x + 60;
+                    textY = current->border.y + 15;
+                } else {
+                    textX = current->border.x + 20;
+                    textY = current->border.y + 10;
+                }
+                
+                DrawText(current->text, textX, textY, fontSize, WHITE);
+                
+                current = current->next;
+            }
         }
 
-        else if (currentScreen == ENDLESS){
+        else if (currentScreen == ENDLESS) {
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
-            DrawGame(&makanan, &rintangan, &enemy, enemyCount, score, level, dinding, tanah, food, musuh, obstacle );
+            DrawGame(&makanan, rintangan, &enemy, enemyCount, score, level, dinding, tanah, food, musuh, obstacle);
 
             DrawText(TextFormat("Score: %d", score), 165, 625, 50, GOLD);
-            DrawText("ENDLESS MODE", SCREEN_WIDTH / 2 - MeasureText("ENDLESS MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
+            DrawText("ENDLESS MODE", SCREEN_WIDTH/2 - MeasureText("ENDLESS MODE",70)/2, SCREEN_HEIGHT-90, 70, BROWN);
 
-            if(!cekTabrakan(&snake)){
+            if(!cekTabrakan(&snake)) {
                 UpdateSnake(&snake);
                 DrawSnake(&snake);
+                
+                if(CheckMakanan(&snake, &makanan)) {
+                    score += 100;
+                    snake.panjang++;
+                    GenerateMakanan(&makanan, rintangan);
+                    PlaySound(eat);
+                }
             }
-            else{
+            else {
                 isGameOver = true;
-                DrawText("GAME OVER", 150, 250, 50, RED);
-                DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);  
-                
-                UpdateButtons(gameOverButtons, 2, &currentScreen);
-                DrawButtons(gameOverButtons, 2);
-                
-                if (gameOverButtons[0].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    InitSnake(&snake);
-                    score = 0;
-                    lives = 3;
-                    enemyCount = 0;
-                    GenerateRintangan(&rintangan, level);
-                    GenerateMakanan(&makanan, &rintangan);
-                    isGameOver = false;
-                    isStartPlaying = false;
-                }
-                if (gameOverButtons[1].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    InitSnake(&snake);
-                    currentScreen = MENU;
-                    score = 0;
-                    lives = 3;
-                    isGameOver = false;
-                    isStartPlaying = false;
-                    
-                    fps = 60;
-                    SetTargetFPS(fps);
-                }
             }
-    
-            if(CheckMakanan(&snake, &makanan)){
-                score += 100;
-                snake.panjang++;
-                GenerateMakanan(&makanan, &rintangan);
-                PlaySound(eat);
-            }
-                   
-            
         }
 
-        else if (currentScreen == STAGE){
-            level = 1;
+        else if (currentScreen == STAGE ){
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
-            DrawGame(&makanan, &rintangan, &enemy, enemyCount, score,level, dinding, tanah, food, musuh, obstacle );
+            DrawGame(&makanan, rintangan, &enemy, enemyCount, score,level, dinding, tanah, food, musuh, obstacle );
             
             DrawText(TextFormat("Score: %d", score), 10, 630, 30, GOLD);
             DrawText(TextFormat("Lives: %d", lives), 10, 660, 30, GOLD);
             DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
             DrawText(TextFormat("Cooldown: %f", GetTime(),tuaim), 420, 660, 30, RED);
             DrawText("STAGE MODE", SCREEN_WIDTH / 2 - MeasureText("STAGE MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
-            if(!cekTabrakan(&snake)){
-                UpdateSnake(&snake);
-                DrawSnake(&snake);
-            }
-            else{
-                isGameOver = true;
-                DrawText("GAME OVER", 150, 250, 50, RED);
-                DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);  
-                
-                UpdateButtons(gameOverButtons, 2, &currentScreen);
-                DrawButtons(gameOverButtons, 2);
-                
-                if (gameOverButtons[0].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    InitSnake(&snake);
-                    score = 0;
-                    lives = 3;
-                    enemyCount = 0;
-                    GenerateRintangan(&rintangan, level);
-                    GenerateMakanan(&makanan, &rintangan);
-                    isGameOver = false;
-                    isStartPlaying = false;
+            if(!isGameOver){
+                if(!cekTabrakan(&snake) && !CekTabrakDinding(&snake)){
+                    UpdateSnake(&snake);
+                    HandleReverseInput(&snake);
+                    DrawSnake(&snake);
                 }
-                if (gameOverButtons[1].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    InitSnake(&snake);
-                    currentScreen = MENU;
-                    score = 0;
-                    lives = 3;
-                    isGameOver = false;
-                    isStartPlaying = false;
-                    
-                    fps = 60;
-                    SetTargetFPS(fps);
+                else{
+                    isGameOver = true;
                 }
             }
     
             if(CheckMakanan(&snake, &makanan)){
                 score += 100;
                 snake.panjang++;
-                GenerateMakanan(&makanan, &rintangan);
+                GenerateMakanan(&makanan, rintangan);
                 PlaySound(eat);
             }
 
@@ -349,55 +327,105 @@ int main(){
                 GenerateEnemy(&enemy, enemyCount, level);
             }
 
-            CekTabrakDinding(&snake, &lives, &isGameOver);
-               if (!isGameOver) {
-                // DrawText("GAME OVER", 150, 250, 50, RED);
-                // DrawText(TextFormat("Score : %i", score), 230, 300, 30, RED);
-                // DrawText(TextFormat("Lives : %i", lives), 230, 350, 30, RED);
-                // DrawText("Press R to Restart", 150, 400, 30, RED);
-                // DrawText("Press M to go to Menu", 150, 450, 30, RED);
-            } else {
-                // DrawText(TextFormat("Lives: %d", lives), 250, 630, 30, GOLD);
-                // DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
-                // DrawText(TextFormat("time: %f tuaim: %f", GetTime(), tuaim), 50, 330, 30, RED);
+            if(CekTabrakRintangan(snake, snake.badan[0], rintangan)){
+                if(!isGameOver){
+                    lives = lives - 1;
+                    if (lives == 0){
+                        isGameOver = true;
+                    }
+                }
             }
-        
-            HandleReverseInput(&snake); 
-            ReverseSnake(&snake);
-            
-        
-            UpdateCooldown();
-        
-            CekTabrakRintangan((Vector2){snake.badan[0].x, snake.badan[0].y}, &rintangan, &lives, &isGameOver);
-              if (!isGameOver) {
-                // DrawText("GAME OVER", 150, 250, 50, RED);
-                // DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);
-                // DrawText(TextFormat("Lives: %i", lives), 230, 350, 30, RED);
-                // DrawText("Press R to Restart", 150, 400, 30, RED);
-                // DrawText("Press M to go to Menu", 150, 450, 30, RED);
-            }
-        
-            CekTabrakEnemy((Vector2){snake.badan[0].x, snake.badan[0].y}, &enemy, &enemyCount, &lives, &isGameOver);
-              if (!isGameOver) {
-                // DrawText("GAME OVER", 150, 250, 50, RED);
-                // DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);
-                // DrawText(TextFormat("Lives: %i", lives), 230, 350, 30, RED);
-                // DrawText("Press R to Restart", 150, 400, 30, RED);
-                // DrawText("Press M to go to Menu", 150, 450, 30, RED);
-            }
-            
-        }
 
+            UpdateCooldown();
             if(mpeluru.status){
                 DrawCircle((int)mpeluru.coor.x, (int)mpeluru.coor.y, radius, GOLD);
             }
+
             if(cooldown(&mportal[0].activation) == false){
                 draw_portal(textuar,2,mportal,20,20);
-                }else{
-                    mportal[0].status=false;
-                    mportal[1].status=false;
+            }else{
+                mportal[0].status=false;
+                mportal[1].status=false;
+            }
+            
+            MoveEnemy(&enemy, enemyCount);    
+        }
+        
+        if ((currentScreen == ENDLESS || currentScreen == STAGE) && isGameOver) {   
+            StopMusicStream(game);  
+            if (!isSoundOver) {  
+                PlaySound(over);  
+                isSoundOver = true;
+            }
+
+            DrawText("GAME OVER", 150, 250, 50, RED);
+            DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);  
+            
+            ButtonNode* current = gameOverButtons;
+            while (current != NULL) {
+                current->hover = CheckCollisionPointRec(GetMousePosition(), current->border);
+                
+                if (strcmp(current->text, "Restart") == 0 && current->hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    InitSnake(&snake);
+                    score = 0;
+                    lives = 3;
+                    enemyCount = 0;
+                    GenerateRintangan(&rintangan, level);
+                    GenerateMakanan(&makanan, rintangan);
+                    isGameOver = false;
+                    isStartPlaying = false;
                 }
-            MoveEnemy(&enemy, 1);
+                
+                if (strcmp(current->text, "Main Menu") == 0 && current->hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    InitSnake(&snake);
+                    currentScreen = MENU;
+                    score = 0;
+                    lives = 3;
+                    isGameOver = false;
+                    isStartPlaying = false;
+                    fps = 60;
+                    SetTargetFPS(fps);
+                }
+                
+                if (strcmp(current->text, "Restart") == 0 && current->hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    InitSnake(&snake);
+                    score = 0;
+                    lives = 3;
+                    enemyCount = 0;
+                    level = 1;
+                    GenerateRintangan(&rintangan, level);
+                    GenerateMakanan(&makanan, rintangan);
+                    isGameOver = false;
+                    isStartPlaying = false;
+                    isSoundOver = false;
+                }
+                
+                if (strcmp(current->text, "Main Menu") == 0 && current->hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    InitSnake(&snake);
+                    currentScreen = MENU;
+                    score = 0;
+                    lives = 3;
+                    level = 1;
+                    isGameOver = false;
+                    isStartPlaying = false;
+                    isSoundOver = false;
+                    fps = 60;
+                    SetTargetFPS(fps);
+                }
+                
+                current = current->next;
+            }
+
+            current = gameOverButtons;
+            while (current != NULL) {
+                DrawRectangleRec(current->border, current->hover ? LIGHTGRAY : GRAY);
+                DrawText(current->text, 
+                        current->border.x + current->border.width/2 - MeasureText(current->text, 20)/2,
+                        current->border.y + current->border.height/2 - 10,
+                        20, WHITE);
+                current = current->next;
+            }
+        }
         EndDrawing();
     }
     UnloadTexture(latar); 
@@ -406,9 +434,13 @@ int main(){
     UnloadTexture(obstacle);
     UnloadTexture(snake.tekstur);
     UnloadMusicStream(menu);
+    FreeButtons(menuButtons);
+    FreeButtons(modeButtons);
+    FreeButtons(gameOverButtons);
+    FreeButtons(howToButtons);
+    FreeTextures(howToPlayTextures);
+    FreeTextures(ssGameplayTextures);
     CloseAudioDevice();
     CloseWindow();
-    return 0;
-    
-
+    return 0;      
 }

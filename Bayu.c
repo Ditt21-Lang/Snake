@@ -4,19 +4,52 @@
 #include "Bayu.h"
 #include "Gilang.h"
 
-void InitButtons(Button buttons[], const char *texts[], int count, int startY) {
-    for (int i = 0; i < count; i++) {
-        buttons[i].border = (Rectangle){200, startY + i * 100, 200, 50};
-        buttons[i].text = texts[i];
-        buttons[i].hover = false;
+
+
+ButtonNode* InitButtons(int startY) {
+    return NULL; // Now we'll add buttons one by one
+}
+
+void AppendButton(ButtonNode** head, const char* text, int yPos) {
+    ButtonNode* newButton = CreateButton(text, yPos);
+    
+    if (*head == NULL) {
+        *head = newButton;
+    } else {
+        ButtonNode* current = *head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newButton;
     }
 }
 
-void UpdateButtons(Button buttons[], int count, GameScreen *screen) {
+ButtonNode* CreateButton(const char* text, int yPos) {
+    ButtonNode* node = (ButtonNode*)malloc(sizeof(ButtonNode));
+    node->border = (Rectangle){200, yPos, 200, 50};
+    node->text = (char*)malloc(strlen(text) + 1);
+    strcpy(node->text, text);
+    node->hover = false;
+    node->next = NULL;
+    return node;
+}
+
+ButtonNode* TextNode(const char* text, int yPos) {
+    ButtonNode* node = (ButtonNode*)malloc(sizeof(ButtonNode));
+    node->border = (Rectangle){200, yPos, 200, 50};
+    node->text = (char*)malloc(strlen(text) + 1);
+    strcpy(node->text, text);
+    node->hover = false;
+    node->next = NULL;
+    return node;
+}
+
+void UpdateButtons(ButtonNode *head, GameScreen *screen) {
     Vector2 mousePoint = GetMousePosition();
-    for (int i = 0; i < count; i++) {
-        buttons[i].hover = CheckCollisionPointRec(mousePoint, buttons[i].border);
-        if (buttons[i].hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+    int i = 0;
+    for (ButtonNode *node = head; node; node = node->next, i++) {
+        node->hover = CheckCollisionPointRec(mousePoint, node->border);
+        if (node->hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             if (*screen == MENU) {
                 if (i == 0) *screen = MODE_SELECTION;
                 else if (i == 1) *screen = HOW_TO_PLAY;
@@ -33,10 +66,20 @@ void UpdateButtons(Button buttons[], int count, GameScreen *screen) {
     }
 }
 
-void DrawButtons(Button buttons[], int count) {
-    for (int i = 0; i < count; i++) {
-        DrawRectangleRec(buttons[i].border, buttons[i].hover ? LIGHTGRAY : GRAY);
-        DrawText(buttons[i].text, buttons[i].border.x + 35, buttons[i].border.y + 15, 20, WHITE);
+void DrawButtons(ButtonNode *head) {
+    for (ButtonNode *node = head; node; node = node->next) {
+        DrawRectangleRec(node->border, node->hover ? LIGHTGRAY : GRAY);
+        DrawText(node->text, node->border.x + 35, node->border.y + 15, 20, WHITE);
+    }
+}
+
+void FreeButtons(ButtonNode* head) {
+    ButtonNode* current = head;
+    while (current != NULL) {
+        ButtonNode* next = current->next;
+        free(current->text);
+        free(current);
+        current = next;
     }
 }
 
@@ -47,6 +90,25 @@ void DrawScaledTexture(Texture2D texture, int x, int y, int maxWidth) {
     DrawTexturePro(texture, (Rectangle){0, 0, texture.width, texture.height}, 
                    (Rectangle){x - newWidth / 2, y, newWidth, newHeight}, 
                    (Vector2){0, 0}, 0.0f, WHITE);
+}
+
+void AddTexture(TextureNode **head, const char *path, int page, Vector2 position) {
+    TextureNode *newNode = (TextureNode *)malloc(sizeof(TextureNode));
+    newNode->texture = LoadTexture(path);
+    newNode->page = page;
+    newNode->position = position;
+    newNode->next = *head;
+    *head = newNode;
+}
+
+void FreeTextures(TextureNode *head) {
+    TextureNode *current = head;
+    while (current != NULL) {
+        TextureNode *next = current->next;
+        UnloadTexture(current->texture);
+        free(current);
+        current = next;
+    }
 }
 
 int snakeSpritesheet(Position prevDirection, Position nextDirection) {
