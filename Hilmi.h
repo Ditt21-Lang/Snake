@@ -10,11 +10,27 @@
 
 extern float reverseTimer;
 
+typedef struct Enemy {
+    Position position;
+    int direction;
+    int isVertical;
+    struct Enemy *next;
+} Enemy;
+
+typedef struct {
+    Enemy *head;
+    int count;
+} EnemyList;
+
+
+
 void ReverseSnake(Snake *Snake);
 void HandleReverseInput(Snake *Snake);
 void UpdateCooldown();
 bool CekTabrakDinding(Snake *snake);
 bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead);
 bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive);
+
+EnemyList GenerateEnemy(int level);
 
 #endif

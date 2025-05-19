@@ -89,23 +89,67 @@ bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead)
 //             i++;
 // }      kode lama yang error
 
-bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
-    int i = 0;
-    bool collision = false;  
-    while (i < *count) {
-        if (head.x == enemy[i].position.x && head.y == enemy[i].position.y) {
-            (*lives)--;  
-            collision = true;
-            if (*lives <= 0) {
-                *alive = false;  
-            } else {
-                *alive = true;
-            }
-        }
-        i++;
-    }
+// bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
+//     int i = 0;
+//     bool collision = false;  
+//     while (i < *count) {
+//         if (head.x == enemy[i].position.x && head.y == enemy[i].position.y) {
+//             (*lives); //--;  
+//             collision = true;
+//             if (*lives <= 0) {
+//                 *alive = false;  
+//             } else {
+//                 *alive = true;
+//             }
+//         }
+//         i++;
+//     }
     
-    if (collision) {
-        printf("Lives: %d\n", *lives); 
+//     if (collision) {
+//         printf("Lives: %d\n", *lives); 
+//     }
+// }   //kode baru 
+
+EnemyList GenerateEnemy(int level) {
+    EnemyList list = {NULL, 0};
+
+    Position enemyPositions[3][3] = {
+        { {12, 12} },
+        { {10, 14}, {14, 10} },
+        { {9, 9}, {13, 13}, {15, 11} }
+    };
+
+    int jumlah = 0;
+    if (level == 2) {
+        jumlah = 1;
+    } else if (level == 3) {
+        jumlah = 2;
+    } else if (level == 4) {
+        jumlah = 3;
+    } else if (level == 5) {
+        jumlah = 3;
     }
-}   //kode baru 
+
+    Enemy *tail = NULL;
+    int i;
+    for (i = 0; i < jumlah; i++){
+        Enemy *newEnemy = malloc(sizeof(Enemy));
+        if (!newEnemy) break; //cek alokasi memori
+
+        newEnemy->position = enemyPositions[level - 2 ][i];
+        newEnemy->direction = 1;
+        newEnemy->isVertical = 1 % 2;
+        newEnemy->next = NULL;
+
+        if (list.head == NULL) {
+            list.head = newEnemy;
+            tail = newEnemy;
+        } else {
+            tail->next = newEnemy;
+            tail = newEnemy;
+        }
+        list.count++;
+    }
+
+    return list;
+}
