@@ -113,6 +113,7 @@ int main(){
     Sound eat = LoadSound("resources/Makanan.wav");
     Music game = LoadMusicStream("resources/GamePlay.wav");
     Sound over = LoadSound("resources/GameOver.wav");
+    Sound hit = LoadSound("resorces/hitObs.wav");
 
     SetSoundVolume(start ,1.5f);
     SetSoundVolume(eat ,1.5f);
@@ -256,7 +257,7 @@ int main(){
                 
                 if(CheckMakanan(&snake, &makanan)) {
                     score += 100;
-                    snake.panjang++;
+                    tambahNode(&snake);
                     GenerateMakanan(&makanan, rintangan);
                     PlaySound(eat);
                 }

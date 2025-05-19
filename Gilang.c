@@ -155,6 +155,9 @@ void UpdateSnake(Snake *snake) {
 
 void tambahNode(Snake *snake){
     SnakeNode* newbody = (SnakeNode*)malloc(sizeof(SnakeNode));
+    newbody->position = snake->speed;
+    newbody->next = NULL;
+    newbody->prev = NULL;
     newbody->prev = snake->tail;
     snake->tail->next = newbody;
     snake->tail = newbody;
