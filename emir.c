@@ -2,28 +2,18 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "emir.h"
-#define LEBAR_LAYAR 800
-#define TINGGI_LAYAR 650
-#define KANAN 262
-#define KIRI 263
-#define BAWAH 264
-#define ATAS 265
 
 int lastbutton(){
     if(IsKeyPressed(KEY_RIGHT)){
-    
     return 262;
     }
     else if(IsKeyPressed(KEY_LEFT)){
-    
     return 263;
     }
     else if(IsKeyPressed(KEY_DOWN)){
-    
     return 264;
     }
     else if(IsKeyPressed(KEY_UP)){
-    
     return 265;
     }
     

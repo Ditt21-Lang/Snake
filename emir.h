@@ -1,3 +1,4 @@
+#ifndef EMIR_H
 #include "raylib.h"
 #include <stdio.h>
 #include <stdbool.h>
@@ -7,7 +8,8 @@
 #define ATAS 265
 #define BATAS_PORTAL_V 650
 #define BATAS_PORTAL_H 750
-#ifndef EMIR_H
+#define LEBAR_LAYAR 800
+#define TINGGI_LAYAR 650
 #define EMIR_H
 
 //variable peluru

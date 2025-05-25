@@ -16,7 +16,7 @@
 #
 #     2. Altered source versions must be plainly marked as such, and must not be misrepresented
 #     as being the original software.
-#
+#gcc emir.c -o emir.exe -I C:\raylib\w64devkit\i686-w64-mingw32\include -L C:\raylib\w64devkit\i686-w64-mingw32\lib -lraylib -lopengl32 -lgdi32 -lwinmm
 #     3. This notice may not be removed or altered from any source distribution.
 #
 #**************************************************************************************************

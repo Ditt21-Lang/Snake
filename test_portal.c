@@ -1,12 +1,7 @@
-#include "raylib.h"
 #include <stdio.h>
-#include <stdbool.h>
-#include "emir.h"  
-    
-    
-//bagian portal\\
+#include "emir.h"
+#include <stdlib.h>
 
-                
 
 int main(){
 const int screenWidth = 800;
@@ -33,7 +28,7 @@ InitWindow(LEBAR_LAYAR,TINGGI_LAYAR, "Gerakkan Lingkaran");
 SetTargetFPS(60);
 
 //texture
-Image kayu=LoadImage("resources/portal2.png");
+Image kayu=LoadImage("portal2.png");
 Texture2D textuar=menggambar(&kayu,100,100);
 
 float tuaim=0;
@@ -43,8 +38,8 @@ mportal[0].cooldown=10;
 while(!WindowShouldClose()){
     
 if(yes()){
-buffer=lastbutton();
-    }
+    buffer=lastbutton();
+}
     
    
 DrawText(TextFormat("Buffer: %d", buffer), 50, 50, 30, RED);
@@ -87,7 +82,7 @@ if(check_peluru(mpeluru.coor.x,LEBAR_LAYAR-100,0+30) || check_peluru(mpeluru.coo
     mpeluru.coor.y=400;
 }
 
-teleport_portal(&circleX,&circleY,&mportal,100,100,2);
+teleport_portal(&circleX,&circleY,mportal,100,100,2);
 // Gambar
 BeginDrawing();
 ClearBackground(RAYWHITE);
