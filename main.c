@@ -11,7 +11,7 @@ int main() {
     InitWindow(LEBAR_LAYAR, TINGGI_LAYAR, "Snake Game");
     
     Snake snake;
-    Rintangan obstacle;
+    RintanganNode obstacle;
     Makanan food;
     Enemy enemies[4];
     int enemyCount = 0;
@@ -31,7 +31,7 @@ int main() {
     
     GenerateRintangan(&obstacle, level);
     GenerateMakanan(&food, &obstacle);
-    GenerateEnemy(enemies, enemyCount, level);
+    GenerateEnemy(level);
     
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -41,7 +41,7 @@ int main() {
 
         if (!cekTabrakan(&snake)) {
             UpdateSnake(&snake);
-            DrawSnake(&snake);
+            DrawSnake(&snake, snake.tekstur);
         } else {
             DrawText("Game Over", LEBAR_LAYAR / 2 - 50, TINGGI_LAYAR / 2, 25, RED);
         }
@@ -64,7 +64,7 @@ int main() {
             score = 0;
             if (level >= 2) enemyCount = level - 1;  
 
-            GenerateEnemy(enemies, enemyCount, level);
+            GenerateEnemy(level);
         }
 
 

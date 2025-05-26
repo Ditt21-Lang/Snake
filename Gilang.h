@@ -1,24 +1,32 @@
 #include <stdio.h>
 #include "raylib.h"
 #include "Marrely.h"
-#include "Hilmi.h"
 #ifndef GILANG_H
 #define GILANG_H
 
+typedef struct SnakeNode{
+    Vector2 position;
+    Rectangle sprite;
+    struct SnakeNode* next;
+    struct SnakeNode* prev;
+}SnakeNode;
+
 typedef struct{
-    Vector2 position; //Menyimpan dua nilai, menentukan nilai koordinat x dan y. 
+    SnakeNode* head;
+    SnakeNode* tail;  
     Vector2 speed;
+    Texture2D tekstur;
     int panjang;
-    Vector2 badan[100];
 } Snake;
 
-void InitSnake(Snake *Snake);
-void DrawSnake(Snake *Snake);
-void UpdateSnake(Snake *Snake);
-bool cekTabrakan(Snake *Snake);
+void InitSnake(Snake *snake);
+void DrawSnake(Snake *snake, Texture2D texture);
+void UpdateSnake(Snake *snake);
+bool cekTabrakan(Snake *snake);
+void tambahNode(Snake *snake);
+Vector2 getDir(Vector2 A, Vector2 B);
 
 //Dibutuhkan header Marrely
 bool CheckMakanan(Snake *snake, Makanan *food);
-bool CheckObstacle(Snake *snake, Rintangan *Obstacle);
 
 #endif
