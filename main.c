@@ -394,6 +394,10 @@ int main(){
         }
         EndDrawing();
     }
+    if (snake.head != NULL){
+        freeSnake(&snake);
+    }
+
     UnloadTexture(latar); 
     UnloadTexture(food);
     UnloadTexture(musuh);
