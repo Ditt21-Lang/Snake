@@ -113,6 +113,7 @@ int main(){
     Sound eat = LoadSound("resources/Makanan.wav");
     Music game = LoadMusicStream("resources/GamePlay.wav");
     Sound over = LoadSound("resources/GameOver.wav");
+    Sound hit = LoadSound("resorces/hitObs.wav");
 
     SetSoundVolume(start ,1.5f);
     SetSoundVolume(eat ,1.5f);
@@ -135,30 +136,6 @@ int main(){
             buffer=lastbutton();
         }   
         
-        tuaim+=GetFrameTime(); 
-
-        if(tuaim >=10){
-            tuaim=0;
-        }
-
-        cooldown(&mportal[0].cooldown);
-        if(IsKeyPressed(KEY_P) && mportal[0].cooldown == 0){
-            p_pressed(&mpeluru,buffer,(Vector2){snake.badan[0].x, snake.badan[0].y});
-            mportal[0].cooldown=10;
-        }
-
-        if(mpeluru.status == true){
-            move_peluru(&mpeluru,mpeluru.speed);
-        }
-
-        if(check_peluru(mpeluru.coor.x,BATAS_PORTAL_H-100,0+30) || check_peluru(mpeluru.coor.y,BATAS_PORTAL_V-100,0+30) ){
-            place_portal(mpeluru.coor,mportal,2,BATAS_PORTAL_H,0,BATAS_PORTAL_V,0,mpeluru.buffer,10,5);
-            mpeluru.status=false;
-            mpeluru.coor.x=400;
-            mpeluru.coor.y=400;
-        }
-
-        teleport_portal(&snake.badan[0].x,&snake.badan[0].y,mportal,100,100,2);
 
         UpdateMusicStream(menu);
         UpdateMusicStream(game);
@@ -276,11 +253,11 @@ int main(){
 
             if(!cekTabrakan(&snake)) {
                 UpdateSnake(&snake);
-                DrawSnake(&snake);
+                DrawSnake(&snake, snake.tekstur);
                 
                 if(CheckMakanan(&snake, &makanan)) {
                     score += 100;
-                    snake.panjang++;
+                    tambahNode(&snake);
                     GenerateMakanan(&makanan, rintangan);
                     PlaySound(eat);
                 }
@@ -303,8 +280,7 @@ int main(){
             if(!isGameOver){
                 if(!cekTabrakan(&snake) && !CekTabrakDinding(&snake)){
                     UpdateSnake(&snake);
-                    HandleReverseInput(&snake);
-                    DrawSnake(&snake);
+                    DrawSnake(&snake, snake.tekstur);
                 }
                 else{
                     isGameOver = true;
@@ -313,7 +289,7 @@ int main(){
     
             if(CheckMakanan(&snake, &makanan)){
                 score += 100;
-                snake.panjang++;
+                tambahNode(&snake);
                 GenerateMakanan(&makanan, rintangan);
                 PlaySound(eat);
             }
@@ -321,7 +297,7 @@ int main(){
             if(score >= 1000){
                 score = 0;
                 InitSnake(&snake);
-                DrawSnake(&snake);
+                DrawSnake(&snake, snake.tekstur);
                 level = level + 1;
                 enemyCount = enemyCount + 1;
                 // GenerateEnemy(&enemy, enemyCount, level);

@@ -29,16 +29,6 @@ ButtonNode* CreateButton(const char* text, int yPos) {
     return node;
 }
 
-ButtonNode* TextNode(const char* text, int yPos) {
-    ButtonNode* node = (ButtonNode*)malloc(sizeof(ButtonNode));
-    node->border = (Rectangle){200, yPos, 200, 50};
-    node->text = (char*)malloc(strlen(text) + 1);
-    strcpy(node->text, text);
-    node->hover = false;
-    node->next = NULL;
-    return node;
-}
-
 void UpdateButtons(ButtonNode *head, GameScreen *screen) {
     Vector2 mousePoint = GetMousePosition();
     int i = 0;

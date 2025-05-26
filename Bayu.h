@@ -42,7 +42,6 @@ void DrawScaledTexture(Texture2D texture, int x, int y, int maxWidth);
 void AddTexture(TextureNode **head, const char *path, int page, Vector2 position);
 void FreeTextures(TextureNode *head);
 ButtonNode* CreateButton(const char* text, int yPos);
-ButtonNode* TextNode(const char* text, int yPos);
 int snakeSpritesheet(Position prevDirection, Position nextDirection);
 
 #endif
