@@ -32,5 +32,6 @@ bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead)
 bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive);
 
 EnemyList GenerateEnemy(int level);
+void FreeEnemyList(EnemyList *list)
 
 #endif

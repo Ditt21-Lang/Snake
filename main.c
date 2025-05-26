@@ -305,15 +305,6 @@ int main(){
                 freeEnemyList(&list);
             }
 
-            if(CekTabrakRintangan(snake, snake.badan[0], rintangan)){
-                if(!isGameOver){
-                    lives = lives - 1;
-                    if (lives == 0){
-                        isGameOver = true;
-                    }
-                }
-            }
-
             UpdateCooldown();
             if(mpeluru.status){
                 DrawCircle((int)mpeluru.coor.x, (int)mpeluru.coor.y, radius, GOLD);

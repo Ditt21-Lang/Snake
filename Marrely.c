@@ -67,20 +67,20 @@ void GenerateRintangan(RintanganNode **head, int level) {
        *head = newNode;
     }
 }
-void GenerateEnemy(Enemy *enemy, int count, int level) {
-    if (level < 2) return; 
-    Position enemyPositions[3][3] = {
-        { {12, 12} },                   
-        { {10, 14}, {14, 10} },          
-        { {9, 9}, {13, 13}, {15, 11} }
-    };
+// void GenerateEnemy(Enemy *enemy, int count, int level) {
+//     if (level < 2) return; 
+//     Position enemyPositions[3][3] = {
+//         { {12, 12} },                   
+//         { {10, 14}, {14, 10} },          
+//         { {9, 9}, {13, 13}, {15, 11} }
+//     };
 
-    for (int i = 0; i < count; i++) {
-        enemy[i].position = enemyPositions[level - 2][i];  
-        enemy[i].direction = 1;
-        enemy[i].isVertical = i % 2;
-    }
-}
+//     for (int i = 0; i < count; i++) {
+//         enemy[i].position = enemyPositions[level - 2][i];  
+//         enemy[i].direction = 1;
+//         enemy[i].isVertical = i % 2;
+//     }
+// }
 
 void DrawGame(Makanan *makanan, RintanganNode *rintangan, Enemy *enemies, int enemyCount, int score, int level, 
               Texture2D background, Texture2D borderTexture, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture) {
@@ -137,7 +137,7 @@ while (curr != NULL) {
 void MoveEnemy(Enemy *enemy, int enemyCount) {
     int batasKiri = 1;
     int batasAtas = 1;
-    int batasKanan = GRID_WIDTH - 2;   // Lebih aman agar tidak ke luar batas
+    int batasKanan = GRID_WIDTH - 2;   
     int batasBawah = GRID_HEIGHT - 2;
 
     for (int i = 0; i < enemyCount; i++) {
