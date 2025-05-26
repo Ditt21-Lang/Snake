@@ -324,7 +324,9 @@ int main(){
                 DrawSnake(&snake);
                 level = level + 1;
                 enemyCount = enemyCount + 1;
-                GenerateEnemy(&enemy, enemyCount, level);
+                // GenerateEnemy(&enemy, enemyCount, level);
+                EnemyList list = GenerateEnemy(level); //update
+                freeEnemyList(&list);
             }
 
             if(CekTabrakRintangan(snake, snake.badan[0], rintangan)){
@@ -372,6 +374,8 @@ int main(){
                     enemyCount = 0;
                     GenerateRintangan(&rintangan, level);
                     GenerateMakanan(&makanan, rintangan);
+                    EnemyList list = GenerateEnemy(level); //update
+                    freeEnemyList(&list);
                     isGameOver = false;
                     isStartPlaying = false;
                 }
@@ -395,6 +399,8 @@ int main(){
                     level = 1;
                     GenerateRintangan(&rintangan, level);
                     GenerateMakanan(&makanan, rintangan);
+                    EnemyList list = GenerateEnemy(level); //update
+                    freeEnemyList(&list);
                     isGameOver = false;
                     isStartPlaying = false;
                     isSoundOver = false;

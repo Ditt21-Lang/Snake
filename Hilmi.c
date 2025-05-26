@@ -89,26 +89,47 @@ bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead)
 //             i++;
 // }      kode lama yang error
 
+// bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
+//     int i = 0;
+//     bool collision = false;  
+//     while (i < *count) {
+//         if (head.x == enemy[i].position.x && head.y == enemy[i].position.y) {
+//             (*lives); //--;  
+//             collision = true;
+//             if (*lives <= 0) {
+//                 *alive = false;  
+//             } else {
+//                 *alive = true;
+//             }
+//         }
+//         i++;
+//     }
+    
+//     if (collision) {
+//         printf("Lives: %d\n", *lives); 
+//     }
+// }   //kode baru 
+
 bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
     int i = 0;
     bool collision = false;  
     while (i < *count) {
         if (head.x == enemy[i].position.x && head.y == enemy[i].position.y) {
-            (*lives); //--;  
+            (*lives)--;  
             collision = true;
-            if (*lives <= 0) {
-                *alive = false;  
-            } else {
-                *alive = true;
-            }
+            *alive = (*lives > 0);
         }
         i++;
     }
-    
+
     if (collision) {
         printf("Lives: %d\n", *lives); 
     }
-}   //kode baru 
+
+    return collision; 
+} //kode terbaru
+
+
 
 // EnemyList GenerateEnemy(int level) {
 //     EnemyList list = {NULL, 0};
@@ -138,7 +159,7 @@ bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *al
 
 //         newEnemy->position = enemyPositions[level - 2 ][i];
 //         newEnemy->direction = 1;
-//         newEnemy->isVertical = 1 % 2;
+//         newEnemy->isVertical = i % 2;
 //         newEnemy->next = NULL;
 
 //         if (list.head == NULL) {
@@ -152,4 +173,40 @@ bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *al
 //     }
 
 //     return list;
+// }
+
+// void FreeEnemyList(EnemyList *list) {
+//     Enemy *current = list->head;
+//     while (current != NULL) {
+//         Enemy *hapus = current;
+//         current = current->next;
+//         free(hapus);
+//     }
+//     list->head = NULL;
+//     list->count = 0;
+// }
+
+// void MoveEnemy(EnemyList *list) {
+//     int batasKiri = 1;
+//     int batasAtas = 1;
+//     int batasKanan = GRID_WIDTH - 2;
+//     int batasBawah = GRID_HEIGHT - 2;
+
+//     Enemy *current = list->head;
+//     while (current != NULL) {
+//         if (current->isVertical) {
+//             current->position.y += current->direction;
+//             if (current->position.y <= batasAtas || current->position.y >= batasBawah) {
+//                 current->direction *= -1;
+//                 current->position.y += current->direction;
+//             }
+//         } else {
+//             current->position.x += current->direction;
+//             if (current->position.x <= batasKiri || current->position.x >= batasKanan) {
+//                 current->direction *= -1;
+//                 current->position.x += current->direction;
+//             }
+//         }
+//         current = current->next;
+//     }
 // }

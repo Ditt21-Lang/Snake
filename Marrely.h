@@ -17,11 +17,11 @@ typedef struct {
     Position position;
 } Makanan;
 
-typedef struct {
-    Position position;
-    int direction;
-    int isVertical;
-} Enemy;
+// typedef struct {
+//     Position position;
+//     int direction;
+//     int isVertical;
+// } Enemy;
 
 typedef struct RintanganNode {
     Position posisi;
@@ -31,7 +31,7 @@ typedef struct RintanganNode {
 // Fungsi utama
 void GenerateMakanan(Makanan *makanan, RintanganNode *rintanganHead);
 void GenerateRintangan(RintanganNode **, int level);
-void GenerateEnemy(Enemy *enemy, int count, int level);
+// void GenerateEnemy(Enemy *enemy, int count, int level);
 void DrawGame(Makanan *makanan, RintanganNode *rintanganHead, Enemy *enemy, int enemyCount,
               int score, int level,
               Texture2D background, Texture2D borderTexture,
