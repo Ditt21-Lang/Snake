@@ -34,12 +34,23 @@
         struct RintanganNode *next;
     } RintanganNode;
 
+typedef struct levelNode{
+    RintanganNode* rintanganHead;
+    struct levelNode* next;
+} LevelNode;
+
+extern LevelNode *levelList;
+
+
 // Fungsi utama
 void GenerateMakanan(Makanan *makanan, RintanganNode *rintanganHead);
 void GenerateRintangan(RintanganNode **, int level);
+void GenerateLevel(LevelNode **, int level);
 void DrawGame(Makanan *makanan, RintanganNode *rintanganHead, EnemyList *enemy, int enemyCount,
               int score, int level,
               Texture2D background, Texture2D borderTexture,
               Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture);
+void FreeRintangan(RintanganNode **head);
+void FreeLevel(LevelNode **head);
 
 #endif

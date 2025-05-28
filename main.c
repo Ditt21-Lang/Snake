@@ -11,6 +11,8 @@
 #define UKURAN_BLOCK 20
 
 int main(){
+
+    
     
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Snave");
     InitAudioDevice();
@@ -340,6 +342,8 @@ int main(){
                     enemyCount = 0;
                     level = 1;
                     GenerateMakanan(&makanan, rintangan);
+                    EnemyList list = GenerateEnemy(level); //update
+                    freeEnemyList(&list);
                     isGameOver = false;
                     isStartPlaying = false;
                     isSoundOver = false;
