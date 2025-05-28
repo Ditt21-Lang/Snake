@@ -17,11 +17,11 @@ typedef struct {
     Position position;
 } Makanan;
 
-typedef struct {
-    Position position;
-    int direction;
-    int isVertical;
-} Enemy;
+// typedef struct {
+//     Position position;
+//     int direction;
+//     int isVertical;
+// } Enemy;
 
 typedef struct RintanganNode {
     Position posisi;
