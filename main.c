@@ -11,6 +11,8 @@
 #define UKURAN_BLOCK 20
 
 int main(){
+
+    
     
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Snave");
     InitAudioDevice();
@@ -107,6 +109,7 @@ int main(){
 
     GenerateRintangan(&rintangan, level);
     GenerateMakanan(&makanan, rintangan);
+    
 
     InitSnake(&snake);
 
