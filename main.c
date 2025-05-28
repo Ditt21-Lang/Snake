@@ -127,15 +127,13 @@ int main(){
     float scale = 1.2;
     float radius = 10.0f;
 
-    GenerateMakanan(&makanan, rintangan);
-
     InitSnake(&snake);
-
+    GenerateMakanan(&makanan, rintangan);
+    
     while(!WindowShouldClose()){
         if(yes()){
             buffer=lastbutton();
         }   
-        
 
         UpdateMusicStream(menu);
         UpdateMusicStream(game);
@@ -251,7 +249,7 @@ int main(){
             DrawText(TextFormat("Score: %d", score), 165, 625, 50, GOLD);
             DrawText("ENDLESS MODE", SCREEN_WIDTH/2 - MeasureText("ENDLESS MODE",70)/2, SCREEN_HEIGHT-90, 70, BROWN);
 
-            if(!cekTabrakan(&snake)) {
+            if(!cekTabrakan(&snake) && !CekTabrakDinding(&snake)) {
                 UpdateSnake(&snake);
                 DrawSnake(&snake, snake.tekstur);
                 
@@ -340,30 +338,7 @@ int main(){
                     score = 0;
                     lives = 3;
                     enemyCount = 0;
-                    GenerateRintangan(&rintangan, level);
-                    GenerateMakanan(&makanan, rintangan);
-                    isGameOver = false;
-                    isStartPlaying = false;
-                }
-                
-                if (strcmp(current->text, "Main Menu") == 0 && current->hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    InitSnake(&snake);
-                    currentScreen = MENU;
-                    score = 0;
-                    lives = 3;
-                    isGameOver = false;
-                    isStartPlaying = false;
-                    fps = 60;
-                    SetTargetFPS(fps);
-                }
-                
-                if (strcmp(current->text, "Restart") == 0 && current->hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    InitSnake(&snake);
-                    score = 0;
-                    lives = 3;
-                    enemyCount = 0;
                     level = 1;
-                    GenerateRintangan(&rintangan, level);
                     GenerateMakanan(&makanan, rintangan);
                     isGameOver = false;
                     isStartPlaying = false;
@@ -376,6 +351,8 @@ int main(){
                     score = 0;
                     lives = 3;
                     level = 1;
+                    enemyCount = 0;
+                    GenerateMakanan(&makanan, rintangan);
                     isGameOver = false;
                     isStartPlaying = false;
                     isSoundOver = false;
