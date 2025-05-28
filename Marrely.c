@@ -45,8 +45,8 @@ void GenerateMakanan(Makanan *makanan, RintanganNode *rintanganHead) {
 }
 
 
-void GenerateRintangan(RintanganNode **head, int *level) {
-    if (*level < 1 || *level > 5) return;  
+void GenerateRintangan(RintanganNode **head, int level) {
+    if (level < 1 || level > 5) return;  
   
     
     Position levelRintangan[5][10] = {
@@ -60,9 +60,9 @@ void GenerateRintangan(RintanganNode **head, int *level) {
 *head = NULL;
     
 
-    for (int i = 0; i < *level; i++) {
+    for (int i = 0; i < level; i++) {
        RintanganNode *newNode = (RintanganNode *)malloc(sizeof(RintanganNode));
-       newNode->posisi = levelRintangan[*level - 1][i];
+       newNode->posisi = levelRintangan[level - 1][i];
        newNode->next = *head;
        *head = newNode;
     }

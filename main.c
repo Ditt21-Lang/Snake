@@ -127,8 +127,6 @@ int main(){
     float scale = 1.2;
     float radius = 10.0f;
 
-
-    GenerateRintangan(&rintangan, &level);
     GenerateMakanan(&makanan, rintangan);
 
     InitSnake(&snake);
@@ -273,6 +271,7 @@ int main(){
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
             DrawGame(&makanan, rintangan, &enemyList, enemyCount, score,level, dinding, tanah, food, musuh, obstacle );
+            GenerateRintangan(&rintangan, level);
             
             DrawText(TextFormat("Score: %d", score), 10, 630, 30, GOLD);
             DrawText(TextFormat("Lives: %d", lives), 10, 660, 30, GOLD);
@@ -302,7 +301,7 @@ int main(){
                 InitSnake(&snake);
                 DrawSnake(&snake, snake.tekstur);
                 level = level + 1;
-                GenerateRintangan(&rintangan, &level);
+                GenerateRintangan(&rintangan, level);
                 enemyCount = enemyCount + 1;
                 FreeEnemyList(&enemyList);             
                 enemyList = GenerateEnemy(level); 
@@ -341,7 +340,7 @@ int main(){
                     score = 0;
                     lives = 3;
                     enemyCount = 0;
-                    GenerateRintangan(&rintangan, &level);
+                    GenerateRintangan(&rintangan, level);
                     GenerateMakanan(&makanan, rintangan);
                     isGameOver = false;
                     isStartPlaying = false;
@@ -364,7 +363,7 @@ int main(){
                     lives = 3;
                     enemyCount = 0;
                     level = 1;
-                    GenerateRintangan(&rintangan, &level);
+                    GenerateRintangan(&rintangan, level);
                     GenerateMakanan(&makanan, rintangan);
                     isGameOver = false;
                     isStartPlaying = false;

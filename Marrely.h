@@ -36,7 +36,7 @@
 
 // Fungsi utama
 void GenerateMakanan(Makanan *makanan, RintanganNode *rintanganHead);
-void GenerateRintangan(RintanganNode **, int *level);
+void GenerateRintangan(RintanganNode **, int level);
 void DrawGame(Makanan *makanan, RintanganNode *rintanganHead, EnemyList *enemy, int enemyCount,
               int score, int level,
               Texture2D background, Texture2D borderTexture,
