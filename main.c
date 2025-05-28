@@ -26,6 +26,8 @@ int main(){
     Makanan makanan;
     RintanganNode *rintangan = NULL;
     Enemy enemy;
+    EnemyList enemyList;
+
 
     //peluru
     peluru mpeluru={0};
@@ -126,7 +128,7 @@ int main(){
     float radius = 10.0f;
 
 
-    GenerateRintangan(&rintangan, level);
+    GenerateRintangan(&rintangan, &level);
     GenerateMakanan(&makanan, rintangan);
 
     InitSnake(&snake);
@@ -246,7 +248,7 @@ int main(){
         else if (currentScreen == ENDLESS) {
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
-            DrawGame(&makanan, rintangan, &enemy, enemyCount, score, level, dinding, tanah, food, musuh, obstacle);
+            DrawGame(&makanan, rintangan, &enemyList, enemyCount, score, level, dinding, tanah, food, musuh, obstacle);
 
             DrawText(TextFormat("Score: %d", score), 165, 625, 50, GOLD);
             DrawText("ENDLESS MODE", SCREEN_WIDTH/2 - MeasureText("ENDLESS MODE",70)/2, SCREEN_HEIGHT-90, 70, BROWN);
@@ -270,7 +272,7 @@ int main(){
         else if (currentScreen == STAGE ){
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
-            DrawGame(&makanan, rintangan, &enemy, enemyCount, score,level, dinding, tanah, food, musuh, obstacle );
+            DrawGame(&makanan, rintangan, &enemyList, enemyCount, score,level, dinding, tanah, food, musuh, obstacle );
             
             DrawText(TextFormat("Score: %d", score), 10, 630, 30, GOLD);
             DrawText(TextFormat("Lives: %d", lives), 10, 660, 30, GOLD);
@@ -281,6 +283,7 @@ int main(){
                 if(!cekTabrakan(&snake) && !CekTabrakDinding(&snake)){
                     UpdateSnake(&snake);
                     DrawSnake(&snake, snake.tekstur);
+                    MoveEnemy(&enemyList);
                 }
                 else{
                     isGameOver = true;
@@ -299,7 +302,10 @@ int main(){
                 InitSnake(&snake);
                 DrawSnake(&snake, snake.tekstur);
                 level = level + 1;
+                GenerateRintangan(&rintangan, &level);
                 enemyCount = enemyCount + 1;
+                FreeEnemyList(&enemyList);             
+                enemyList = GenerateEnemy(level); 
             }
 
             UpdateCooldown();
@@ -313,8 +319,7 @@ int main(){
                 mportal[0].status=false;
                 mportal[1].status=false;
             }
-            
-            MoveEnemy(&enemy, enemyCount);    
+                
         }
         
         if ((currentScreen == ENDLESS || currentScreen == STAGE) && isGameOver) {   
@@ -336,7 +341,7 @@ int main(){
                     score = 0;
                     lives = 3;
                     enemyCount = 0;
-                    GenerateRintangan(&rintangan, level);
+                    GenerateRintangan(&rintangan, &level);
                     GenerateMakanan(&makanan, rintangan);
                     isGameOver = false;
                     isStartPlaying = false;
@@ -359,7 +364,7 @@ int main(){
                     lives = 3;
                     enemyCount = 0;
                     level = 1;
-                    GenerateRintangan(&rintangan, level);
+                    GenerateRintangan(&rintangan, &level);
                     GenerateMakanan(&makanan, rintangan);
                     isGameOver = false;
                     isStartPlaying = false;
@@ -394,10 +399,6 @@ int main(){
         }
         EndDrawing();
     }
-    if (snake.head != NULL){
-        freeSnake(&snake);
-    }
-
     UnloadTexture(latar); 
     UnloadTexture(food);
     UnloadTexture(musuh);
@@ -412,5 +413,6 @@ int main(){
     FreeTextures(ssGameplayTextures);
     CloseAudioDevice();
     CloseWindow();
+    freeSnake(&snake);
     return 0;      
 }
