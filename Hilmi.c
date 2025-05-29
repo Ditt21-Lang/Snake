@@ -56,7 +56,7 @@ bool CekTabrakDinding(Snake *snake) {
 }
 
 
-bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead) {
+bool CekTabrakRintangan(Vector2 head, RintanganNode *rintanganHead) {
     int KepalaX = (int)(head.x / CELL_SIZE);
     int KepalaY = (int)(head.y / CELL_SIZE);
 
@@ -71,48 +71,6 @@ bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead)
     return false; 
 }
 
-<<<<<<< HEAD
-=======
-
-// void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
-//     int i = 0;
-//     while (i < enemy->count){
-//             if (head.x == enemy[i].position.x 
-//                 && head.y == enemy[i].position.y){
-//                 (*lives)--;
-//                 if (*lives <=0){
-//                     *alive = false;
-//                   } else {
-//                     *alive = true;
-//                   }
-//                 }
-//                 printf("Lives : %d\n", *lives);
-//             }
-//             i++;
-// }      kode lama yang error
-
-// bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
-//     int i = 0;
-//     bool collision = false;  
-//     while (i < *count) {
-//         if (head.x == enemy[i].position.x && head.y == enemy[i].position.y) {
-//             (*lives); //--;  
-//             collision = true;
-//             if (*lives <= 0) {
-//                 *alive = false;  
-//             } else {
-//                 *alive = true;
-//             }
-//         }
-//         i++;
-//     }
-    
-//     if (collision) {
-//         printf("Lives: %d\n", *lives); 
-//     }
-// }   //kode baru 
-
->>>>>>> 5ae3c48002376472e5f581d1001162bcba4bac98
 bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
     int i = 0;
     bool collision = false;  
@@ -130,7 +88,8 @@ bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *al
     }
 
     return collision; 
-} //kode terbaru
+} //kode terbaru 
+// Benerin lagi cektabrakEnemy nya, saran aku lihat cek tabrak rintangan. Kodenya sama sama aja tinggal nyeusain dengan enemy
 
 
 
@@ -160,17 +119,10 @@ EnemyList GenerateEnemy(int level) {
         Enemy *newEnemy = malloc(sizeof(Enemy));
         if (!newEnemy) break; //cek alokasi memori
 
-<<<<<<< HEAD
         newEnemy->position = enemyPositions[level - 2 ][i];
         newEnemy->direction = 1;
         newEnemy->isVertical = i % 2;
         newEnemy->next = NULL;
-=======
-//         newEnemy->position = enemyPositions[level - 2 ][i];
-//         newEnemy->direction = 1;
-//         newEnemy->isVertical = i % 2;
-//         newEnemy->next = NULL;
->>>>>>> 5ae3c48002376472e5f581d1001162bcba4bac98
 
         if (list.head == NULL) {
             list.head = newEnemy;
@@ -182,7 +134,6 @@ EnemyList GenerateEnemy(int level) {
         list.count++;
     }
 
-<<<<<<< HEAD
     return list;
 }
 
@@ -221,43 +172,3 @@ void MoveEnemy(EnemyList *list) {
         current = current->next;
     }
 }
-=======
-//     return list;
-// }
-
-// void FreeEnemyList(EnemyList *list) {
-//     Enemy *current = list->head;
-//     while (current != NULL) {
-//         Enemy *hapus = current;
-//         current = current->next;
-//         free(hapus);
-//     }
-//     list->head = NULL;
-//     list->count = 0;
-// }
-
-// void MoveEnemy(EnemyList *list) {
-//     int batasKiri = 1;
-//     int batasAtas = 1;
-//     int batasKanan = GRID_WIDTH - 2;
-//     int batasBawah = GRID_HEIGHT - 2;
-
-//     Enemy *current = list->head;
-//     while (current != NULL) {
-//         if (current->isVertical) {
-//             current->position.y += current->direction;
-//             if (current->position.y <= batasAtas || current->position.y >= batasBawah) {
-//                 current->direction *= -1;
-//                 current->position.y += current->direction;
-//             }
-//         } else {
-//             current->position.x += current->direction;
-//             if (current->position.x <= batasKiri || current->position.x >= batasKanan) {
-//                 current->direction *= -1;
-//                 current->position.x += current->direction;
-//             }
-//         }
-//         current = current->next;
-//     }
-// }
->>>>>>> 5ae3c48002376472e5f581d1001162bcba4bac98

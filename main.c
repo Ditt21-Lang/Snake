@@ -117,10 +117,13 @@ int main(){
     Sound eat = LoadSound("resources/Makanan.wav");
     Music game = LoadMusicStream("resources/GamePlay.wav");
     Sound over = LoadSound("resources/GameOver.wav");
-    Sound hit = LoadSound("resorces/hitObs.wav");
+    Sound hit = LoadSound("resources/hitObs.wav");
+    Sound level_up = LoadSound("resources/LevelUp.wav");
 
     SetSoundVolume(start ,1.5f);
     SetSoundVolume(eat ,1.5f);
+    SetSoundVolume(hit, 1.5f);
+    SetSoundVolume(level_up, 1.5f);
     
     float tuaim=0;
     mportal[0].cooldown=10;
@@ -285,6 +288,7 @@ int main(){
                     MoveEnemy(&enemyList);
                 }
                 else{
+                    level = 0;
                     isGameOver = true;
                 }
             }
@@ -298,13 +302,23 @@ int main(){
 
             if(score >= 1000){
                 score = 0;
+                PlaySound(level_up);
                 InitSnake(&snake);
                 DrawSnake(&snake, snake.tekstur);
                 level = level + 1;
                 GenerateRintangan(&rintangan, level);
-                enemyCount = enemyCount + 1;
-                FreeEnemyList(&enemyList);             
+                enemyCount = enemyCount + 1;            
                 enemyList = GenerateEnemy(level); 
+            }
+
+            if(CekTabrakRintangan((Vector2){snake.head->position.x, snake.head->position.y}, rintangan)) {
+                if (!isGameOver){
+                    lives = lives - 1;
+                    PlaySound(hit);
+                    if (lives == 0){
+                        isGameOver = true;
+                    }
+                }
             }
 
             UpdateCooldown();
@@ -341,9 +355,8 @@ int main(){
                     lives = 3;
                     enemyCount = 0;
                     level = 1;
+                    FreeEnemyList(&enemyList); 
                     GenerateMakanan(&makanan, rintangan);
-                    EnemyList list = GenerateEnemy(level); //update
-                    freeEnemyList(&list);
                     isGameOver = false;
                     isStartPlaying = false;
                     isSoundOver = false;
@@ -356,12 +369,14 @@ int main(){
                     lives = 3;
                     level = 1;
                     enemyCount = 0;
-                    GenerateMakanan(&makanan, rintangan);
                     isGameOver = false;
                     isStartPlaying = false;
                     isSoundOver = false;
+                    isMusicPlaying = false;
                     fps = 60;
                     SetTargetFPS(fps);
+                    FreeRintangan(&rintangan);
+                    FreeEnemyList(&enemyList);
                 }
                 
                 current = current->next;
@@ -385,14 +400,16 @@ int main(){
     UnloadTexture(obstacle);
     UnloadTexture(snake.tekstur);
     UnloadMusicStream(menu);
+    CloseAudioDevice();
+    CloseWindow();
     FreeButtons(menuButtons);
     FreeButtons(modeButtons);
     FreeButtons(gameOverButtons);
     FreeButtons(howToButtons);
     FreeTextures(howToPlayTextures);
     FreeTextures(ssGameplayTextures);
-    CloseAudioDevice();
-    CloseWindow();
     freeSnake(&snake);
+    FreeEnemyList(&enemyList);
+    FreeRintangan(&rintangan);
     return 0;      
 }
