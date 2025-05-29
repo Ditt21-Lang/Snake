@@ -28,7 +28,7 @@ InitWindow(LEBAR_LAYAR,TINGGI_LAYAR, "Gerakkan Lingkaran");
 SetTargetFPS(60);
 
 //texture
-Image kayu=LoadImage("portal2.png");
+Image kayu=LoadImage("resources/queen.png");
 Texture2D textuar=menggambar(&kayu,100,100);
 
 float tuaim=0;
@@ -75,8 +75,8 @@ if(mpeluru.status == true){
 move_peluru(&mpeluru,mpeluru.speed);
 }
 
-if(check_peluru(mpeluru.coor.x,LEBAR_LAYAR-100,0+30) || check_peluru(mpeluru.coor.y,TINGGI_LAYAR-100,0+30) ){
-    place_portal(mpeluru.coor,mportal,2,LEBAR_LAYAR,0,TINGGI_LAYAR,0,mpeluru.buffer,10,5);
+if(check_peluru(mpeluru.coor.x,LEBAR_LAYAR-60,0+30) || check_peluru(mpeluru.coor.y,TINGGI_LAYAR-60,0+30) ){
+    place_portal(mpeluru.coor,mportal,2,LEBAR_LAYAR-50,50,TINGGI_LAYAR-50,50,mpeluru.buffer,0,5);
     mpeluru.status=false;
     mpeluru.coor.x=400;
     mpeluru.coor.y=400;

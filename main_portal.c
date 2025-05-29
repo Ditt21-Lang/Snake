@@ -3,18 +3,13 @@
 #include <stdbool.h>
 #include "emir.h"  
     
-    
-//bagian portal\\
 
-                
 
 int main(){
-const int screenWidth = 800;
-const int screenHeight = 600;
 int buffer;
 //peluru
 peluru mpeluru={0};
-mpeluru.speed=50;
+mpeluru.speed=10;
 mpeluru.status=false;
 
 //portal
@@ -23,8 +18,8 @@ mportal[0].status=false;
 mportal[1].status=false;
 
 // Variabel lingkaran
-float circleX = screenWidth / 2.0f;
-float circleY = screenHeight / 2.0f;
+float circleX = LEBAR_LAYAR / 2.0f;
+float circleY = LEBAR_LAYAR / 2.0f;
 float radius = 30.0f;
 float speed = 5.0f;
 
@@ -33,11 +28,11 @@ InitWindow(LEBAR_LAYAR,TINGGI_LAYAR, "Gerakkan Lingkaran");
 SetTargetFPS(60);
 
 //texture
-Image kayu=LoadImage("resources/portal2.png");
-Texture2D textuar=menggambar(&kayu,100,100);
+Image kayu=LoadImage("resources/queen.png");
+Texture2D textuar=menggambar(&kayu,lebar_texture_portal,tinggi_texture_portal);
 
 float tuaim=0;
-mportal[0].cooldown=10;
+mportal[0].cooldown=2;
 
 
 while(!WindowShouldClose()){
@@ -45,8 +40,7 @@ while(!WindowShouldClose()){
 if(yes()){
 buffer=lastbutton();
     }
-    
-   
+
 DrawText(TextFormat("Buffer: %d", buffer), 50, 50, 30, RED);
 DrawText(TextFormat("peluru: %f", mpeluru.coor.y), 100, 150, 30, RED);
 DrawText(TextFormat("peluru: %f", mpeluru.coor.x), 100, 100, 30, RED);
@@ -80,14 +74,14 @@ if(mpeluru.status == true){
 move_peluru(&mpeluru,mpeluru.speed);
 }
 
-if(check_peluru(mpeluru.coor.x,LEBAR_LAYAR-100,0+30) || check_peluru(mpeluru.coor.y,TINGGI_LAYAR-100,0+30) ){
-    place_portal(mpeluru.coor,mportal,2,LEBAR_LAYAR,0,TINGGI_LAYAR,0,mpeluru.buffer,10,5);
+if(check_peluru(mpeluru.coor.x,LEBAR_LAYAR,30) || check_peluru(mpeluru.coor.y,TINGGI_LAYAR,30) ){
+    place_portal(mpeluru.coor,tinggi_texture_portal,lebar_texture_portal,mportal,2,LEBAR_LAYAR,0,TINGGI_LAYAR,0,mpeluru.buffer,0,5);
     mpeluru.status=false;
     mpeluru.coor.x=400;
     mpeluru.coor.y=400;
 }
 
-teleport_portal(&circleX,&circleY,&mportal,100,100,2);
+teleport_portal(&circleX,&circleY,mportal,100,100,2);
 // Gambar
 BeginDrawing();
 ClearBackground(RAYWHITE);

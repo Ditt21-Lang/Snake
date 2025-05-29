@@ -23,7 +23,7 @@ int lastbutton(){
     if(IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_LEFT) ||IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_UP)){
     return true;
     }
-    
+    return false;
     }
     
 //if P press | peluru koor koornya ada di head of ular
@@ -34,57 +34,54 @@ void p_pressed(peluru *mpeluru,int buffer_mengisi,Vector2 target_obj){
     (*mpeluru).buffer=buffer_mengisi;
     }
 
-
 //peluru bergerak and arah nya
-    void move_peluru(peluru *mpeluru,float speed){
-        switch(mpeluru->buffer){
-        case 262://KANAN:
-        (*mpeluru).coor.x +=speed;
-        break;
-        case 263://KIRI:
-        mpeluru->coor.x -=speed;
-        break;
-        case 264://BAWAH:
-        mpeluru->coor.y +=speed;
-        break;
-        case 265://ATAS:
-        mpeluru->coor.y -=speed;
-        break;
-        }
-        }
-    
-   // check if peluru kena tembok return true
-    bool check_peluru(float coor,int lebar_tinggi,int min){
-        if(coor>lebar_tinggi || coor<min){
-           return true;
-        }else {
-        return false;
-        }
-            
-    }    
-    
-    
-    
-//bagian portal\\
+void move_peluru(peluru *mpeluru,float speed){
+    switch(mpeluru->buffer){
+    case 262://KANAN:
+    (*mpeluru).coor.x +=speed;
+    break;
+    case 263://KIRI:
+    mpeluru->coor.x -=speed;
+    break;
+    case 264://BAWAH:
+    mpeluru->coor.y +=speed;
+    break;
+    case 265://ATAS:
+    mpeluru->coor.y -=speed;
+    break;
+    }
+    }
 
-//koordinat portal ke 2
-Vector2 convert_coor_portal(Vector2 coor,int max_lebar,int min_lebar,int max_tinggi,int min_tinggi,int arah){
+// check if peluru kena tembok return true
+bool check_peluru(float coor,int max,int min){
+    if(coor > max || coor < min){
+        return true;
+    }
+    else {
+        return false;
+    }   
+}    
+
+//fungsi ini tuh membalikan apabila kanan maka koor paling kirin up maka bawah
+//fungsi ini tuh membalikan apabila kanan maka koor paling kirin up maka bawah
+Vector2 convert_coor_portal(Vector2 portal_coordinat,int max_lebar,int min_lebar,int max_tinggi,int min_tinggi,int arah){
+//fungsi ini tuh membalikan apabila kanan maka koor paling kirin up maka bawah
     switch(arah){
         case KANAN:
-        coor.x -= coor.x; //x
-        return coor;
+        portal_coordinat.x = min_lebar; //x
+        return portal_coordinat;
         break;
         case KIRI:
-        coor.x = max_lebar-100; //x
-        return coor;
+        portal_coordinat.x = max_lebar; //x
+        return portal_coordinat;
         break;
         case BAWAH:
-        coor.y -=coor.y; 
-        return coor;
+        portal_coordinat.y =min_tinggi; 
+        return portal_coordinat;
         break;
         case ATAS:
-        coor.y=max_tinggi-100;
-        return coor;
+        portal_coordinat.y=max_tinggi;
+        return portal_coordinat;
         break;
         default:
         break;
@@ -93,11 +90,10 @@ Vector2 convert_coor_portal(Vector2 coor,int max_lebar,int min_lebar,int max_tin
 
 //mengset coor portal
 //if(check_peluru==true) kalo si peluru kena tembok
-    void place_portal(Vector2 obj,portal *p1,int kotak,int max_lebar,int min_lebar,int max_tinggi,int min_tinggi,int arah,float cooldown,float activation){
+    void place_portal(Vector2 coor_peluru,portal *p1,int kotak,int max_lebar/*- lebar image - lebar object */,int min_lebar,int max_tinggi,int min_tinggi,int arah,float cooldown,float activation){
     for(int i=0;i<kotak;i++){
         if(i%2 == 0){
-        (*(p1+i)).coor.x=obj.x;
-        (*(p1+i)).coor.y=obj.y;
+        (*(p1+i)).coor=convert_coor_portal(coor_peluru,min_lebar,max_lebar,min_tinggi,max_tinggi,arah);
         (*(p1+i)).status=true;
         (*(p1+i)).cooldown=cooldown;
         (*(p1+i)).activation=activation;
@@ -107,7 +103,6 @@ Vector2 convert_coor_portal(Vector2 coor,int max_lebar,int min_lebar,int max_tin
         (*(p1+i)).status=true;
         }
     }
-
 } 
 
 bool cooldown(float *target){
@@ -119,7 +114,7 @@ bool cooldown(float *target){
         return true;
 }
 
-    Texture2D menggambar(Image *edit,int width,int height){
+Texture2D menggambar(Image *edit,int width,int height){
      ImageResize(edit,width,height);
      Texture2D textuar=LoadTextureFromImage(*edit);
      UnloadImage(*edit);
@@ -127,16 +122,15 @@ bool cooldown(float *target){
     }
 
 
-    void draw_portal(Texture2D purtal,int kotak,portal *mportal,int lgambar,int tgambar){
-        for(int i=0;i<kotak;i++){
-            if((mportal+i)->status == true){
-        DrawTexture(purtal,mportal[i].coor.x-(lgambar/2),mportal[i].coor.y-(tgambar/2),BLUE);
-        }else{
-            return;
-        }
+void draw_portal(Texture2D purtal,int kotak,portal *mportal,int lgambar,int tgambar){
+    for(int i=0;i<kotak;i++){
+        if((mportal+i)->status == true){
+    DrawTexture(purtal,mportal[i].coor.x-(lgambar/2),mportal[i].coor.y-(tgambar/2),BLUE);
+    }else{
+        return;
     }
-    }
-
+}
+}
 
 void teleport_portal(float *targetx,float *targety,portal mportal[],int lgambar,int tgambar,int kotak){
     for(int i=0;i<kotak;i++){

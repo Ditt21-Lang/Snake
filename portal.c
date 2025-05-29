@@ -81,15 +81,15 @@ Vector2 convert_coor_portal(Vector2 coor,int max_lebar,int min_lebar,int max_tin
 
 } 
 
-    void draw_portal(Texture2D purtal,int kotak,portal *mportal,int lgambar,int tgambar){
-        for(int i=0;i<kotak;i++){
-            if((mportal+i)->status == true){
-        DrawTexture(purtal,mportal[i].coor.x-(lgambar/2),mportal[i].coor.y-(tgambar/2),BLUE);
-        }else{
-            printf("portal tidak ada");
-        }
+void draw_portal(Texture2D purtal,int kotak,portal *mportal,int lgambar,int tgambar){
+    for(int i=0;i<kotak;i++){
+        if((mportal+i)->status == true){
+    DrawTexture(purtal,mportal[i].coor.x-(lgambar/2),mportal[i].coor.y-(tgambar/2),BLUE);
+    }else{
+        printf("portal tidak ada");
     }
-    }
+}
+}
 
 
 
