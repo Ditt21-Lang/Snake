@@ -16,7 +16,7 @@ void HandleReverseInput(Snake *Snake);
 void UpdateCooldown();
 bool CekTabrakDinding(Snake *snake);
 bool CekTabrakRintangan(Vector2 head, RintanganNode *rintanganHead);
-bool CekTabrakEnemy(Vector2 head, EnemyList list);
+bool CekTabrakEnemy(Position head, EnemyList list);
 
 EnemyList GenerateEnemy(int level);
 void FreeEnemyList(EnemyList *list);
