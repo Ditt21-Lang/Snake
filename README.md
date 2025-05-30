@@ -36,7 +36,7 @@ Unlike the typical Snake game, **Snave** takes you into a cave full of surprises
 | Emir Althaf | Zerokarahajimaru | Portal |
 | Gilang Aditya | Ditt21-Lang | Snake, Check Collision |
 | Hilmi Mahdani | hilmimahdani | Reverse, Check Collision |
-| Marrely Salsa | marrelykasih | Obstacle, Food, Draw Visual |
+| Marrely Salsa | marrelykasih | Draw Visual (Obstacle, Food, Enemy, And Map) |
 
 # 🛠️ How to build and run
 - Use raylib, if you don't have one you can download it at https://www.raylib.com/.
