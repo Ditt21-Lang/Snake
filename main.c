@@ -280,8 +280,8 @@ int main(){
             
             DrawText(TextFormat("Score: %d", score), 10, 630, 30, GOLD);
             DrawText(TextFormat("Lives: %d", lives), 10, 660, 30, GOLD);
-            DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
-            DrawText(TextFormat("Cooldown: %f", GetTime(),tuaim), 420, 660, 30, RED);
+            DrawText(TextFormat("Level: %d", level), 385, 630, 30, GOLD);
+            DrawText(TextFormat("Cooldown: %f", reverseTimer), 385, 660, 30, RED);
             DrawText("STAGE MODE", SCREEN_WIDTH / 2 - MeasureText("STAGE MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
             if(!isGameOver){
                 if(!cekTabrakan(&snake) && !CekTabrakDinding(&snake)){
@@ -313,7 +313,8 @@ int main(){
                 enemyList = GenerateEnemy(level); 
             }
 
-            if(CekTabrakRintangan((Vector2){snake.head->position.x, snake.head->position.y}, rintangan)) {
+            if(CekTabrakRintangan((Vector2){snake.head->position.x, snake.head->position.y}, rintangan) ||
+                CekTabrakEnemy(snake, enemyList)) {
                 if (!isGameOver){
                     lives = lives - 1;
                     PlaySound(hit);
@@ -331,6 +332,10 @@ int main(){
 
             if (showHit){
                 DrawText(TextFormat("HIT!"), 245, 650, 30, RED);
+            }
+
+            if (IsKeyPressed(KEY_SPACE)){
+                ReverseSnake(&snake);
             }
 
             UpdateCooldown();
