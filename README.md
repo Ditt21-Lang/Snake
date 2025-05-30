@@ -40,7 +40,7 @@ Unlike the typical Snake game, **Snave** takes you into a cave full of surprises
 
 # 🛠️ How to build and run
 - Use raylib, if you don't have one you can download it at https://www.raylib.com/.
-- Your compiler must have raylib.h in your repective compiler "include" file.
+- Your compiler must have raylib.h in your respective compiler "include" file.
 - Also, put libraylib.a in your respective compiler "lib" file.
 - Compile the all the .c files in this github using the linker -lraylib -lwinmm -lgdi32 -lopengl32.
 - For ex.: gcc -o main.exe main.c Gilang.c Bayu.c emir.c Marrely.c Hilmi.c -lraylib -lwinmm -lgdi32 -lopengl32.
