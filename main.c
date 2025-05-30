@@ -311,9 +311,7 @@ int main(){
                 enemyList = GenerateEnemy(level); 
             }
 
-<<<<<<< HEAD
-=======
-            if(CekTabrakRintangan((Vector2){snake.head->position.x, snake.head->position.y}, rintangan)) {
+            if(CekTabrakRintangan((Vector2){snake.head->position.x, snake.head->position.y}, rintangan) || CekTabrakEnemy(snake, enemyList)){  {
                 if (!isGameOver){
                     lives = lives - 1;
                     PlaySound(hit);
@@ -323,7 +321,10 @@ int main(){
                 }
             }
 
->>>>>>> a7ce359f2e42e4854833a14ae05308a936a5b001
+            if (IsKeyPressed(KEY_SPACE)){
+                ReverseSnake(&snake);
+            }
+
             UpdateCooldown();
             if(mpeluru.status){
                 DrawCircle((int)mpeluru.coor.x, (int)mpeluru.coor.y, radius, GOLD);
