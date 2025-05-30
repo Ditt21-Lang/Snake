@@ -8,32 +8,35 @@
 float reverseCooldown = 20.0f;                                      /*cooldown dalam detik*/
 float reverseTimer = 0.0f;
 
-// void ReverseSnake(Snake *snake) {
-//     if (reverseTimer > 0) return;                                 /*kalau masih cooldown, jangan reverse*/  
+void ReverseSnake(Snake *snake){
+    if (reverseTimer > 0) return;                                 /*kalau masih cooldown, jangan reverse*/  
 
-//     for (int i = 0; i < snake->panjang / 2; i++) {
-//         Vector2 temp = snake->badan[i];                                 
-//         snake->badan[i] = snake->badan[snake->panjang - 1 - i];
-//         snake->badan[snake->panjang - 1 - i] = temp;
-//      }
+    SnakeNode *current = snake->head;
+    SnakeNode *prev = NULL;
 
-//     snake->position = snake->badan[0];                                  /* pastikan kepala ada di posisi yang benar*/
-//     /*tentukan arah gerak baru setelah direverse*/
-//     Vector2 diff = (Vector2){ 
-//         snake->badan[0].x - snake->badan[1].x, 
-//         snake->badan[0].y - snake->badan[1].y 
-//     };
+    while (current != NULL) {
+        SnakeNode *next = current->next;
+        current->next = prev;
+        current->prev = next;
+        prev = current;
+        current = next;
+    }
 
-//     snake->speed = diff;                                        /* perbarui kecepatan*/
+    snake->tail = snake->head;                                      /* update tail */
+    snake->head = prev;                                             /* update head */
 
-//     reverseTimer = reverseCooldown;                             /*reset cooldown*/
-// }
+    // Perbarui posisi kepala
+    snake->head->position.x += snake->speed.x;
+    snake->head->position.y += snake->speed.y;
 
-// void HandleReverseInput(Snake *snake) {
-//     if (IsKeyPressed(KEY_SPACE) && reverseTimer <=0) {
-//         ReverseSnake(snake);
-//     } 
-// }
+    reverseTimer = reverseCooldown;                                 /*reset cooldown*/
+}
+
+void HandleReverseInput(Snake *snake) {
+    if (IsKeyPressed(KEY_SPACE) && reverseTimer <= 0) {
+        ReverseSnake(snake);
+    } 
+}
 
 void UpdateCooldown(){
     if (reverseTimer > 0){
@@ -56,7 +59,7 @@ bool CekTabrakDinding(Snake *snake) {
 }
 
 
-bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead){
+bool CekTabrakRintangan(Vector2 head, RintanganNode *rintanganHead){
     int KepalaX = (int)(head.x / CELL_SIZE);
     int KepalaY = (int)(head.y / CELL_SIZE);
 
@@ -71,65 +74,20 @@ bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead)
     return false; 
 }
 
+bool CekTabrakEnemy(Vector2 head, Enemy *enemyHead){
+    int headX = (int)(head.x / CELL_SIZE);
+    int headY = (int)(head.y / CELL_SIZE);
 
-// void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
-//     int i = 0;
-//     while (i < enemy->count){
-//             if (head.x == enemy[i].position.x 
-//                 && head.y == enemy[i].position.y){
-//                 (*lives)--;
-//                 if (*lives <=0){
-//                     *alive = false;
-//                   } else {
-//                     *alive = true;
-//                   }
-//                 }
-//                 printf("Lives : %d\n", *lives);
-//             }
-//             i++;
-// }      kode lama yang error
+    Enemy *current = enemyHead;
 
-// bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
-//     int i = 0;
-//     bool collision = false;  
-//     while (i < *count) {
-//         if (head.x == enemy[i].position.x && head.y == enemy[i].position.y) {
-//             (*lives); //--;  
-//             collision = true;
-//             if (*lives <= 0) {
-//                 *alive = false;  
-//             } else {
-//                 *alive = true;
-//             }
-//         }
-//         i++;
-//     }
-    
-//     if (collision) {
-//         printf("Lives: %d\n", *lives); 
-//     }
-// }   //kode baru 
-
-bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
-    int i = 0;
-    bool collision = false;  
-    while (i < *count) {
-        if (head.x == enemy[i].position.x && head.y == enemy[i].position.y) {
-            (*lives)--;  
-            collision = true;
-            *alive = (*lives > 0);
+    while (current != NULL) {
+        if (headX == current->position.x && headY == current->position.y) {
+            return true;  
         }
-        i++;
+        current = current->next;
     }
-
-    if (collision) {
-        printf("Lives: %d\n", *lives); 
-    }
-
-    return collision; 
-} //kode terbaru
-
-
+    return false;
+}
 
 EnemyList GenerateEnemy(int level) {
     EnemyList list = {NULL, 0};
@@ -155,7 +113,7 @@ EnemyList GenerateEnemy(int level) {
     int i;
     for (i = 0; i < jumlah; i++){
         Enemy *newEnemy = malloc(sizeof(Enemy));
-        if (!newEnemy) break; //cek alokasi memori
+        if (!newEnemy) break; 
 
         newEnemy->position = enemyPositions[level - 2 ][i];
         newEnemy->direction = 1;

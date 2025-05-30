@@ -24,14 +24,14 @@ typedef struct {
 
 
 
-// void ReverseSnake(Snake *Snake);
+void ReverseSnake(Snake *snake);
 void HandleReverseInput(Snake *Snake);
 void UpdateCooldown();
 bool CekTabrakDinding(Snake *snake);
-bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead);
-bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive);
+bool CekTabrakRintangan(Vector2 head, RintanganNode *rintanganHead);
+bool CekTabrakEnemy(Vector2 head, Enemy *enemyHead);
 
 EnemyList GenerateEnemy(int level);
-void FreeEnemyList(EnemyList *list)
-
+void FreeEnemyList(EnemyList *list);
+void MoveEnemy(EnemyList *list);
 #endif
