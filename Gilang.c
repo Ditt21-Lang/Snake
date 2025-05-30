@@ -9,7 +9,7 @@
 void InitSnake(Snake *snake){
     float startX = LEBAR_LAYAR/2;
     float startY = TINGGI_LAYAR/2;
-    snake->speed= (Vector2){UKURAN_BLOCK, 0};
+    snake->direction= (Vector2){UKURAN_BLOCK, 0};
     snake->head = NULL;
     snake->tail = NULL;
 
@@ -56,13 +56,13 @@ void DrawSnake(Snake *snake, Texture2D texture) {
         float rotation = 0;
         if(current == snake->head){
             current->sprite = (Rectangle){0, 0, 20, 20};
-            if (snake->speed.x > 0){
+            if (snake->direction.x > 0){
                 rotation = 90;
-            } else if (snake->speed.x < 0){
+            } else if (snake->direction.x < 0){
                 rotation = 270;
-            } else if (snake->speed.y > 0){
+            } else if (snake->direction.y > 0){
                 rotation = 180;
-            } else if (snake->speed.y < 0){
+            } else if (snake->direction.y < 0){
                 rotation = 0;
             }
 
@@ -122,20 +122,20 @@ bool cekTabrakan(Snake *snake){
 }
 
 void UpdateSnake(Snake *snake) {
-    if(snake->speed.x !=0){
+    if(snake->direction.x !=0){
         if(IsKeyPressed(KEY_UP)){
-            snake->speed = (Vector2){0, -UKURAN_BLOCK};
+            snake->direction = (Vector2){0, -UKURAN_BLOCK};
         }
         else if(IsKeyPressed(KEY_DOWN)){
-            snake->speed = (Vector2){0, UKURAN_BLOCK};
+            snake->direction = (Vector2){0, UKURAN_BLOCK};
         }
     }
-    else if(snake->speed.y != 0){
+    else if(snake->direction.y != 0){
         if(IsKeyPressed(KEY_RIGHT)){
-            snake->speed = (Vector2){UKURAN_BLOCK, 0};
+            snake->direction = (Vector2){UKURAN_BLOCK, 0};
         }
         else if(IsKeyPressed(KEY_LEFT)){
-            snake->speed = (Vector2){-UKURAN_BLOCK, 0};
+            snake->direction = (Vector2){-UKURAN_BLOCK, 0};
         }
     }
 
@@ -146,15 +146,15 @@ void UpdateSnake(Snake *snake) {
         current = current->prev;
     } 
         // Perbarui posisi kepala dengan menambahkan kecepatan
-    snake->head->position.x += snake->speed.x;
-    snake->head->position.y += snake->speed.y;
+    snake->head->position.x += snake->direction.x;
+    snake->head->position.y += snake->direction.y;
 
     cekTabrakan(snake);
 } 
 
 void tambahNode(Snake *snake){
     SnakeNode* newbody = (SnakeNode*)malloc(sizeof(SnakeNode));
-    newbody->position = snake->speed;
+    newbody->position = snake->direction;
     newbody->next = NULL;
     newbody->prev = NULL;
     newbody->prev = snake->tail;
@@ -167,13 +167,16 @@ void freeSnake(Snake *snake){
         while (snake->tail != NULL){
             SnakeNode* current = snake->tail;
             snake->tail = snake->tail->prev;
-            snake->tail->next = NULL;
-            current->prev = NULL;
             free(current); 
         }
+        snake->head = NULL;
+        snake->tail = NULL;
     }
 }
 
 bool CheckMakanan(Snake *snake, Makanan *food) {
-    return (snake->head->position.x == food->position.x && snake->head->position.y == food->position.y);
+    if (snake->head->position.x == food->position.x && snake->head->position.y == food->position.y){
+        return true;
+    }
+    return false;
 }

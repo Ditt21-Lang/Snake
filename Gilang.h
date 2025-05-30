@@ -14,7 +14,7 @@ typedef struct SnakeNode{
 typedef struct{
     SnakeNode* head;
     SnakeNode* tail;  
-    Vector2 speed;
+    Vector2 direction;
     Texture2D tekstur;
 } Snake;
 
@@ -22,9 +22,12 @@ void InitSnake(Snake *snake);
 void DrawSnake(Snake *snake, Texture2D texture);
 void UpdateSnake(Snake *snake);
 bool cekTabrakan(Snake *snake);
+Vector2 getDir(Vector2 A, Vector2 B);
+
+
+//Tambahan untuk Double Linked List
 void tambahNode(Snake *snake);
 void freeSnake(Snake *snake);
-Vector2 getDir(Vector2 A, Vector2 B);
 
 //Dibutuhkan header Marrely
 bool CheckMakanan(Snake *snake, Makanan *food);

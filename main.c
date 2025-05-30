@@ -51,7 +51,9 @@ int main(){
     bool isStartPlaying = false;
     bool isGameOver = false;
     bool isSoundOver = false;
-    
+    bool showHit = false;
+    float hitStartTime = 0;
+
     ButtonNode* menuButtons = InitButtons(300);
     AppendButton(&menuButtons, "Play", 300);
     AppendButton(&menuButtons, "How to Play", 400);
@@ -315,10 +317,20 @@ int main(){
                 if (!isGameOver){
                     lives = lives - 1;
                     PlaySound(hit);
+                    showHit = true;
+                    hitStartTime = GetTime();
                     if (lives == 0){
                         isGameOver = true;
                     }
                 }
+            }
+
+            if (showHit && (GetTime() - hitStartTime >= 2.0f)) {
+                showHit = false;
+            }
+
+            if (showHit){
+                DrawText(TextFormat("HIT!"), 245, 650, 30, RED);
             }
 
             UpdateCooldown();
@@ -411,5 +423,6 @@ int main(){
     freeSnake(&snake);
     FreeEnemyList(&enemyList);
     FreeRintangan(&rintangan);
+    printf("Return Succesfully");
     return 0;      
 }
