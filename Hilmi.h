@@ -10,19 +10,6 @@
 
 extern float reverseTimer;
 
-typedef struct Enemy {
-    Position position;
-    int direction;
-    int isVertical;
-    struct Enemy *next;
-} Enemy;
-
-typedef struct {
-    Enemy *head;
-    int count;
-} EnemyList;
-
-
 
 void ReverseSnake(Snake *snake);
 void HandleReverseInput(Snake *Snake);
