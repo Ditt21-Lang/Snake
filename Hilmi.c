@@ -9,7 +9,8 @@ float reverseCooldown = 20.0f;                                      /*cooldown d
 float reverseTimer = 0.0f;
 
 void ReverseSnake(Snake *snake){
-    if (reverseTimer > 0) return;                                 /*kalau masih cooldown, jangan reverse*/  
+    if (reverseTimer > 0) return;  
+    if (snake->head == NULL || snake->tail == NULL) return;                               /*kalau masih cooldown, jangan reverse*/  
 
     SnakeNode *current = snake->head;
     SnakeNode *prev = NULL;
@@ -26,8 +27,8 @@ void ReverseSnake(Snake *snake){
     snake->head = prev;                                             /* update head */
 
     // Perbarui posisi kepala
-    snake->head->position.x += snake->speed.x;
-    snake->head->position.y += snake->speed.y;
+    snake->speed.x *= -1;
+    snake->speed.y *= -1;
 
     reverseTimer = reverseCooldown;                                 /*reset cooldown*/
 }
@@ -74,11 +75,11 @@ bool CekTabrakRintangan(Vector2 head, RintanganNode *rintanganHead){
     return false; 
 }
 
-bool CekTabrakEnemy(Vector2 head, Enemy *enemyHead){
+bool CekTabrakEnemy(Vector2 head, EnemyList list){
     int headX = (int)(head.x / CELL_SIZE);
     int headY = (int)(head.y / CELL_SIZE);
 
-    Enemy *current = enemyHead;
+    Enemy *current = list.head;
 
     while (current != NULL) {
         if (headX == current->position.x && headY == current->position.y) {
