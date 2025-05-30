@@ -97,7 +97,7 @@ EnemyList GenerateEnemy(int level) {
 
     Position enemyPositions[3][3] = {
         { {12, 12} },
-        { {10, 14}, {14, 10} },
+        { {13, 14}, {14, 13} },
         { {9, 9}, {13, 13}, {15, 11} }
     };
 
