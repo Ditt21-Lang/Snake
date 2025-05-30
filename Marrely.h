@@ -18,11 +18,18 @@ typedef struct {
     Position position;
 } Makanan;
 
-// typedef struct {
-//     Position position;
-//     int direction;
-//     int isVertical;
-// } Enemy;
+typedef struct Enemy {
+    Position position;
+    int direction;
+    int isVertical;
+    struct Enemy *next;
+} Enemy;
+
+typedef struct {
+    Enemy *head;
+    int count;
+} EnemyList;
+
 
 typedef struct RintanganNode {
     Position posisi;
