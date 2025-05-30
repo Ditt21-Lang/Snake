@@ -10,12 +10,11 @@ void InitSnake(Snake *snake){
     float startX = LEBAR_LAYAR/2;
     float startY = TINGGI_LAYAR/2;
     snake->speed= (Vector2){UKURAN_BLOCK, 0};
-    snake->panjang = 8;
     snake->head = NULL;
     snake->tail = NULL;
 
 
-    for (int i = 0; i < snake->panjang; i++) {
+    for (int i = 0; i < 8; i++) {
         SnakeNode* newNode = (SnakeNode*)malloc(sizeof(SnakeNode));
         newNode->position = (Vector2){startX - i * UKURAN_BLOCK, startY};
         newNode->prev = NULL;
@@ -113,7 +112,7 @@ void DrawSnake(Snake *snake, Texture2D texture) {
 bool cekTabrakan(Snake *snake){
     SnakeNode* current;
     current = snake->head->next;
-    for (int i = 1; i < snake->panjang; i++){
+    while(current != NULL){
         if(snake->head->position.x == current->position.x && snake->head->position.y == current->position.y){
             return true;
         }
@@ -161,6 +160,18 @@ void tambahNode(Snake *snake){
     newbody->prev = snake->tail;
     snake->tail->next = newbody;
     snake->tail = newbody;
+}
+
+void freeSnake(Snake *snake){
+    if (snake->head != NULL){
+        while (snake->tail != NULL){
+            SnakeNode* current = snake->tail;
+            snake->tail = snake->tail->prev;
+            snake->tail->next = NULL;
+            current->prev = NULL;
+            free(current); 
+        }
+    }
 }
 
 bool CheckMakanan(Snake *snake, Makanan *food) {

@@ -16,7 +16,6 @@ typedef struct{
     SnakeNode* tail;  
     Vector2 speed;
     Texture2D tekstur;
-    int panjang;
 } Snake;
 
 void InitSnake(Snake *snake);
@@ -24,6 +23,7 @@ void DrawSnake(Snake *snake, Texture2D texture);
 void UpdateSnake(Snake *snake);
 bool cekTabrakan(Snake *snake);
 void tambahNode(Snake *snake);
+void freeSnake(Snake *snake);
 Vector2 getDir(Vector2 A, Vector2 B);
 
 //Dibutuhkan header Marrely

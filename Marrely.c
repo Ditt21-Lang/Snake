@@ -50,23 +50,25 @@ void GenerateRintangan(RintanganNode **head, int level) {
   
     
     Position levelRintangan[5][10] = {
-    { {10, 12}, {14, 14}, {12, 8} },
-    { {9, 11}, {15, 13}, {11, 9}, {13, 15} },
-    { {8, 10}, {16, 12}, {12, 14}, {14, 8}, {10, 16} },
-    { {9, 13}, {11, 15}, {13, 9}, {15, 11}, {12, 12}, {14, 14} },
-    { {10, 14}, {14, 10}, {12, 16}, {16, 12}, {8, 12}, {12, 8}, {12, 12} }
-}; 
+        { {10, 12}, {14, 14}, {12, 8} },
+        { {9, 11}, {15, 13}, {11, 9}, {13, 15} },
+        { {8, 10}, {16, 12}, {12, 14}, {14, 8}, {10, 16} },
+        { {9, 13}, {11, 15}, {13, 9}, {15, 11}, {12, 12}, {14, 14} },
+        { {10, 14}, {14, 10}, {12, 16}, {16, 12}, {8, 12}, {12, 8}, {12, 12} }
+    }; 
 
-*head = NULL;
-    
+    int jumlahRintanganPerLevel[5] = {3, 4, 5, 6, 7};
+    *head = NULL;
+    int jumlahRintangan = jumlahRintanganPerLevel[level - 1];
 
-    for (int i = 0; i < level; i++) {
+    for (int i = 0; i < jumlahRintangan; i++) {
        RintanganNode *newNode = (RintanganNode *)malloc(sizeof(RintanganNode));
        newNode->posisi = levelRintangan[level - 1][i];
        newNode->next = *head;
        *head = newNode;
     }
 }
+<<<<<<< HEAD
 // void GenerateEnemy(Enemy *enemy, int count, int level) {
 //     if (level < 2) return; 
 //     Position enemyPositions[3][3] = {
@@ -81,16 +83,21 @@ void GenerateRintangan(RintanganNode **head, int level) {
 //         enemy[i].isVertical = i % 2;
 //     }
 // }
+=======
 
-void DrawGame(Makanan *makanan, RintanganNode *rintangan, Enemy *enemies, int enemyCount, int score, int level, 
-              Texture2D background, Texture2D borderTexture, Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture) {
+>>>>>>> a7ce359f2e42e4854833a14ae05308a936a5b001
+
+void DrawGame(Makanan *makanan, RintanganNode *rintanganHead, EnemyList *enemy, int enemyCount,
+              int score, int level,
+              Texture2D background, Texture2D borderTexture,
+              Texture2D makananTexture, Texture2D enemyTexture, Texture2D rintanganTexture) {
 
     ClearBackground(RAYWHITE);
     DrawTexture(borderTexture, 0, 0, WHITE);
     DrawTexture(background, 0, 0, WHITE);
 
-   RintanganNode *curr = rintangan;
-while (curr != NULL) {
+   RintanganNode *curr = rintanganHead;
+    while (curr != NULL) {
     DrawTexturePro(rintanganTexture,
         (Rectangle){0, 0, rintanganTexture.width, rintanganTexture.height},
         (Rectangle){curr->posisi.x * CELL_SIZE, curr->posisi.y * CELL_SIZE, CELL_SIZE, CELL_SIZE},
@@ -101,15 +108,17 @@ while (curr != NULL) {
                    (Rectangle){makanan->position.x, makanan->position.y, CELL_SIZE, CELL_SIZE}, 
                    (Vector2){0, 0}, 0, WHITE);
     
-    for (int i = 0; i < enemyCount; i++) {
+    Enemy *Ecurr = enemy->head;
+    while (Ecurr != NULL) {
         DrawTexturePro(enemyTexture, (Rectangle){0, 0, enemyTexture.width, enemyTexture.height}, 
-                       (Rectangle){enemies[i].position.x * CELL_SIZE, enemies[i].position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
+                       (Rectangle){Ecurr->position.x * CELL_SIZE, Ecurr->position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE}, 
                        (Vector2){0, 0}, 0, WHITE);
-    
+        Ecurr = Ecurr->next;
     }
     DrawRectangle(0, 700, GetScreenWidth(), 200,  LIGHTGRAY);
     DrawRectangle(0, 600, GetScreenWidth(), 100, (Color){0, 0, 0, 200}); 
 
+<<<<<<< HEAD
 }
 
 // void MoveEnemy(Enemy *enemy) {
@@ -156,3 +165,6 @@ void MoveEnemy(Enemy *enemy, int enemyCount) {
         }
     }
 }//kode baru ale yang aku benerin
+=======
+}
+>>>>>>> a7ce359f2e42e4854833a14ae05308a936a5b001

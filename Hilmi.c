@@ -56,7 +56,11 @@ bool CekTabrakDinding(Snake *snake) {
 }
 
 
+<<<<<<< HEAD
 bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead){
+=======
+bool CekTabrakRintangan(Vector2 head, RintanganNode *rintanganHead) {
+>>>>>>> a7ce359f2e42e4854833a14ae05308a936a5b001
     int KepalaX = (int)(head.x / CELL_SIZE);
     int KepalaY = (int)(head.y / CELL_SIZE);
 
@@ -70,45 +74,6 @@ bool CekTabrakRintangan(Snake snake, Vector2 head, RintanganNode *rintanganHead)
     }
     return false; 
 }
-
-
-// void CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
-//     int i = 0;
-//     while (i < enemy->count){
-//             if (head.x == enemy[i].position.x 
-//                 && head.y == enemy[i].position.y){
-//                 (*lives)--;
-//                 if (*lives <=0){
-//                     *alive = false;
-//                   } else {
-//                     *alive = true;
-//                   }
-//                 }
-//                 printf("Lives : %d\n", *lives);
-//             }
-//             i++;
-// }      kode lama yang error
-
-// bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
-//     int i = 0;
-//     bool collision = false;  
-//     while (i < *count) {
-//         if (head.x == enemy[i].position.x && head.y == enemy[i].position.y) {
-//             (*lives); //--;  
-//             collision = true;
-//             if (*lives <= 0) {
-//                 *alive = false;  
-//             } else {
-//                 *alive = true;
-//             }
-//         }
-//         i++;
-//     }
-    
-//     if (collision) {
-//         printf("Lives: %d\n", *lives); 
-//     }
-// }   //kode baru 
 
 bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *alive){
     int i = 0;
@@ -127,7 +92,8 @@ bool CekTabrakEnemy(Vector2 head, Enemy *enemy, int *count, int *lives, bool *al
     }
 
     return collision; 
-} //kode terbaru
+} //kode terbaru 
+// Benerin lagi cektabrakEnemy nya, saran aku lihat cek tabrak rintangan. Kodenya sama sama aja tinggal nyeusain dengan enemy
 
 
 
