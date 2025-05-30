@@ -79,15 +79,23 @@ bool CekTabrakRintangan(Vector2 head, RintanganNode *rintanganHead){
     return false; 
 }
 
-bool CekTabrakEnemy(Position head, EnemyList list){
+bool CekTabrakEnemy(Snake ular, EnemyList list){
 
-    Enemy *current = list.head;
+    Enemy *enemy = list.head;
 
-    while (current != NULL) {
-        if (head.x == current->position.x && head.y == current->position.y) {
-            return true;  
+    while (enemy != NULL) {
+        SnakeNode *current = ular.head;
+
+        while (current != NULL){
+            int snakeX = (int)(current->position.x / CELL_SIZE);
+            int snakeY = (int)(current->position.y / CELL_SIZE);
+
+            if (enemy->position.x == snakeX && enemy->position.y == snakeY) {
+                return true;  
+            }
+            current = current->next;
         }
-        current = current->next;
+        enemy = enemy->next;
     }
     return false;
 }

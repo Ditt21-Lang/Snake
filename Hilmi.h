@@ -29,7 +29,7 @@ void HandleReverseInput(Snake *Snake);
 void UpdateCooldown();
 bool CekTabrakDinding(Snake *snake);
 bool CekTabrakRintangan(Vector2 head, RintanganNode *rintanganHead);
-bool CekTabrakEnemy(Position head, EnemyList list);
+bool CekTabrakEnemy(Snake ular, EnemyList list);
 
 EnemyList GenerateEnemy(int level);
 void FreeEnemyList(EnemyList *list);
