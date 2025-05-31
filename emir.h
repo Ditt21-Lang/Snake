@@ -6,13 +6,11 @@
 #define KIRI 263
 #define BAWAH 264
 #define ATAS 265
-#define lebar_texture_portal 100
-#define tinggi_texture_portal 100
-#define BATAS_PORTAL_V 650
-#define BATAS_PORTAL_H 750
 #define LEBAR_LAYAR 800
 #define TINGGI_LAYAR 650
 #define EMIR_H
+
+typedef struct main_portal *pll;
 
 //variable peluru
 typedef struct{
@@ -22,16 +20,17 @@ typedef struct{
     int buffer;
     Image gambar_peluru;
     Texture2D texture;
-    float cooldown;
 }peluru;
 
-typedef struct{
+
+typedef struct main_portal{
     Vector2 coor;
     bool status;
     Image gambar_portal;
     int arah;
-    float cooldown;
     float activation;
+    pll next;
+    pll prev;
 }portal;
 
 //utilitas
@@ -46,10 +45,17 @@ bool check_peluru(float coor,int lebar_tinggi,int min);
 //bagian portal
 
 Vector2 convert_coor_portal(Vector2 portal_coordinat,int max_lebar,int min_lebar,int max_tinggi,int min_tinggi,int arah);
-void place_portal(Vector2 coor_peluru,portal *p1,int kotak,int max_lebar/*- lebar image - lebar object */,int min_lebar,int max_tinggi,int min_tinggi,int arah,float cooldown,float activation);
+void place_portal(Vector2 coor_peluru,pll *p1,int max_lebar/*- lebar image - lebar object */,int min_lebar,int max_tinggi,int min_tinggi,int arah,float activation);
 bool cooldown(float *target);
 Texture2D menggambar(Image *edit,int width,int height);
-void draw_portal(Texture2D purtal,int kotak,portal *mportal,int lgambar,int tgambar);
-void teleport_portal(float *targetx,float *targety,portal mportal[],int lgambar,int tgambar,int kotak);
+void draw_portal(Texture2D purtal,pll mportal,int lgambar,int tgambar,Color portal_color);
+void teleport_portal(float *targetx,float *targety,pll mportal,int lgambar,int tgambar);
+    pll Alokasi_portal( Vector2 coor,bool status,int arah,float activation);
+    void dellall_portal(pll *target);
+void insert_last(pll *p,pll inserted_node);
+void insert_value_last(pll *p,Vector2 coor,bool status,int arah,float activation);
+pll traversal(pll p);
+void cooldown_portal_traversal(pll p);
 
+bool check_portal_activation(pll p);
 #endif
