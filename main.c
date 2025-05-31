@@ -39,7 +39,7 @@ int main(){
     // Variabel lingkaran
     float circleX = TINGGI_LAYAR / 2.0f;
     float circleY = LEBAR_LAYAR / 2.0f;
-    float radius = 30.0f;
+    float radius = 10.0f;
     float speed = 5.0f;
 
     //portal
@@ -360,16 +360,15 @@ int main(){
 
             UpdateCooldown();
         
-            if(IsKeyPressed(KEY_P) ){
-                p_pressed(&mpeluru,buffer,(Vector2){snake.head->position.x,snake.head->position.y});
-            }
+            if( IsKeyPressed(KEY_P) ) p_pressed(&mpeluru,buffer,snake.head->position);
 
-            if(mpeluru.status == true){
+            if(mpeluru.status){
                 move_peluru(&mpeluru,mpeluru.speed);
+                DrawCircle((int)mpeluru.coor.x, (int)mpeluru.coor.y, radius, GOLD);
             }
 
-            if(check_peluru(mpeluru.coor.x,LEBAR_LAYAR,0) || check_peluru(mpeluru.coor.y,TINGGI_LAYAR,0) ){
-                place_portal(mpeluru.coor,&mportal,LEBAR_LAYAR-50,50,TINGGI_LAYAR-50,50,mpeluru.buffer,2);
+            if(check_peluru(mpeluru.coor.x,530,0) || check_peluru(mpeluru.coor.y, 530,0) ){
+                place_portal(mpeluru.coor,&mportal, 530 ,30, 530,30,mpeluru.buffer,2);
                 mpeluru.status=false;
                 mpeluru.coor.x=400;
                 mpeluru.coor.y=400;
@@ -378,15 +377,10 @@ int main(){
             if(mportal != NULL){
                 if(mportal->status == false) dellall_portal(&mportal);
             }
-
-            teleport_portal(&circleX,&circleY,mportal,130,130);
+            teleport_portal(&(snake.head->position.x),&(snake.head->position.y),mportal,40,40);
             cooldown_portal_traversal(mportal);
-
-            if(mpeluru.status){
-                DrawCircle((int)mpeluru.coor.x,(int)mpeluru.coor.y, radius, GOLD);
-            }
-
-            draw_portal(textuar,mportal,100,100,BLUE);
+    
+            draw_portal(textuar,mportal,50,50,BLUE);
 
 
         }
