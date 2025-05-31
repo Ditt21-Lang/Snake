@@ -43,7 +43,7 @@ int main(){
 
     int score = 0;
     int total_score = 0;
-    int level = 5;
+    int level = 1;
     int lives = 15;
     int enemyCount = 0;
     int buffer;
@@ -381,7 +381,7 @@ int main(){
                     PlaySound(winning);
                     isSoundWinning = true;
                 }
-                
+
             }
 
             // Cek apakah 3 detik sudah berlalu
@@ -399,6 +399,12 @@ int main(){
                 isGameOver = false;
                 isStartPlaying = false;
                 fps = 60;
+                score = 0;
+                total_score = 0;
+                lives = 15;
+                level = 1;
+                enemyCount = 0;
+                reverseTimer = 0;
                 SetTargetFPS(fps);
                 FreeRintangan(&rintangan);
                 FreeEnemyList(&enemyList);
