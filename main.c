@@ -36,6 +36,12 @@ int main(){
     mpeluru.speed=50;
     mpeluru.status=false;
 
+    // Variabel lingkaran
+    float circleX = TINGGI_LAYAR / 2.0f;
+    float circleY = LEBAR_LAYAR / 2.0f;
+    float radius = 30.0f;
+    float speed = 5.0f;
+
     //portal
     pll mportal=NULL;
 
@@ -44,7 +50,7 @@ int main(){
     int level = 1;
     int lives = 15;
     int enemyCount = 0;
-    int buffer;
+    int buffer = 0;
 
     bool isMusicPlaying = false;
     bool isStartPlaying = false;
@@ -140,7 +146,6 @@ int main(){
     float bgX = 0;
     float scrollSpeed = 75;
     float scale = 1.2;
-    float radius = 10.0f;
 
     InitSnake(&snake);
     GenerateMakanan(&makanan, rintangan);
@@ -354,33 +359,37 @@ int main(){
             }
 
             UpdateCooldown();
+        
+            if(IsKeyPressed(KEY_P) ){
+                p_pressed(&mpeluru,buffer,(Vector2){snake.head->position.x,snake.head->position.y});
+            }
+
+            if(mpeluru.status == true){
+                move_peluru(&mpeluru,mpeluru.speed);
+            }
+
+            if(check_peluru(mpeluru.coor.x,LEBAR_LAYAR,0) || check_peluru(mpeluru.coor.y,TINGGI_LAYAR,0) ){
+                place_portal(mpeluru.coor,&mportal,LEBAR_LAYAR-50,50,TINGGI_LAYAR-50,50,mpeluru.buffer,2);
+                mpeluru.status=false;
+                mpeluru.coor.x=400;
+                mpeluru.coor.y=400;
+            }
+
+            if(mportal != NULL){
+                if(mportal->status == false) dellall_portal(&mportal);
+            }
+
+            teleport_portal(&circleX,&circleY,mportal,130,130);
+            cooldown_portal_traversal(mportal);
+
+            if(mpeluru.status){
+                DrawCircle((int)mpeluru.coor.x,(int)mpeluru.coor.y, radius, GOLD);
+            }
+
+            draw_portal(textuar,mportal,100,100,BLUE);
 
 
-            // //________________________
-            // if( IsKeyPressed(KEY_P) ) p_pressed(&mpeluru,buffer,snake.head->position);
-
-            // if(mpeluru.status){
-            //     move_peluru(&mpeluru,mpeluru.speed);
-            //     DrawCircle((int)mpeluru.coor.x, (int)mpeluru.coor.y, radius, GOLD);
-            // }
-
-        // if(check_peluru(mpeluru.coor.x,LEBAR_LAYAR,0) || check_peluru(mpeluru.coor.y,TINGGI_LAYAR,0) ){
-        //     place_portal(mpeluru.coor,&mportal,LEBAR_LAYAR-50,50,TINGGI_LAYAR-50,50,mpeluru.buffer,2);
-        //     mpeluru.status=false;
-        //     mpeluru.coor.x=400;
-        //     mpeluru.coor.y=400;
-        // }
-
-    //     if(mportal != NULL){
-    //     if(mportal->status == false) dellall_portal(&mportal);
-    // }
-    // teleport_portal(&(snake.head->position.x),&(snake.head->position.y),mportal,80,80);
-    // cooldown_portal_traversal(mportal);
-    
-    // draw_portal(textuar,mportal,50,50,BLUE);
-    // //________________________    
-
-}
+        }
         
         if (currentScreen == STAGE && isWin) {
             // Catat waktu saat menang pertama kali
