@@ -8,13 +8,15 @@
 float reverseCooldown = 20.0f;                                      /*cooldown dalam detik*/
 float reverseTimer = 0.0f;
 
+//untuk membalikkan arah ular 
 void ReverseSnake(Snake *snake){
-    if (reverseTimer > 0) return;  
-    if (snake->head == NULL || snake->tail == NULL) return;                               /*kalau masih cooldown, jangan reverse*/  
+    if (reverseTimer > 0) return;  /* jangan direverse kalo masih cooldown */
+    if (snake->head == NULL || snake->tail == NULL) return;                 
 
-    SnakeNode *current = snake->head;
-    SnakeNode *prev = NULL;
+    SnakeNode *current = snake->head;   
+    SnakeNode *prev = NULL; 
 
+    //balik arah ular dengan next jadi prev dan sebaliknya
     while (current != NULL) {
         SnakeNode *next = current->next;
         current->next = prev;
@@ -23,11 +25,12 @@ void ReverseSnake(Snake *snake){
         current = next;
     }
 
-    snake->tail = snake->head;                                      /* update tail */
-    snake->head = prev;                                             /* update head */
+    snake->tail = snake->head;                                      /* update pointer tail */
+    snake->head = prev;                                             /* update pointer head */
     
-    if (snake->head->next != NULL){
-        Vector2 newHead = snake->head->position;
+    //update arah ular dari dua node pertama
+    if (snake->head->next != NULL){  
+        Vector2 newHead = snake->head->position;     
         Vector2 secondNode = snake->head->next->position;
 
         snake->direction.x = newHead.x - secondNode.x;
@@ -37,14 +40,15 @@ void ReverseSnake(Snake *snake){
     reverseTimer = reverseCooldown;                                 /*reset cooldown*/
 }
 
-
+//untuk memperbarui cooldown
 void UpdateCooldown(){
     if (reverseTimer > 0){
-        reverseTimer -= GetFrameTime();                 /* kurangi cooldown berdasarkan deltaTime*/    
+        reverseTimer -= GetFrameTime();                 /*kurangi cooldown dengan waktu frame*/
         if (reverseTimer < 0) reverseTimer = 0;
     }
 }
 
+//untuk mengecek jika kepala ular menabrak dinding
 bool CekTabrakDinding(Snake *snake) {
     float headX = snake->head->position.x;
     float headY = snake->head->position.y;
@@ -58,7 +62,7 @@ bool CekTabrakDinding(Snake *snake) {
     }
 }
 
-
+//untuk mengecek jika kepala ular menabrak rintangan
 bool CekTabrakRintangan(Vector2 head, RintanganNode *rintanganHead) {
     int KepalaX = (int)(head.x / CELL_SIZE);
     int KepalaY = (int)(head.y / CELL_SIZE);
@@ -74,13 +78,13 @@ bool CekTabrakRintangan(Vector2 head, RintanganNode *rintanganHead) {
     return false; 
 }
 
+//untuk mengecek jika ular menabrak enemy
 bool CekTabrakEnemy(Snake ular, EnemyList list){
 
     Enemy *enemy = list.head;
-
     while (enemy != NULL) {
-        SnakeNode *current = ular.head;
 
+        SnakeNode *current = ular.head;
         while (current != NULL){
             int snakeX = (int)(current->position.x / CELL_SIZE);
             int snakeY = (int)(current->position.y / CELL_SIZE);
@@ -95,8 +99,7 @@ bool CekTabrakEnemy(Snake ular, EnemyList list){
     return false;
 }
 
-
-
+//membuat list enemy berdasarkan level
 EnemyList GenerateEnemy(int level) {
     EnemyList list = {NULL, 0};
 
@@ -121,7 +124,7 @@ EnemyList GenerateEnemy(int level) {
     int i;
     for (i = 0; i < jumlah; i++){
         Enemy *newEnemy = malloc(sizeof(Enemy));
-        if (!newEnemy) break; //cek alokasi memori
+        if (!newEnemy) break;       /* cek alokasi memori */
 
         newEnemy->position = enemyPositions[level - 2 ][i];
         newEnemy->direction = 1;
@@ -137,13 +140,13 @@ EnemyList GenerateEnemy(int level) {
         }
         list.count++;
     }
-
     return list;
 }
 
+//untuk membebaskan memori list enemy
 void FreeEnemyList(EnemyList *list) {
     Enemy *current = list->head;
-    while (current != NULL) {
+    while (current != NULL) { 
         Enemy *hapus = current;
         current = current->next;
         free(hapus);
@@ -152,6 +155,7 @@ void FreeEnemyList(EnemyList *list) {
     list->count = 0;
 }
 
+//untuk menggerakkan enemy sesuai arah dan batas
 void MoveEnemy(EnemyList *list) {
     int batasKiri = 1;
     int batasAtas = 1;

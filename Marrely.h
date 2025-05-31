@@ -34,9 +34,6 @@
         struct RintanganNode *next;
     } RintanganNode;
 
-
-
-
 // Fungsi utama
 void GenerateMakanan(Makanan *makanan, RintanganNode *rintanganHead);
 void GenerateRintangan(RintanganNode **, int level);
