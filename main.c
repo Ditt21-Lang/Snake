@@ -42,8 +42,9 @@ int main(){
     mportal[1].status=false;
 
     int score = 0;
+    int total_score = 0;
     int level = 1;
-    int lives = 3;
+    int lives = 15;
     int enemyCount = 0;
     int buffer;
 
@@ -51,8 +52,14 @@ int main(){
     bool isStartPlaying = false;
     bool isGameOver = false;
     bool isSoundOver = false;
+    bool isSoundWinning = false;
+    bool isWin = false;
     bool showHit = false;
+    bool hasWinTimeStarted = false;
     float hitStartTime = 0;
+    float winStartTime = 0.0f;
+    
+
 
     ButtonNode* menuButtons = InitButtons(300);
     AppendButton(&menuButtons, "Play", 300);
@@ -121,11 +128,15 @@ int main(){
     Sound over = LoadSound("resources/GameOver.wav");
     Sound hit = LoadSound("resources/hitObs.wav");
     Sound level_up = LoadSound("resources/LevelUp.wav");
+    Sound Reverse = LoadSound("resources/Reverse.wav");
+    Sound winning = LoadSound("resources/winStage.wav");
 
     SetSoundVolume(start ,1.5f);
     SetSoundVolume(eat ,1.5f);
     SetSoundVolume(hit, 1.5f);
     SetSoundVolume(level_up, 1.5f);
+    SetSoundVolume(Reverse, 5.0f);
+    SetSoundVolume(winning, 1.0f);
     
     float tuaim=0;
     mportal[0].cooldown=10;
@@ -279,9 +290,9 @@ int main(){
             GenerateRintangan(&rintangan, level);
             
             DrawText(TextFormat("Score: %d", score), 10, 630, 30, GOLD);
-            DrawText(TextFormat("Lives: %d", lives), 10, 660, 30, GOLD);
-            DrawText(TextFormat("Level: %d", level), 385, 630, 30, GOLD);
-            DrawText(TextFormat("Cooldown: %f", reverseTimer), 385, 660, 30, RED);
+            DrawText(TextFormat("Lives: %d", lives), 10, 660, 30, RED);
+            DrawText(TextFormat("Level: %d", level), 395, 630, 30, WHITE);
+            DrawText(TextFormat("Reverse: %f", reverseTimer), 395, 660, 30, GREEN);
             DrawText("STAGE MODE", SCREEN_WIDTH / 2 - MeasureText("STAGE MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
             if(!isGameOver){
                 if(!cekTabrakan(&snake) && !CekTabrakDinding(&snake)){
@@ -297,6 +308,7 @@ int main(){
     
             if(CheckMakanan(&snake, &makanan)){
                 score += 100;
+                total_score = total_score + 100;
                 tambahNode(&snake);
                 GenerateMakanan(&makanan, rintangan);
                 PlaySound(eat);
@@ -308,6 +320,7 @@ int main(){
                 InitSnake(&snake);
                 DrawSnake(&snake, snake.tekstur);
                 level = level + 1;
+                lives = lives + 1;
                 GenerateRintangan(&rintangan, level);
                 enemyCount = enemyCount + 1;            
                 enemyList = GenerateEnemy(level); 
@@ -335,7 +348,12 @@ int main(){
             }
 
             if (IsKeyPressed(KEY_SPACE)){
+                PlaySound(Reverse);
                 ReverseSnake(&snake);
+            }
+
+            if(level > 5){
+                isWin = true;
             }
 
             UpdateCooldown();
@@ -352,6 +370,50 @@ int main(){
                 
         }
         
+        if (currentScreen == STAGE && isWin) {
+            // Catat waktu saat menang pertama kali
+            if (!hasWinTimeStarted) {
+                winStartTime = GetTime();
+                hasWinTimeStarted = true;
+                StopMusicStream(game); 
+
+                if (!isSoundWinning){
+                    PlaySound(winning);
+                    isSoundWinning = true;
+                }
+
+            }
+
+            // Cek apakah 3 detik sudah berlalu
+            if (GetTime() - winStartTime <= 3.0f) {
+                DrawText("YOU WIN!", 180, 250, 50, GREEN);
+                DrawText(TextFormat("Total Score: %i", total_score), 160, 300, 30, GREEN); 
+                InitSnake(&snake);
+            } else {
+                // Reset status kemenangan agar bisa lanjut ke layar lain atau ulang game
+                isWin = false;
+                hasWinTimeStarted = false;
+                isSoundWinning = false;
+                isMusicPlaying = false;
+                isSoundOver = false;
+                isGameOver = false;
+                isStartPlaying = false;
+                fps = 60;
+                score = 0;
+                total_score = 0;
+                lives = 15;
+                level = 1;
+                enemyCount = 0;
+                reverseTimer = 0;
+                SetTargetFPS(fps);
+                FreeRintangan(&rintangan);
+                FreeEnemyList(&enemyList);
+                currentScreen = MENU;
+
+            }
+        }
+
+        
         if ((currentScreen == ENDLESS || currentScreen == STAGE) && isGameOver) {   
             StopMusicStream(game);  
             if (!isSoundOver) {  
@@ -360,7 +422,7 @@ int main(){
             }
 
             DrawText("GAME OVER", 150, 250, 50, RED);
-            DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);  
+            DrawText(TextFormat("Total Score: %i", total_score), 160, 300, 30, RED);  
             
             ButtonNode* current = gameOverButtons;
             while (current != NULL) {
@@ -369,9 +431,11 @@ int main(){
                 if (strcmp(current->text, "Restart") == 0 && current->hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                     InitSnake(&snake);
                     score = 0;
-                    lives = 3;
+                    total_score = 0;
+                    lives = 15;
                     enemyCount = 0;
                     level = 1;
+                    reverseTimer = 0;
                     FreeEnemyList(&enemyList); 
                     GenerateMakanan(&makanan, rintangan);
                     isGameOver = false;
@@ -383,9 +447,11 @@ int main(){
                     InitSnake(&snake);
                     currentScreen = MENU;
                     score = 0;
-                    lives = 3;
+                    total_score = 0;
+                    lives = 15;
                     level = 1;
                     enemyCount = 0;
+                    reverseTimer = 0;
                     isGameOver = false;
                     isStartPlaying = false;
                     isSoundOver = false;

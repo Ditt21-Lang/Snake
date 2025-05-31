@@ -6,6 +6,8 @@
 #define TINGGI_LAYAR 800
 #define UKURAN_BLOCK 20
 
+// IS: Snake belum ada
+// FS: Snake sudah ada dan dialokasikan memorinya
 void InitSnake(Snake *snake){
     float startX = LEBAR_LAYAR/2;
     float startY = TINGGI_LAYAR/2;
@@ -40,10 +42,14 @@ void InitSnake(Snake *snake){
     }
 }
 
+//IS: Dua buah Node posinya diketahui
+//FS: Mengembalikan Nilai selisih antara kedua node
 Vector2 getDir(Vector2 A, Vector2 B){
     return (Vector2){A.x - B.x, A.y - B.y};
 }
 
+//IS : Snake sudah diinisialisasi (sudah ada)
+//FS : Snake digambar di layar
 void DrawSnake(Snake *snake, Texture2D texture) {
     SnakeNode* current = snake->head;
     while (current != NULL) {
@@ -107,8 +113,8 @@ void DrawSnake(Snake *snake, Texture2D texture) {
     }
 }
 
-
-
+//IS: Snake ada dan bergerak di layar
+//FS: Mengembalikan nilai true ketika kepala snake bertabrakan dengan dirinya sendiri
 bool cekTabrakan(Snake *snake){
     SnakeNode* current;
     current = snake->head->next;
@@ -121,6 +127,8 @@ bool cekTabrakan(Snake *snake){
     return false;
 }
 
+//IS: Snake ada dan sudah digambar
+//FS: Snake berpindah sesuai arah yang ditentukan dari kepala hingga buntut
 void UpdateSnake(Snake *snake) {
     if(snake->direction.x !=0){
         if(IsKeyPressed(KEY_UP)){
@@ -152,6 +160,8 @@ void UpdateSnake(Snake *snake) {
     cekTabrakan(snake);
 } 
 
+//IS: Snake sudah ada 
+//FS: Node Snake bertambah
 void tambahNode(Snake *snake){
     SnakeNode* newbody = (SnakeNode*)malloc(sizeof(SnakeNode));
     newbody->position = snake->direction;
@@ -162,6 +172,8 @@ void tambahNode(Snake *snake){
     snake->tail = newbody;
 }
 
+//IS: Snake sudah ada
+//FS: Seluruh node snake di-dealokasi
 void freeSnake(Snake *snake){
     if (snake->head != NULL){
         while (snake->tail != NULL){
@@ -174,6 +186,8 @@ void freeSnake(Snake *snake){
     }
 }
 
+//IS: Snake sudah ada bergerak di layar
+//FS: Mengambalikan nilai true ketika posisi kepala snake sama dengan posisi makanan
 bool CheckMakanan(Snake *snake, Makanan *food) {
     if (snake->head->position.x == food->position.x && snake->head->position.y == food->position.y){
         return true;
