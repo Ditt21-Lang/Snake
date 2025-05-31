@@ -11,6 +11,8 @@
 #define UKURAN_BLOCK 20
 
 int main(){
+
+    
     
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Snave");
     InitAudioDevice();
@@ -26,6 +28,8 @@ int main(){
     Makanan makanan;
     RintanganNode *rintangan = NULL;
     Enemy enemy;
+    EnemyList enemyList;
+
 
     //peluru
     peluru mpeluru={0};
@@ -33,13 +37,12 @@ int main(){
     mpeluru.status=false;
 
     //portal
-    portal mportal[2];
-    mportal[0].status=false;
-    mportal[1].status=false;
+    pll mportal=NULL;
 
     int score = 0;
+    int total_score = 0;
     int level = 1;
-    int lives = 3;
+    int lives = 15;
     int enemyCount = 0;
     int buffer;
 
@@ -47,7 +50,15 @@ int main(){
     bool isStartPlaying = false;
     bool isGameOver = false;
     bool isSoundOver = false;
+    bool isSoundWinning = false;
+    bool isWin = false;
+    bool showHit = false;
+    bool hasWinTimeStarted = false;
+    float hitStartTime = 0;
+    float winStartTime = 0.0f;
     
+
+
     ButtonNode* menuButtons = InitButtons(300);
     AppendButton(&menuButtons, "Play", 300);
     AppendButton(&menuButtons, "How to Play", 400);
@@ -113,29 +124,31 @@ int main(){
     Sound eat = LoadSound("resources/Makanan.wav");
     Music game = LoadMusicStream("resources/GamePlay.wav");
     Sound over = LoadSound("resources/GameOver.wav");
-    Sound hit = LoadSound("resorces/hitObs.wav");
+    Sound hit = LoadSound("resources/hitObs.wav");
+    Sound level_up = LoadSound("resources/LevelUp.wav");
+    Sound Reverse = LoadSound("resources/Reverse.wav");
+    Sound winning = LoadSound("resources/winStage.wav");
 
     SetSoundVolume(start ,1.5f);
     SetSoundVolume(eat ,1.5f);
+    SetSoundVolume(hit, 1.5f);
+    SetSoundVolume(level_up, 1.5f);
+    SetSoundVolume(Reverse, 5.0f);
+    SetSoundVolume(winning, 1.0f);
     
-    float tuaim=0;
-    mportal[0].cooldown=10;
+    float cooldown_bullet=10;//em
     float bgX = 0;
     float scrollSpeed = 75;
     float scale = 1.2;
     float radius = 10.0f;
 
-
-    GenerateRintangan(&rintangan, level);
-    GenerateMakanan(&makanan, rintangan);
-
     InitSnake(&snake);
-
+    GenerateMakanan(&makanan, rintangan);
+    
     while(!WindowShouldClose()){
         if(yes()){
             buffer=lastbutton();
         }   
-        
 
         UpdateMusicStream(menu);
         UpdateMusicStream(game);
@@ -246,12 +259,12 @@ int main(){
         else if (currentScreen == ENDLESS) {
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
-            DrawGame(&makanan, rintangan, &enemy, enemyCount, score, level, dinding, tanah, food, musuh, obstacle);
+            DrawGame(&makanan, rintangan, &enemyList, enemyCount, score, level, dinding, tanah, food, musuh, obstacle);
 
             DrawText(TextFormat("Score: %d", score), 165, 625, 50, GOLD);
             DrawText("ENDLESS MODE", SCREEN_WIDTH/2 - MeasureText("ENDLESS MODE",70)/2, SCREEN_HEIGHT-90, 70, BROWN);
 
-            if(!cekTabrakan(&snake)) {
+            if(!cekTabrakan(&snake) && !CekTabrakDinding(&snake)) {
                 UpdateSnake(&snake);
                 DrawSnake(&snake, snake.tekstur);
                 
@@ -270,25 +283,29 @@ int main(){
         else if (currentScreen == STAGE ){
             ClearBackground(RAYWHITE);
             StopMusicStream(menu);
-            DrawGame(&makanan, rintangan, &enemy, enemyCount, score,level, dinding, tanah, food, musuh, obstacle );
+            DrawGame(&makanan, rintangan, &enemyList, enemyCount, score,level, dinding, tanah, food, musuh, obstacle );
+            GenerateRintangan(&rintangan, level);
             
             DrawText(TextFormat("Score: %d", score), 10, 630, 30, GOLD);
-            DrawText(TextFormat("Lives: %d", lives), 10, 660, 30, GOLD);
-            DrawText(TextFormat("Level: %d", level), 450, 630, 30, GOLD);
-            DrawText(TextFormat("Cooldown: %f", GetTime(),tuaim), 420, 660, 30, RED);
+            DrawText(TextFormat("Lives: %d", lives), 10, 660, 30, RED);
+            DrawText(TextFormat("Level: %d", level), 395, 630, 30, WHITE);
+            DrawText(TextFormat("Reverse: %f", reverseTimer), 395, 660, 30, GREEN);
             DrawText("STAGE MODE", SCREEN_WIDTH / 2 - MeasureText("STAGE MODE", 70) / 2, SCREEN_HEIGHT - 90, 70, BROWN);
             if(!isGameOver){
                 if(!cekTabrakan(&snake) && !CekTabrakDinding(&snake)){
                     UpdateSnake(&snake);
                     DrawSnake(&snake, snake.tekstur);
+                    MoveEnemy(&enemyList);
                 }
                 else{
+                    level = 0;
                     isGameOver = true;
                 }
             }
     
             if(CheckMakanan(&snake, &makanan)){
                 score += 100;
+                total_score = total_score + 100;
                 tambahNode(&snake);
                 GenerateMakanan(&makanan, rintangan);
                 PlaySound(eat);
@@ -296,26 +313,118 @@ int main(){
 
             if(score >= 1000){
                 score = 0;
+                PlaySound(level_up);
                 InitSnake(&snake);
                 DrawSnake(&snake, snake.tekstur);
                 level = level + 1;
-                enemyCount = enemyCount + 1;
+                lives = lives + 1;
+                GenerateRintangan(&rintangan, level);
+                enemyCount = enemyCount + 1;            
+                enemyList = GenerateEnemy(level); 
+            }
+
+            if(CekTabrakRintangan((Vector2){snake.head->position.x, snake.head->position.y}, rintangan) ||
+                CekTabrakEnemy(snake, enemyList)) {
+                if (!isGameOver){
+                    lives = lives - 1;
+                    PlaySound(hit);
+                    showHit = true;
+                    hitStartTime = GetTime();
+                    if (lives == 0){
+                        isGameOver = true;
+                    }
+                }
+            }
+
+            if (showHit && (GetTime() - hitStartTime >= 2.0f)) {
+                showHit = false;
+            }
+
+            if (showHit){
+                DrawText(TextFormat("HIT!"), 245, 650, 30, RED);
+            }
+
+            if (IsKeyPressed(KEY_SPACE)){
+                PlaySound(Reverse);
+                ReverseSnake(&snake);
+            }
+
+            if(level > 5){
+                isWin = true;
             }
 
             UpdateCooldown();
-            if(mpeluru.status){
-                DrawCircle((int)mpeluru.coor.x, (int)mpeluru.coor.y, radius, GOLD);
+
+
+            // //________________________
+            // if( IsKeyPressed(KEY_P) ) p_pressed(&mpeluru,buffer,snake.head->position);
+
+            // if(mpeluru.status){
+            //     move_peluru(&mpeluru,mpeluru.speed);
+            //     DrawCircle((int)mpeluru.coor.x, (int)mpeluru.coor.y, radius, GOLD);
+            // }
+
+        // if(check_peluru(mpeluru.coor.x,LEBAR_LAYAR,0) || check_peluru(mpeluru.coor.y,TINGGI_LAYAR,0) ){
+        //     place_portal(mpeluru.coor,&mportal,LEBAR_LAYAR-50,50,TINGGI_LAYAR-50,50,mpeluru.buffer,2);
+        //     mpeluru.status=false;
+        //     mpeluru.coor.x=400;
+        //     mpeluru.coor.y=400;
+        // }
+
+    //     if(mportal != NULL){
+    //     if(mportal->status == false) dellall_portal(&mportal);
+    // }
+    // teleport_portal(&(snake.head->position.x),&(snake.head->position.y),mportal,80,80);
+    // cooldown_portal_traversal(mportal);
+    
+    // draw_portal(textuar,mportal,50,50,BLUE);
+    // //________________________    
+
+}
+        
+        if (currentScreen == STAGE && isWin) {
+            // Catat waktu saat menang pertama kali
+            if (!hasWinTimeStarted) {
+                winStartTime = GetTime();
+                hasWinTimeStarted = true;
+                StopMusicStream(game); 
+
+                if (!isSoundWinning){
+                    PlaySound(winning);
+                    isSoundWinning = true;
+                }
+
             }
 
-            if(cooldown(&mportal[0].activation) == false){
-                draw_portal(textuar,2,mportal,20,20);
-            }else{
-                mportal[0].status=false;
-                mportal[1].status=false;
+            // Cek apakah 3 detik sudah berlalu
+            if (GetTime() - winStartTime <= 3.0f) {
+                DrawText("YOU WIN!", 180, 250, 50, GREEN);
+                DrawText(TextFormat("Total Score: %i", total_score), 160, 300, 30, GREEN); 
+                InitSnake(&snake);
+            } else {
+                // Reset status kemenangan agar bisa lanjut ke layar lain atau ulang game
+                isWin = false;
+                hasWinTimeStarted = false;
+                isSoundWinning = false;
+                isMusicPlaying = false;
+                isSoundOver = false;
+                isGameOver = false;
+                isStartPlaying = false;
+                fps = 60;
+                score = 0;
+                total_score = 0;
+                lives = 15;
+                level = 1;
+                enemyCount = 0;
+                reverseTimer = 0;
+                SetTargetFPS(fps);
+                FreeRintangan(&rintangan);
+                FreeEnemyList(&enemyList);
+                currentScreen = MENU;
+
             }
-            
-            MoveEnemy(&enemy, enemyCount);    
         }
+
         
         if ((currentScreen == ENDLESS || currentScreen == STAGE) && isGameOver) {   
             StopMusicStream(game);  
@@ -325,7 +434,7 @@ int main(){
             }
 
             DrawText("GAME OVER", 150, 250, 50, RED);
-            DrawText(TextFormat("Score: %i", score), 230, 300, 30, RED);  
+            DrawText(TextFormat("Total Score: %i", total_score), 160, 300, 30, RED);  
             
             ButtonNode* current = gameOverButtons;
             while (current != NULL) {
@@ -334,32 +443,12 @@ int main(){
                 if (strcmp(current->text, "Restart") == 0 && current->hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                     InitSnake(&snake);
                     score = 0;
-                    lives = 3;
-                    enemyCount = 0;
-                    GenerateRintangan(&rintangan, level);
-                    GenerateMakanan(&makanan, rintangan);
-                    isGameOver = false;
-                    isStartPlaying = false;
-                }
-                
-                if (strcmp(current->text, "Main Menu") == 0 && current->hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    InitSnake(&snake);
-                    currentScreen = MENU;
-                    score = 0;
-                    lives = 3;
-                    isGameOver = false;
-                    isStartPlaying = false;
-                    fps = 60;
-                    SetTargetFPS(fps);
-                }
-                
-                if (strcmp(current->text, "Restart") == 0 && current->hover && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    InitSnake(&snake);
-                    score = 0;
-                    lives = 3;
+                    total_score = 0;
+                    lives = 15;
                     enemyCount = 0;
                     level = 1;
-                    GenerateRintangan(&rintangan, level);
+                    reverseTimer = 0;
+                    FreeEnemyList(&enemyList); 
                     GenerateMakanan(&makanan, rintangan);
                     isGameOver = false;
                     isStartPlaying = false;
@@ -370,13 +459,19 @@ int main(){
                     InitSnake(&snake);
                     currentScreen = MENU;
                     score = 0;
-                    lives = 3;
+                    total_score = 0;
+                    lives = 15;
                     level = 1;
+                    enemyCount = 0;
+                    reverseTimer = 0;
                     isGameOver = false;
                     isStartPlaying = false;
                     isSoundOver = false;
+                    isMusicPlaying = false;
                     fps = 60;
                     SetTargetFPS(fps);
+                    FreeRintangan(&rintangan);
+                    FreeEnemyList(&enemyList);
                 }
                 
                 current = current->next;
@@ -400,13 +495,17 @@ int main(){
     UnloadTexture(obstacle);
     UnloadTexture(snake.tekstur);
     UnloadMusicStream(menu);
+    CloseAudioDevice();
+    CloseWindow();
     FreeButtons(menuButtons);
     FreeButtons(modeButtons);
     FreeButtons(gameOverButtons);
     FreeButtons(howToButtons);
     FreeTextures(howToPlayTextures);
     FreeTextures(ssGameplayTextures);
-    CloseAudioDevice();
-    CloseWindow();
+    freeSnake(&snake);
+    FreeEnemyList(&enemyList);
+    FreeRintangan(&rintangan);
+    printf("Return Succesfully");
     return 0;      
 }

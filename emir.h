@@ -6,8 +6,6 @@
 #define KIRI 263
 #define BAWAH 264
 #define ATAS 265
-#define LEBAR_LAYAR 800
-#define TINGGI_LAYAR 650
 #define EMIR_H
 
 typedef struct main_portal *pll;

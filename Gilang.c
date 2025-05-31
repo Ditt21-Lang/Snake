@@ -6,16 +6,17 @@
 #define TINGGI_LAYAR 800
 #define UKURAN_BLOCK 20
 
+// IS: Snake belum ada
+// FS: Snake sudah ada dan dialokasikan memorinya
 void InitSnake(Snake *snake){
     float startX = LEBAR_LAYAR/2;
     float startY = TINGGI_LAYAR/2;
-    snake->speed= (Vector2){UKURAN_BLOCK, 0};
-    snake->panjang = 8;
+    snake->direction= (Vector2){UKURAN_BLOCK, 0};
     snake->head = NULL;
     snake->tail = NULL;
 
 
-    for (int i = 0; i < snake->panjang; i++) {
+    for (int i = 0; i < 8; i++) {
         SnakeNode* newNode = (SnakeNode*)malloc(sizeof(SnakeNode));
         newNode->position = (Vector2){startX - i * UKURAN_BLOCK, startY};
         newNode->prev = NULL;
@@ -41,10 +42,14 @@ void InitSnake(Snake *snake){
     }
 }
 
+//IS: Dua buah Node posinya diketahui
+//FS: Mengembalikan Nilai selisih antara kedua node
 Vector2 getDir(Vector2 A, Vector2 B){
     return (Vector2){A.x - B.x, A.y - B.y};
 }
 
+//IS : Snake sudah diinisialisasi (sudah ada)
+//FS : Snake digambar di layar
 void DrawSnake(Snake *snake, Texture2D texture) {
     SnakeNode* current = snake->head;
     while (current != NULL) {
@@ -57,13 +62,13 @@ void DrawSnake(Snake *snake, Texture2D texture) {
         float rotation = 0;
         if(current == snake->head){
             current->sprite = (Rectangle){0, 0, 20, 20};
-            if (snake->speed.x > 0){
+            if (snake->direction.x > 0){
                 rotation = 90;
-            } else if (snake->speed.x < 0){
+            } else if (snake->direction.x < 0){
                 rotation = 270;
-            } else if (snake->speed.y > 0){
+            } else if (snake->direction.y > 0){
                 rotation = 180;
-            } else if (snake->speed.y < 0){
+            } else if (snake->direction.y < 0){
                 rotation = 0;
             }
 
@@ -108,12 +113,12 @@ void DrawSnake(Snake *snake, Texture2D texture) {
     }
 }
 
-
-
+//IS: Snake ada dan bergerak di layar
+//FS: Mengembalikan nilai true ketika kepala snake bertabrakan dengan dirinya sendiri
 bool cekTabrakan(Snake *snake){
     SnakeNode* current;
     current = snake->head->next;
-    for (int i = 1; i < snake->panjang; i++){
+    while(current != NULL){
         if(snake->head->position.x == current->position.x && snake->head->position.y == current->position.y){
             return true;
         }
@@ -122,21 +127,23 @@ bool cekTabrakan(Snake *snake){
     return false;
 }
 
+//IS: Snake ada dan sudah digambar
+//FS: Snake berpindah sesuai arah yang ditentukan dari kepala hingga buntut
 void UpdateSnake(Snake *snake) {
-    if(snake->speed.x !=0){
+    if(snake->direction.x !=0){
         if(IsKeyPressed(KEY_UP)){
-            snake->speed = (Vector2){0, -UKURAN_BLOCK};
+            snake->direction = (Vector2){0, -UKURAN_BLOCK};
         }
         else if(IsKeyPressed(KEY_DOWN)){
-            snake->speed = (Vector2){0, UKURAN_BLOCK};
+            snake->direction = (Vector2){0, UKURAN_BLOCK};
         }
     }
-    else if(snake->speed.y != 0){
+    else if(snake->direction.y != 0){
         if(IsKeyPressed(KEY_RIGHT)){
-            snake->speed = (Vector2){UKURAN_BLOCK, 0};
+            snake->direction = (Vector2){UKURAN_BLOCK, 0};
         }
         else if(IsKeyPressed(KEY_LEFT)){
-            snake->speed = (Vector2){-UKURAN_BLOCK, 0};
+            snake->direction = (Vector2){-UKURAN_BLOCK, 0};
         }
     }
 
@@ -147,15 +154,17 @@ void UpdateSnake(Snake *snake) {
         current = current->prev;
     } 
         // Perbarui posisi kepala dengan menambahkan kecepatan
-    snake->head->position.x += snake->speed.x;
-    snake->head->position.y += snake->speed.y;
+    snake->head->position.x += snake->direction.x;
+    snake->head->position.y += snake->direction.y;
 
     cekTabrakan(snake);
 } 
 
+//IS: Snake sudah ada 
+//FS: Node Snake bertambah
 void tambahNode(Snake *snake){
     SnakeNode* newbody = (SnakeNode*)malloc(sizeof(SnakeNode));
-    newbody->position = snake->speed;
+    newbody->position = snake->direction;
     newbody->next = NULL;
     newbody->prev = NULL;
     newbody->prev = snake->tail;
@@ -163,6 +172,25 @@ void tambahNode(Snake *snake){
     snake->tail = newbody;
 }
 
+//IS: Snake sudah ada
+//FS: Seluruh node snake di-dealokasi
+void freeSnake(Snake *snake){
+    if (snake->head != NULL){
+        while (snake->tail != NULL){
+            SnakeNode* current = snake->tail;
+            snake->tail = snake->tail->prev;
+            free(current); 
+        }
+        snake->head = NULL;
+        snake->tail = NULL;
+    }
+}
+
+//IS: Snake sudah ada bergerak di layar
+//FS: Mengambalikan nilai true ketika posisi kepala snake sama dengan posisi makanan
 bool CheckMakanan(Snake *snake, Makanan *food) {
-    return (snake->head->position.x == food->position.x && snake->head->position.y == food->position.y);
+    if (snake->head->position.x == food->position.x && snake->head->position.y == food->position.y){
+        return true;
+    }
+    return false;
 }

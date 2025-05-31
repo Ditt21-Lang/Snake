@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include "emir.h"
 #include <stdlib.h>
-
+#define LEBAR_LAYAR 600
+#define TINGGI_LAYAR 800
 
 int main(){
 const int screenWidth = 800;

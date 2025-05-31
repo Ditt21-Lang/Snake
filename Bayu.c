@@ -1,10 +1,11 @@
 #include "Bayu.h"
 
-
+// Menginisialisasi linked list tombol (button) dengan posisi Y awal tertentu
 ButtonNode* InitButtons(int startY) {
     return NULL;
 }
 
+// Menambahkan tombol baru ke linked list tombol dengan teks dan posisi Y tertentu
 void AppendButton(ButtonNode** head, const char* text, int yPos) {
     ButtonNode* newButton = CreateButton(text, yPos);
     
@@ -19,6 +20,7 @@ void AppendButton(ButtonNode** head, const char* text, int yPos) {
     }
 }
 
+// Membuat node tombol baru dengan teks dan posisi Y tertentu
 ButtonNode* CreateButton(const char* text, int yPos) {
     ButtonNode* node = (ButtonNode*)malloc(sizeof(ButtonNode));
     node->border = (Rectangle){200, yPos, 200, 50};
@@ -29,6 +31,7 @@ ButtonNode* CreateButton(const char* text, int yPos) {
     return node;
 }
 
+// Memperbarui status tombol berdasarkan input mouse dan mengubah tampilan layar sesuai tombol yang ditekan
 void UpdateButtons(ButtonNode *head, GameScreen *screen) {
     Vector2 mousePoint = GetMousePosition();
     int i = 0;
@@ -51,6 +54,7 @@ void UpdateButtons(ButtonNode *head, GameScreen *screen) {
     }
 }
 
+// Menggambar semua tombol di layar dengan warna berbeda saat di-hover
 void DrawButtons(ButtonNode *head) {
     for (ButtonNode *node = head; node; node = node->next) {
         DrawRectangleRec(node->border, node->hover ? LIGHTGRAY : GRAY);
@@ -58,6 +62,7 @@ void DrawButtons(ButtonNode *head) {
     }
 }
 
+// Membebaskan semua memori yang digunakan oleh linked list
 void FreeButtons(ButtonNode* head) {
     ButtonNode* current = head;
     while (current != NULL) {
@@ -68,6 +73,7 @@ void FreeButtons(ButtonNode* head) {
     }
 }
 
+// Menggambar tekstur dengan ukuran yang disesuaikan agar tidak melebihi lebar maksimum
 void DrawScaledTexture(Texture2D texture, int x, int y, int maxWidth) {
     float scale = (texture.width > maxWidth) ? (float)maxWidth / texture.width : 1.0f;
     int newWidth = texture.width * scale;
@@ -75,6 +81,7 @@ void DrawScaledTexture(Texture2D texture, int x, int y, int maxWidth) {
     DrawTexturePro(texture, (Rectangle){0, 0, texture.width, texture.height}, (Rectangle){x - newWidth / 2, y, newWidth, newHeight}, (Vector2){0, 0}, 0.0f, WHITE);
 }
 
+// Menambahkan node tekstur baru ke linked list tekstur untuk ditampilkan pada halaman tertentu
 void AddTexture(TextureNode **head, const char *path, int page, Vector2 position) {
     TextureNode *newNode = (TextureNode *)malloc(sizeof(TextureNode));
     newNode->texture = LoadTexture(path);
@@ -84,6 +91,7 @@ void AddTexture(TextureNode **head, const char *path, int page, Vector2 position
     *head = newNode;
 }
 
+// Membebaskan semua memori dan tekstur yang digunakan oleh linked list
 void FreeTextures(TextureNode *head) {
     TextureNode *current = head;
     while (current != NULL) {
@@ -94,6 +102,7 @@ void FreeTextures(TextureNode *head) {
     }
 }
 
+// Digunakan untuk memilih sprite tikungan yang sesuai dari spritesheet (tubuh ular yang bengkok)
 int snakeSpritesheet(Position prevDirection, Position nextDirection) {
 
     int spriteIndex = 0;
