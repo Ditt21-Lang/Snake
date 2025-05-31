@@ -10,18 +10,17 @@
 
 extern float reverseTimer;
 
+// membutuhkan header Gilang.h untuk tipe data SnakeNode dan Snake
+// membutuhkan header Marrely.h untuk tipe data RintanganNode, EnemyList dan Enemy
 
-void ReverseSnake(Snake *Snake);
-void HandleReverseInput(Snake *Snake);
-void UpdateCooldown();
-bool CekTabrakDinding(Snake *snake);
-bool CekTabrakRintangan(Vector2 head, RintanganNode *rintanganHead);
-bool CekTabrakEnemy(Snake ular, EnemyList list);
+void ReverseSnake(Snake *snake); //membalikkan arah ular
+void UpdateCooldown(); //memperbarui cooldown
+bool CekTabrakDinding(Snake *snake); //mengecek jika kepala ular menabrak dinding
+bool CekTabrakRintangan(Vector2 head, RintanganNode *rintanganHead); //mengecek jika kepala ular menabrak rintangan
+bool CekTabrakEnemy(Snake ular, EnemyList list); //mengecek jika ular menabrak enemy
 
-void FreeRintangan(RintanganNode **head);
-EnemyList GenerateEnemy(int level);
-void FreeEnemyList(EnemyList *list);
-void MoveEnemy(EnemyList *list);
-// EnemyList GenerateEnemy(int level);
+EnemyList GenerateEnemy(int level); //membuat list enemy berdasarkan level
+void FreeEnemyList(EnemyList *list); //membebaskan memori list enemy
+void MoveEnemy(EnemyList *list); //menggerakkan enemy sesuai arah dan batas
 
 #endif
